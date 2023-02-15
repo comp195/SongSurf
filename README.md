@@ -1,6 +1,6 @@
 # SongSurf
 ## Description
-__SongSurf__ allows you to discover new music that you'll love through an informative, attractive, and intuitive website.
+__SongSurf__ allows you to discover new music that you'll love through an informative, attractive, and intuitive website.  Input your favorite artists, albums, or songs and receive recommendations based on what you love.  SongSurf also allows you to track your favorite discoveries for future use.
 
 ## Project Features
 * Algorithm-based music discovery generation for tracks, artists, and albums.
