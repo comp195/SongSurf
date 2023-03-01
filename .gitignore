@@ -1,0 +1,7 @@
+# Ignore any VSCODE files
+.vscode/
+
+# Ignore virtual environments
+patrick_venv/
+shabaj_venv/
+william_venv/

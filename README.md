@@ -27,4 +27,17 @@ __SongSurf__ allows you to discover new music that you'll love through an inform
 2. William Balbuena: w_balbuena@u.pacific.edu
 3. Patrick Nisperos: p_nisperos@u.pacific.edu
 
+### Development Environment
+How to get a working development environment:
+1. Install [Python 3](https://www.python.org/downloads/)
+2. Create a virtual environment
+``` 
+windows> python -m venv my_venv
+or
+unix> python3 -m venv my_venv
+```
+3. Install the required libraries
+```
+unix/win> pip install -r requirements.txt
+```
 
