@@ -11,7 +11,7 @@ logging.basicConfig(filename='error.log', level=logging.ERROR, format='%(asctime
 
 with app.app_context():
     db = SQLAlchemy(app)
-
+print("* Running on http://127.0.0.1:5000")
 # Create User model with columns for the attributes
 class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True) # User_ID Column
