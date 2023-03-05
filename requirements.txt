@@ -1,1 +1,2 @@
-Flask
+Flask==2.2.3
+flask-sqlalchemy==3.0.3

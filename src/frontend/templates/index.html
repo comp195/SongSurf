@@ -13,4 +13,42 @@
   Input your favorite artists, albums, or songs and receive recommendations based on what you love.
   SongSurf also allows you to track your favorite discoveries for future use   .</p>
 
+<div class="content">
+
+  <div class="search_boxes"> <!-- Search boxes for user to input what they love -->
+    <h4>Enter up to 3 Song/Artist/Album you love:</h4>
+    <ol>
+      <li><input type="text" name="content" id="content"></li>
+      <li><input type="text" name="content" id="content"></li>
+      <li><input type="text" name="content" id="content"></li>
+    </ol>
+
+  </div>
+
+
+  <div class="search_radio_buttons"> <!-- Radio buttons to select what to show user -->
+    <h4>Show Me:</h4>
+    <label>
+      <input type="radio" name="content" value="Artists">
+      Artists
+    </label>
+    <br>
+    <label>
+      <input type="radio" name="content" value="Albums">
+      Albums
+    </label>
+    <br>
+    <label>
+      <input type="radio" name="content" value="Songs">
+      Songs
+    </label>
+    <br>
+  </div>
+
+  <form action="/" method="POST"> <!-- Surf Button -->
+    <input type="submit" value="SURF">
+
+  </form>
+</div>
+
 {% endblock %}
