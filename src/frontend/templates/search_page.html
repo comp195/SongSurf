@@ -1,0 +1,53 @@
+{% extends 'base.html' %} <!-- Based off the base.html (where skeleton html is like navi bar)-->
+
+
+{% block head %}
+<title>SongSurf Homepage</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/search_page.css') }}">
+{% endblock %}
+
+{% block body %} 
+
+<h1>SongSurf</h1>
+<p> SongSurf allows you to discover new music that
+  you'll love through an informative, attractive, and intuitive website. 
+  Input your favorite artists, albums, or songs and receive recommendations based on what you love.
+  SongSurf also allows you to track your favorite discoveries for future use   .</p>
+
+  <form action="/" method="POST"> <!-- Everything within this form section interacts with backend to send data -->
+
+    <div class="search_section">
+      <div class="search_boxes"> <!-- Search boxes for user to input what they love -->
+        <h4>Enter up to 3 Song/Artist/Album you love:</h4>
+        <ol>
+          <li><input type="text" name="user_choice1" id="user_choice1"></li>
+          <li><input type="text" name="user_choice2" id="user_choice2"></li>
+          <li><input type="text" name="user_choice3" id="user_choice3"></li>
+        </ol>
+      </div>
+      <div class="search_radio_buttons"> <!-- Radio buttons to select what to show user -->
+        <h4>Show Me:</h4>
+        <label>
+          <input type="radio" name="show_type" value="Artists">
+          Artists
+        </label>
+        <br>
+        <label>
+          <input type="radio" name="show_type" value="Albums">
+          Albums
+        </label>
+        <br>
+        <label>
+          <input type="radio" name="show_type" value="Songs">
+          Songs
+        </label>
+        <br>
+      </div>
+
+    <input type="submit" value="SURF"> <!-- SURF Button to go to reccomend_page -->
+  
+  </div>
+  </form>
+</div>
+
+{% endblock %}
