@@ -58,7 +58,9 @@ def index():
         elif request.form['show_type'] == 'Songs': # if the Songs radio button was selected
         	print("Songs")
 
-        return render_template('reccomend_page.html', user=new_user)
+        user_choice = request.form['show_type']
+
+        return render_template('reccomend_page.html', user=new_user, user_choice = user_choice)
 
     else: # If user visits the page
         return render_template('search_page.html')
