@@ -50,6 +50,14 @@ def index():
             app.logger.error('Issue adding user with AAS searches %s. Error: %s', aas_searches, str(e))
             print(e)
 
+      	# If artists were chosen, treat user input as all artists, etc.
+        if request.form['show_type'] == 'Artists':	# if the Artists radio button was selected
+        	print("Artists")
+        elif request.form['show_type'] == 'Albums': # if the Albums radio button was selected
+        	print("Albums")
+        elif request.form['show_type'] == 'Songs': # if the Songs radio button was selected
+        	print("Songs")
+
         return render_template('reccomend_page.html', user=new_user)
 
     else: # If user visits the page
