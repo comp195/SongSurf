@@ -9,6 +9,14 @@ headers = {
 }
 ###########################
 
+# PLAN:
+# Get tags of songs/artists/albums that the user inputted
+# Use the tags to search for the top artists in those tags
+# Find the most common tags among them
+# Search the top artists for those tags
+# Find the most common artists from all the tags
+# If no common artists, take the top artists from each tag in sequential order
+
 tag = 'rap'
 limit = 10
 
