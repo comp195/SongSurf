@@ -3,6 +3,8 @@ import logging
 from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 
+import artist as artist
+
 app = Flask(__name__, static_folder='../frontend/static', template_folder='../frontend/templates')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///main.db'
 
@@ -53,6 +55,7 @@ def index():
       	# If artists were chosen, treat user input as all artists, etc.
         if request.form['show_type'] == 'Artists':	# if the Artists radio button was selected
         	print("Artists")
+        	artist.get_artist(request.form['user_choice1'], request.form['user_choice2'], request.form['user_choice3'])
         elif request.form['show_type'] == 'Albums': # if the Albums radio button was selected
         	print("Albums")
         elif request.form['show_type'] == 'Songs': # if the Songs radio button was selected
