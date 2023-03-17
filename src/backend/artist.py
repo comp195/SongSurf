@@ -96,3 +96,5 @@ def get_artist(a1,a2,a3):
 	print(most_common_tuples)
 	most_common_artists = [t[0] for t in most_common_tuples]	# get the most common tags from the tuples
 	print(most_common_artists)
+
+	return most_common_artists
