@@ -7,7 +7,7 @@ def jprint(obj):
 	trext = json.dumps(obj, sort_keys=True, indent=4)
 	print(text)
 
-###############################
+#############################
 # IMPORTANT FOR API USE!
 # MUST INCLUDE USER_AGENT AS A HEADER AND API KEY IN PAYLOAD!
 # FAILURE TO INCLUDE WILL RISK BAN
@@ -24,6 +24,9 @@ payload = {
 	'format': 'json'
 }
 ##############################
+
+# If using loops put a sleep statement to prevent overuse of the API
+time.sleep(1)
 
 r = requests.get('https://ws.audioscrobbler.com/2.0/', headers=headers, params=payload)
 r.status_code
