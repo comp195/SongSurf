@@ -68,3 +68,15 @@
 2023-03-04 18:08:26,431 INFO: Successfully added user with AAS searches: ['as', 'ds', 'fd']
 2023-03-04 18:08:26,435 INFO: 127.0.0.1 - - [04/Mar/2023 18:08:26] "POST / HTTP/1.1" 200 -
 2023-03-04 18:08:26,441 INFO: 127.0.0.1 - - [04/Mar/2023 18:08:26] "[36mGET /static/css/base.css HTTP/1.1[0m" 304 -
+2023-03-04 18:09:41,996 INFO: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2023-03-04 18:09:41,996 INFO: [33mPress CTRL+C to quit[0m
+2023-03-04 18:09:41,997 INFO:  * Restarting with stat
+2023-03-04 18:09:42,450 WARNING:  * Debugger is active!
+2023-03-04 18:09:42,454 INFO:  * Debugger PIN: 727-901-131
+2023-03-04 18:09:43,890 INFO: 127.0.0.1 - - [04/Mar/2023 18:09:43] "GET / HTTP/1.1" 200 -
+2023-03-04 18:09:43,972 INFO: 127.0.0.1 - - [04/Mar/2023 18:09:43] "[36mGET /static/css/base.css HTTP/1.1[0m" 304 -
+2023-03-04 18:09:43,973 INFO: 127.0.0.1 - - [04/Mar/2023 18:09:43] "[36mGET /static/css/search_page.css HTTP/1.1[0m" 304 -
+2023-03-04 18:09:55,313 INFO: Successfully added user with AAS searches: ['shabaj', 'william', 'patrick']
+2023-03-04 18:09:55,317 INFO: 127.0.0.1 - - [04/Mar/2023 18:09:55] "POST / HTTP/1.1" 200 -
+2023-03-04 18:09:55,323 INFO: 127.0.0.1 - - [04/Mar/2023 18:09:55] "[36mGET /static/css/base.css HTTP/1.1[0m" 304 -
