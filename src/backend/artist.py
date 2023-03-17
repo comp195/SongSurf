@@ -1,5 +1,6 @@
 import requests # pip install requests
 import time
+from collections import Counter
 
 ### IMPORTANT API INFO ###
 USER_AGENT = 'wbuop'
@@ -11,11 +12,13 @@ headers = {
 ###########################
 
 # Get tags of songs/artists/albums that the user inputted
-artist1 = "Kendrick Lamar"
-artist2 = "Steely Dan"
-artist3 = "Marvin Gaye"
+artist1 = "The Beach Boys"
+artist2 = "The Beatles"
+artist3 = "Lil Yachty"
 
 artists = [artist1, artist2, artist3]
+
+toptags = []
 
 for artist in artists:
 	payload = {
@@ -23,42 +26,68 @@ for artist in artists:
 		'method': 'artist.getTopTags',
 		'format': 'json',
 		'artist': artist,
-		'autocorrect': 1	# corrects if user mispelled the artist
+		'autocorrect': 1,	# corrects if user mispelled the artist
 	}
-
-	time.sleep(1)
 
 	r = requests.get('https://ws.audioscrobbler.com/2.0/', headers=headers, params=payload)
 
-	tags = r.json()['toptags']['tag']
+	if r.status_code == 200:
+		tags = r.json()['toptags']['tag']
 
-	for tag in tags:
-		print(tag['name'])
+		# Add tags to toptag array
+		for tag in tags:
+			toptags.append(tag['name'])
+	else:
+		print(f'Request failed with status code {r.status_code}')
+
+	time.sleep(1)
+
+# Prints all tags acquired for debugging
+#for tag in toptags:
+#	print(tag)
+
+# Get the 5 most common tags
+# Output is a tuple e.g. ('rap', 5) where rap appears 5 times
+counter = Counter(toptags)
+most_common_tuples = counter.most_common(5)
+most_common_tags = [t[0] for t in most_common_tuples]	# get the most common tags from the tuples
+print(most_common_tags)
 
 # Use the tags to search for the top artists in those tags
-# Find the most common tags among them
 # Search the top artists for those tags
 # Find the most common artists from all the tags
 # If no common artists, take the top artists from each tag in sequential order
 
-# Get top artists for tag
-tag = 'rap'
-limit = 10
+topartists = []
 
-payload = {
-	'api_key': API_KEY,
-	'method': 'tag.gettopartists',
-	'format': 'json',
-	'limit': limit,
-	'tag': tag
-}
+for tag in most_common_tags:
+	# Get top 50 artists for tag
+	limit = 50
 
+	payload = {
+		'api_key': API_KEY,
+		'method': 'tag.gettopartists',
+		'format': 'json',
+		'limit': limit,
+		'tag': tag
+	}
 
-# r = requests.get('https://ws.audioscrobbler.com/2.0/', headers=headers, params=payload)
-# if r.status_code == 200:
-# 	data = r.json()
-# 	artists = data['topartists']['artist']
-# 	for artist in artists:
-# 		print(artist['name'])
-# else:
-# 	print(f'Request failed with status code {r.status_code}')
+	r = requests.get('https://ws.audioscrobbler.com/2.0/', headers=headers, params=payload)
+	if r.status_code == 200:
+		artists = r.json()['topartists']['artist']
+		for artist in artists:
+			topartists.append(artist['name'])
+	else:
+		print(f'Request failed with status code {r.status_code}')
+
+	time.sleep(1)
+
+# Prints all artists acquired for debugging
+#for artist in topartists:
+#	print(artist)
+
+counter = Counter(topartists)
+most_common_tuples = counter.most_common(5)
+print(most_common_tuples)
+most_common_artists = [t[0] for t in most_common_tuples]	# get the most common tags from the tuples
+print(most_common_artists)
