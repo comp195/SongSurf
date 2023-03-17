@@ -52,28 +52,33 @@ def index():
             app.logger.error('Issue adding user with AAS searches %s. Error: %s', aas_searches, str(e))
             print(e)
 
-      	# If artists were chosen, treat user input as all artists, etc.
+          # If artists were chosen, treat user input as all artists, etc.
         if request.form['show_type'] == 'Artists':	# if the Artists radio button was selected
-        	print("Artists")
-        	artists = artist.get_artist(request.form['user_choice1'], request.form['user_choice2'], request.form['user_choice3'])
-        	user_choice = request.form['show_type']
-        	return render_template('reccomend_page.html', user=new_user, user_choice = user_choice, 
-        		recommendation1 = artists[0], 
-        		recommendation2 = artists[1], 
-        		recommendation3 = artists[2], 
-        		recommendation4 = artists[3], 
-        		recommendation5 = artists[4])
+            print("Artists")
+            artists = artist.get_artist(request.form['user_choice1'], request.form['user_choice2'], request.form['user_choice3'])
+            user_choice = request.form['show_type']
+            return render_template('reccomend_page.html', user=new_user, user_choice = user_choice, 
+                recommendation1 = artists[0], 
+                recommendation2 = artists[1], 
+                recommendation3 = artists[2], 
+                recommendation4 = artists[3], 
+                recommendation5 = artists[4])
         elif request.form['show_type'] == 'Albums': # if the Albums radio button was selected
-        	print("Albums")
-        	user_choice = request.form['show_type']
-        	return render_template('reccomend_page.html', user=new_user, user_choice = user_choice)
+            print("Albums")
+            user_choice = request.form['show_type']
+            return render_template('reccomend_page.html', user=new_user, user_choice = user_choice)
         elif request.form['show_type'] == 'Songs': # if the Songs radio button was selected
-        	print("Songs")
-        	user_choice = request.form['show_type']
-        	return render_template('reccomend_page.html', user=new_user, user_choice = user_choice)
+            print("Songs")
+            user_choice = request.form['show_type']
+            return render_template('reccomend_page.html', user=new_user, user_choice = user_choice)
 
     else: # If user visits the page
-        return render_template('search_page.html')
+        return render_template('home_page.html')
+    
+@app.route('/other_page')
+def search_page():
+    return render_template('search_page.html')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
