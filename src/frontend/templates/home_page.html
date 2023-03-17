@@ -1,0 +1,98 @@
+{% extends 'base.html' %} <!-- Based off the base.html (where skeleton html is like navi bar)-->
+
+
+{% block head %}
+<title>SongSurf Homepage</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/search_page.css') }}">
+{% endblock %}
+
+{% block body %} 
+
+<html>
+<head>
+<title>HTML in Python</title>
+<body style="background-color:rgb(6,23,58)">
+<table border="0" width="100%" height="10%" bgcolor="#000000" style="position: absolute; top: 0; bottom: 0; left: 0; right: 0;border-bottom:1px dotted white;">
+<tr>
+
+<td style="color:#ffffff;font-size:50px;text-shadow:2px 2px 2px red">Project Reporting</td>
+<td width="10%" align="center"> <a href="index">Home</a></td>
+<td width="10%" align="center"> <a href="about">About</a></td>
+<td width="10%" align="center"> <a href="projectreg">Registration</a></td>
+<td width="10%" align="center"> <a href="projectlist">Project List</a></td>
+  <td width="10%" align="center"> <a href="proupdate">Pro Update</a></td>
+<td width="10%" align="center"> <a href="admin">Admin</a></td>
+
+</tr>
+</table><br><br><br><br><br><br><br>
+
+<table border="0" style="box-shadow:1px 1px 10px white" width="70%" height="70%" align="center">
+<tr>
+<td align="center" valign="top">
+<div class="slideshow-container">
+
+<div class="mySlides fade"> 
+  <div class="numbertext">1 / 4</div>
+  <img src="static/image/slide1.jpg" style="width:1100px" height="350px">
+  <div class="text">Caption Text</div>
+</div>
+
+<div class="mySlides fade">
+  <div class="numbertext">2 / 4</div>
+  <img src="static/image/slide2.jpg" style="width:1100px" height="350px">
+  <div class="text">Caption Two</div>
+</div>
+
+<div class="mySlides fade">
+  <div class="numbertext">3 / 4</div>
+  <img src="static/image/slide3.jpg" style="width:1100px" height="350px">
+  <div class="text">Caption Three</div>
+</div>
+
+<div class="mySlides fade">
+  <div class="numbertext">4 / 4</div>
+  <img src="static/image/slide4.jpg" style="width:1100px" height="350px">
+  <div class="text">Caption Text</div>
+</div>
+</div>
+<br>
+
+<div style="text-align:center">
+  <span class="dot"></span> 
+  <span class="dot"></span> 
+  <span class="dot"></span> 
+  <span class="dot"></span> 
+</div>
+</td>
+</tr>
+<tr style="background-color:black;color:white;height:25px">
+<td><marquee behavior="alternate">
+Welcome of You in my Project.
+</marquee></td>
+</tr>
+</table>
+
+<script>
+var slideIndex = 0;
+showSlides();
+
+function showSlides() {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("dot");
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";  
+  }
+  slideIndex++;
+  if (slideIndex > slides.length) {slideIndex = 1}    
+  for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";  
+  dots[slideIndex-1].className += " active";
+  setTimeout(showSlides, 2000); // Change image every 2 seconds
+}
+</script>
+</body>
+</html>
+{% endblock %}
