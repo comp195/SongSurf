@@ -5,3 +5,6 @@
 patrick_venv/
 my_venv/
 william_venv/
+
+# Ignore error log
+error.log
