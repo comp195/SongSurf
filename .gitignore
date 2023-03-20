@@ -6,10 +6,5 @@ patrick_venv/
 my_venv/
 william_venv/
 
-<<<<<<< HEAD
-# Ignore error log
-error.log
-=======
 # ignore log files
 *.log
->>>>>>> refs/remotes/origin/main
