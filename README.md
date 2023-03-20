@@ -41,3 +41,11 @@ unix> python3 -m venv my_venv
 unix/win> pip install -r requirements.txt
 ```
 
+### Tech Stack
+- [Flask](https://flask.palletsprojects.com/en/2.2.x/) - 🛠️ The Python micro framework for building web applications.
+- [last.fm](https://www.last.fm/api) - 🛠️ API allows building own program using Last.fm data.
+- [Python](https://www.python.org/) - 🛠️ A general-purpose programming language useful for backend.
+- [JavaScript](https://www.javascript.com/) - 🛠️ A scripting language that enables you to create dynamically updating content, and anything web related. 
+- [SQL](https://www.tutorialspoint.com/sql/sql-overview.htm) - 🛠️ A programming language used to manage data stored in relational databases, which store structured data in tables. 
+
+
