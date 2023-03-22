@@ -12,21 +12,21 @@ headers = {
 }
 ###########################
 
-def get_track(a1,a2,a3):
-	# Get tags of songs/tracks/tracks that the user inputted
-	tracks = [a1[0],a2[0],a3[0]]
+def get_album(a1,a2,a3):
+	# Get tags of songs/albums/albums that the user inputted
+	albums = [a1[0],a2[0],a3[0]]
 	artists = [a1[1],a2[1],a3[1]]
 	top_tags = []
 
-	for i in range(len(tracks)):
+	for i in range(len(albums)):
 
 		payload = {
 			'api_key': API_KEY,
-			'method': 'track.getTopTags',
+			'method': 'album.getTopTags',
 			'format': 'json',
-			'track': tracks[i],
+			'album': albums[i],
 			'artist': artists[i],
-			'autocorrect': 1,	# corrects if user mispelled the track
+			'autocorrect': 1,	# corrects if user mispelled the album
 		}
 
 		# API Call to last.fm
@@ -43,10 +43,10 @@ def get_track(a1,a2,a3):
 
 		time.sleep(1)
 
-	top_5_tracks = comparer.compare_and_output_top_5(top_tags, 'track')
-	"TODO: for tracks, edit the comparer to return artists as well, since tracks can have same name"
+	top_5_albums = comparer.compare_and_output_top_5(top_tags, 'album')
+	"TODO: for albums, edit the comparer to return artists as well, since albums can have same name"
 
-	return top_5_tracks
+	return top_5_albums
 
 # test
-# tracks = get_track(('Wish you were Here','Pink Floyd'), ('Dreams','Fleetwood Mac'), ('Come as you are','Nirvana'))
+# albums = get_album(('The Dark Side of the Moon','Pink Floyd'), ('Rumours','Fleetwood Mac'), ('Nevermind','Nirvana'))

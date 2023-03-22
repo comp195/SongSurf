@@ -25,10 +25,13 @@ def compare_and_output_top_5(top_tags, type):
     """
 	if (type == 'artist'):
 		METHOD_KEY = 'tag.getTopArtists'
+		JSON_KEY_1 = 'topartists'
 	elif (type == 'album'):
 		METHOD_KEY = 'tag.getTopAlbums'
+		JSON_KEY_1 = 'albums'
 	elif (type == 'track'):
 		METHOD_KEY = 'tag.getTopTracks'
+		JSON_KEY_1 = 'tracks'
 		
 		
 
@@ -59,8 +62,9 @@ def compare_and_output_top_5(top_tags, type):
 		}
 
 		r = requests.get('https://ws.audioscrobbler.com/2.0/', headers=headers, params=payload)
+
 		if r.status_code == 200:
-			items = r.json()['top' + type + 's'][type]
+			items = r.json()[JSON_KEY_1][type]
 			for item in items:
 				top_items.append(item['name'])
 		else:
