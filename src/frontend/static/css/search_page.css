@@ -3,3 +3,25 @@
   margin-left:80px;
   margin-right:80px;
 }
+
+.search_boxes_wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.search_boxes_column {
+  width: calc(50% - 5px); /* 50% of the width of the parent element minus the margin between the columns */
+  margin-right: 10px;
+}
+
+.search_boxes_column:last-child {
+  margin-right: 0;
+}
+
+.search_boxes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
