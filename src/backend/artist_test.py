@@ -12,6 +12,7 @@ headers = {
 }
 ###########################
 
+
 def get_artist(a1,a2,a3):
 	# Get tags of songs/artists/albums that the user inputted
 	artists = [a1, a2, a3]
@@ -38,7 +39,10 @@ def get_artist(a1,a2,a3):
 		else:
 			print(f'Request failed with status code {r.status_code}')
 
+		print(r.json())
 		time.sleep(1)
 
 	top_5_artists = comparer.compare_and_output_top_5(top_tags, 'artist')
 	return top_5_artists
+
+artists = get_artist('Malz Monday', 'J Cole', 'Bas')
