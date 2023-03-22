@@ -44,8 +44,6 @@ def get_album(a1,a2,a3):
 		time.sleep(1)
 
 	top_5_albums = comparer.compare_and_output_top_5(top_tags, 'album')
-	"TODO: for albums, edit the comparer to return artists as well, since albums can have same name"
-
 	return top_5_albums
 
 # test

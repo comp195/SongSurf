@@ -4,6 +4,8 @@ from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 
 import artist as artist
+import album 
+import track
 
 app = Flask(__name__, static_folder='../frontend/static', template_folder='../frontend/templates')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///main.db'
@@ -65,12 +67,24 @@ def index():
                 recommendation5 = artists[4])
         elif request.form['show_type'] == 'Albums': # if the Albums radio button was selected
             print("Albums")
+            albums = album.get_album(request.form['user_choice1'], request.form['user_choice2'], request.form['user_choice3'])
             user_choice = request.form['show_type']
-            return render_template('reccomend_page.html', user=new_user, user_choice = user_choice)
+            return render_template('reccomend_page.html', user=new_user, user_choice = user_choice,
+                recommendation1 = albums[0], 
+                recommendation2 = albums[1], 
+                recommendation3 = albums[2], 
+                recommendation4 = albums[3], 
+                recommendation5 = albums[4])
         elif request.form['show_type'] == 'Songs': # if the Songs radio button was selected
             print("Songs")
+            tracks = track.get_track(request.form['user_choice1'], request.form['user_choice2'], request.form['user_choice3'])
             user_choice = request.form['show_type']
-            return render_template('reccomend_page.html', user=new_user, user_choice = user_choice)
+            return render_template('reccomend_page.html', user=new_user, user_choice = user_choice,
+                recommendation1 = tracks[0], 
+                recommendation2 = tracks[1], 
+                recommendation3 = tracks[2], 
+                recommendation4 = tracks[3], 
+                recommendation5 = tracks[4])
 
     else: # If user visits the page
         return render_template('home_page.html')

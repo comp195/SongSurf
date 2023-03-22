@@ -26,12 +26,15 @@ def compare_and_output_top_5(top_tags, type):
 	if (type == 'artist'):
 		METHOD_KEY = 'tag.getTopArtists'
 		JSON_KEY_1 = 'topartists'
+		additional_items = False
 	elif (type == 'album'):
 		METHOD_KEY = 'tag.getTopAlbums'
 		JSON_KEY_1 = 'albums'
+		additional_items = True
 	elif (type == 'track'):
 		METHOD_KEY = 'tag.getTopTracks'
 		JSON_KEY_1 = 'tracks'
+		additional_items = True
 		
 		
 
@@ -63,10 +66,14 @@ def compare_and_output_top_5(top_tags, type):
 
 		r = requests.get('https://ws.audioscrobbler.com/2.0/', headers=headers, params=payload)
 
-		if r.status_code == 200:
+		if (r.status_code == 200):
 			items = r.json()[JSON_KEY_1][type]
-			for item in items:
-				top_items.append(item['name'])
+			if (additional_items):
+				for item in items:
+					top_items.append((item['name'],item['artist']['name'])) # add a tuple to top_items (name, artist)
+			else:
+				for item in items:
+				    top_items.append(item['name'])
 		else:
 			print(f'Request failed with status code {r.status_code}')
 
@@ -76,7 +83,7 @@ def compare_and_output_top_5(top_tags, type):
 	counter = Counter(top_items)
 	top_5_tuples = counter.most_common(5) # grab 5 most common items
 	print(top_5_tuples)
-	top_5_items = [t[0] for t in top_5_tuples]	# get the most common tags from the tuples
+	top_5_items = [t[0] for t in top_5_tuples]	# get the most common items from the tuples
 	print(top_5_items)
 
 	return top_5_items

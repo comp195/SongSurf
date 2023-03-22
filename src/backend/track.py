@@ -44,8 +44,6 @@ def get_track(a1,a2,a3):
 		time.sleep(1)
 
 	top_5_tracks = comparer.compare_and_output_top_5(top_tags, 'track')
-	"TODO: for tracks, edit the comparer to return artists as well, since tracks can have same name"
-
 	return top_5_tracks
 
 # test

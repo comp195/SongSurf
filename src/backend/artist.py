@@ -42,3 +42,6 @@ def get_artist(a1,a2,a3):
 
 	top_5_artists = comparer.compare_and_output_top_5(top_tags, 'artist')
 	return top_5_artists
+
+# test
+# artists = get_artist('Malz Monday', 'J Cole', 'Bas')
