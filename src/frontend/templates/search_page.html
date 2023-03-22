@@ -17,37 +17,52 @@
   <form action="/" method="POST"> <!-- Everything within this form section interacts with backend to send data -->
 
     <div class="search_section">
-      <div class="search_boxes"> <!-- Search boxes for user to input what they love -->
-        <h4>Enter up to 3 Song/Artist/Album you love:</h4>
-        <ol>
-          <li><input type="text" name="user_choice1" id="user_choice1"></li>
-          <li><input type="text" name="user_choice2" id="user_choice2"></li>
-          <li><input type="text" name="user_choice3" id="user_choice3"></li>
-        </ol>
-      </div>
+
       <div class="search_radio_buttons"> <!-- Radio buttons to select what to show user -->
         <h4>Show Me:</h4>
         <label>
-          <input type="radio" name="show_type" value="Artists">
+          <input type="radio" name="show_type" value="Artists" onclick="updateSearchLabel('Artists'); hideAdditionalBoxes();">
           Artists
         </label>
         <br>
         <label>
-          <input type="radio" name="show_type" value="Albums">
+          <input type="radio" name="show_type" value="Albums" onclick="updateSearchLabel('Albums'); showAdditionalBoxes(3);">
           Albums
         </label>
         <br>
         <label>
-          <input type="radio" name="show_type" value="Songs">
-          Songs
+          <input type="radio" name="show_type" value="Songs" onclick="updateSearchLabel('Tracks'); showAdditionalBoxes(3);">
+          Tracks
         </label>
         <br>
       </div>
+      
+      <div class="search_boxes"> <!-- Search boxes for user to input what they love -->
+        <h4>Enter up to 3 <span id="search_label"></span> you love:</h4>
+        <div class="search_boxes_wrapper">
+          <div class="search_boxes_column">
+            <ol>
+              <li><input type="text" name="user_choice1" id="user_choice1"></li>
+              <li><input type="text" name="user_choice2" id="user_choice2"></li>
+              <li><input type="text" name="user_choice3" id="user_choice3"></li>
+            </ol>
+          </div>
+          <div class="search_boxes_column">
+            <ol>
+              <li id="additional_box_1" style="display: none;"><input type="text" name="user_choice4" id="user_choice4"></li>
+              <li id="additional_box_2" style="display: none;"><input type="text" name="user_choice5" id="user_choice5"></li>
+              <li id="additional_box_3" style="display: none;"><input type="text" name="user_choice6" id="user_choice6"></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      
 
-    <input type="submit" value="SURF"> <!-- SURF Button to go to reccomend_page -->
+      <input type="submit" value="SURF"> <!-- SURF Button to go to reccomend_page -->
   
-  </div>
+    </div>
   </form>
-</div>
+
+  <script src="../static/javascript/search_box.js"></script>
 
 {% endblock %}

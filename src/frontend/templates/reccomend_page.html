@@ -1,8 +1,10 @@
 {% extends 'base.html' %} <!-- Based off the base.html (where skeleton html is like navi bar)-->
 
 
+
 {% block head %}
 <title>SongSurf Reccomendations</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reccomend_page.css') }}">
 {% endblock %}
 
 {% block body %} 
@@ -15,11 +17,21 @@
 
 <div class="content">
   <h2>Here are some {{ user_choice }} based off what you like:</h2>
-  <p>{{ user_choice }} - {{ recommendation1 }}</p>
-  <p>{{ user_choice }} - {{ recommendation2 }}</p>
-  <p>{{ user_choice }} - {{ recommendation3 }}</p>
-  <p>{{ user_choice }} - {{ recommendation4 }}</p>
-  <p>{{ user_choice }} - {{ recommendation5 }}</p>
+  <div class="recommendations">
+  {% for rec in recommendations %}
+    {% if rec is iterable and not rec|string %}
+      {% for r in rec %}
+        <p>{{ user_choice }} - {{ r }}</p>
+      {% endfor %}
+    {% else %}
+      <p>{{ user_choice }} - {{ rec }}</p>
+    {% endif %}
+  {% endfor %}
+  
+  
+  
+  </div>
+  
 </div>
 
 <div class="dev_only">

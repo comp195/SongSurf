@@ -1,0 +1,13 @@
+.recommendations {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .recommendation-column {
+    width: calc(33.33% - 10px);
+    margin-right: 10px;
+  }
+  
+  .recommendation-column:last-child {
+    margin-right: 0;
+  }
