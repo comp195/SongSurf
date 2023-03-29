@@ -1,4 +1,3 @@
-import os
 import logging
 from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
@@ -8,7 +7,7 @@ import album
 import track
 
 app = Flask(__name__, static_folder='../frontend/static', template_folder='../frontend/templates')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///main.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///main.db' # configure database
 
 # Set up logging
 logging.basicConfig(filename='error.log', level=logging.ERROR, format='%(asctime)s %(levelname)s: %(message)s')
@@ -16,22 +15,10 @@ logging.basicConfig(filename='error.log', level=logging.ERROR, format='%(asctime
 with app.app_context():
     db = SQLAlchemy(app)
 print("* Running on http://127.0.0.1:8000")
-# Create User model with columns for the attributes
-class User(db.Model):
-    user_id = db.Column(db.Integer, primary_key=True) # User_ID Column
-    aas_searches = db.Column(db.String(300), nullable=False) # "album_artist_song_search" Column
-    song_favorites = db.Column(db.String(300), nullable=False) # Song Favorites Column
-    artist_favorites = db.Column(db.String(300), nullable=False) # Artist Favorites Column
-    album_favorites = db.Column(db.String(300), nullable=False) # Album Favorites Column
 
-    def __init__(self, aas_searches="", song_favorites="", artist_favorites="", album_favorites=""):
-        self.aas_searches = aas_searches
-        self.song_favorites = song_favorites
-        self.artist_favorites = artist_favorites
-        self.album_favorites = album_favorites
+# Initialize database
+from database import *
 
-    def __repr__(self):
-        return '<User_id %r>' % self.user_id
 
 # Define route for main page (search_page)
 @app.route('/', methods=['POST', 'GET'])
@@ -83,4 +70,4 @@ def search_page():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port = 8000)
+    app.run(debug=True, port = 8000) # when deployed, set debug=False
