@@ -38,7 +38,17 @@ class User(db.Model):
 def index():
     if request.method == 'POST': # If user clicks SURF
         aas_searches = [] # create an empty list for storing the user's AAS searches
-        
+
+        # Check if any input fields are empty
+        if not request.form['user_choice1'] or not request.form['user_choice2'] or not request.form['user_choice3']:
+        	error_message = "Please fill out all three input fields."
+        	return render_template('search_page.html', message=error_message)
+
+        # Check if a radio button is selected
+        if not request.form.get('show_type'):
+        	error_message = "Please select a category: Artists, Albums, or Songs"
+        	return render_template('search_page.html', message=error_message)
+
         # Get the values from each input field and add them to the list
         aas_searches.append(request.form['user_choice1']) # aas = album_artist_song_search
         aas_searches.append(request.form['user_choice2'])
@@ -53,6 +63,8 @@ def index():
         except Exception as e:
             app.logger.error('Issue adding user with AAS searches %s. Error: %s', aas_searches, str(e))
             print(e)
+
+        loading = "Loading..."
 
           # If artists were chosen, treat user input as all artists, etc.
         if request.form['show_type'] == 'Artists':	# if the Artists radio button was selected
