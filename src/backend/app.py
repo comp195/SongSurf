@@ -32,7 +32,7 @@ def index():
             return render_template('search_page.html', message=error_message)
 
          # Check if any input fields are empty
-        if not request.form['user_choice4'] or not request.form['user_choice5'] or not request.form['user_choice6']:
+        if (request.form['show_type'] == 'Albums' or request.form['show_type'] == 'Songs') and (not request.form['user_choice4'] or not request.form['user_choice5'] or not request.form['user_choice6']):
             error_message = "Please fill out all the artist input fields."
             return render_template('search_page.html', message=error_message)
         
