@@ -58,12 +58,29 @@
         </div>
       </div>
       
+      <div id="loading" style="display: none;">
+        <img src="static/css/images/loading.gif" alt="Loading" style="width: 50px; height: 50px;">
+      </div>
 
-      <input type="submit" value="SURF"> <!-- SURF Button to go to reccomend_page -->
+
+      <input type="submit" value="SURF" onclick="showLoading()"> <!-- SURF Button to go to reccomend_page -->
+      
   
     </div>
   </form>
 
   <script src="../static/javascript/search_box.js"></script>
 
+  <script>
+    function showLoading() {
+    document.getElementById("loading").style.display = "block";
+    document.getElementById("submit-button").disabled = true;
+    }
+    function hideLoading() {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("submit-button").disabled = false;
+    }
+
+   window.addEventListener('pageshow', hideLoading);
+  </script>
 {% endblock %}
