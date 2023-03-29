@@ -25,12 +25,17 @@ from database import *
 def index():
     if request.method == 'POST': # If user clicks SURF
         aas_searches = [] # create an empty list for storing the user's AAS searches
-
-        # Check if any input fields are empty
+        
+         # Check if any input fields are empty
         if not request.form['user_choice1'] or not request.form['user_choice2'] or not request.form['user_choice3']:
             error_message = "Please fill out all three input fields."
             return render_template('search_page.html', message=error_message)
 
+         # Check if any input fields are empty
+        if not request.form['user_choice4'] or not request.form['user_choice5'] or not request.form['user_choice6']:
+            error_message = "Please fill out all the artist input fields."
+            return render_template('search_page.html', message=error_message)
+        
         # Check if a radio button is selected
         if not request.form.get('show_type'):
             error_message = "Please select a category: Artists, Albums, or Songs"
