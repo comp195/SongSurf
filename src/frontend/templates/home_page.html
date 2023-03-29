@@ -1,90 +1,89 @@
-{% extends 'base.html' %} <!-- Based off the base.html (where skeleton html is like navi bar)-->
+  {% extends 'base.html' %}
 
-
-{% block head %}
-<title>SongSurf Homepage</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/home_page.css') }}">
-{% endblock %}
-
-{% block body %} 
-
-<html>
-<head>
-<title>SongSurf Homepage </title>
-<body style="background-color:rgba(110, 95, 47, 0.874)">
-<table border="0" width="100%" height="10%" bgcolor="#000000" style="position: absolute; top: 0; bottom: 0; left: 0; right: 0;border-bottom:1px double white;">
-<tr>
-
-<td align="center" style="color:#ffffff;font-size:50px;text-shadow:2px 2px 2px greenyellow">SongSurf</td>
-
-
-</tr>
-</table><br><br><br><br><br><br><br>
-
-<table border="0" style="box-shadow:1px 1px 10px white" width="70%" height="70%" align="center">
-<tr>
-<td align="center" valign="top">
-<div class="slideshow-container">
-
-<div class="mySlides fade"> 
-  <div class="numbertext">1 / 4</div>
-  <img src="static/css/images/music1.png" style="width:1100px" height="350px">
-  <div class="text">image</div>
-</div>
-
-<div class="mySlides fade">
-  <div class="numbertext">2 / 4</div>
-  <img src="static/css/images/music2.png" style="width:1100px" height="350px">
-  <div class="text">image</div>
-</div>
-
-<div class="mySlides fade">
-  <div class="numbertext">3 / 4</div>
-  <img src="static/css/images/music3.png" style="width:1100px" height="350px">
-  <div class="text">image</div>
-</div>
-
-<div class="mySlides fade">
-  <div class="numbertext">4 / 4</div>
-  <img src="static/css/images/music4.png" style="width:1100px" height="350px">
-  <div class="text">image</div>
-</div>
-</div>
-<br>
-
-<div style="text-align:center">
-  <span class="dot"></span> 
-  <span class="dot"></span> 
-  <span class="dot"></span> 
-  <span class="dot"></span> 
-</div>
-</td>
-</tr>
-</tr>
-</table>
-
-<script>
-var slideIndex = 0;
-showSlides();
-
-function showSlides() {
-  var i;
-  var slides = document.getElementsByClassName("mySlides");
-  var dots = document.getElementsByClassName("dot");
-  for (i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";  
+  {% block head %}
+  <title>SongSurf Homepage</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/home_page.css') }}">
+  {% endblock %}
+  
+  {% block body %} 
+  
+  <html>
+  <head>
+  <title>SongSurf Homepage </title>
+  <body style="background-color:#2c3e50;">
+  <table border="0" width="100%" height="10%" bgcolor="#000000" style="position: absolute; top: 0; bottom: 0; left: 0; right: 0;border-bottom:1px double white;">
+  <tr>
+  
+  <td align="center" style="color:#ffffff;font-size:50px;text-shadow:2px 2px 2px #27ae60">SongSurf</td>
+  
+  
+  </tr>
+  </table><br><br><br><br><br><br><br>
+  
+  <table border="0" style="box-shadow:1px 1px 10px #27ae60" width="70%" height="70%" align="center">
+  <tr>
+  <td align="center" valign="top">
+  <div class="slideshow-container">
+  
+  <div class="mySlides fade"> 
+    <div class="numbertext">1 / 4</div>
+    <img src="static/css/images/music1.png" style="width:1100px" height="350px">
+    <div class="text">image</div>
+  </div>
+  
+  <div class="mySlides fade">
+    <div class="numbertext">2 / 4</div>
+    <img src="static/css/images/music2.png" style="width:1100px" height="350px">
+    <div class="text">image</div>
+  </div>
+  
+  <div class="mySlides fade">
+    <div class="numbertext">3 / 4</div>
+    <img src="static/css/images/music3.png" style="width:1100px" height="350px">
+    <div class="text">image</div>
+  </div>
+  
+  <div class="mySlides fade">
+    <div class="numbertext">4 / 4</div>
+    <img src="static/css/images/music4.png" style="width:1100px" height="350px">
+    <div class="text">image</div>
+  </div>
+  </div>
+  <br>
+  
+  <div style="text-align:center">
+    <span class="dot"></span> 
+    <span class="dot"></span> 
+    <span class="dot"></span> 
+    <span class="dot"></span> 
+  </div>
+  </td>
+  </tr>
+  </table>
+  
+  <script>
+  var slideIndex = 0;
+  showSlides();
+  
+  function showSlides() {
+    var i;
+    var slides = document.getElementsByClassName("mySlides");
+    var dots = document.getElementsByClassName("dot");
+    for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";  
+    }
+    slideIndex++;
+    if (slideIndex > slides.length) {slideIndex = 1}    
+    for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+    }
+    slides[slideIndex-1].style.display = "block";  
+    dots[slideIndex-1].className += " active";
+    setTimeout(showSlides, 4000); // Change image every 4 seconds
   }
-  slideIndex++;
-  if (slideIndex > slides.length) {slideIndex = 1}    
-  for (i = 0; i < dots.length; i++) {
-    dots[i].className = dots[i].className.replace(" active", "");
-  }
-  slides[slideIndex-1].style.display = "block";  
-  dots[slideIndex-1].className += " active";
-  setTimeout(showSlides, 4000); // Change image every 4 seconds
-}
-</script>
-<p> 
+  </script>
+  <p>
+  
   
   SongSurf allows you to discover new music that
   you'll love through an informative, attractive, and intuitive website. 
