@@ -76,22 +76,24 @@ class LikeDislike(db.Model):
     entity_id = db.Column(db.Integer, nullable=False)
     liked = db.Column(db.Boolean, nullable=False)
 
-    user = db.relationship('User', backref=db.backref('likes_dislikes', lazy=True))
+    user = db.relationship('User', backref=db.backref('likes_dislikes', lazy=True)) # FK relationship
 
     __table_args__ = (
         db.CheckConstraint("entity_type IN ('artist', 'album', 'track')"),
     )
 
-    @property
-    def entity(self):
-        if self.entity_type == 'album':
-            return Album.query.get(self.entity_id)
-        elif self.entity_type == 'artist':
-            return Artist.query.get(self.entity_id)
-        elif self.entity_type == 'track':
-            return Track.query.get(self.entity_id)
-        else:
-            return None
+class Reccomend(db.Model):
+    favorite_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    entity_type = db.Column(db.Enum('artist', 'album', 'track'), nullable=False)
+    entity_id = db.Column(db.Integer, nullable=False)
+    reccomended = db.Column(db.Boolean, nullable=False)
+
+    user = db.relationship('User', backref=db.backref('reccomended', lazy=True)) # FK relationship
+
+    __table_args__ = (
+        db.CheckConstraint("entity_type IN ('artist', 'album', 'track')"),
+    )
 
 
 """ End Database Block """
@@ -145,15 +147,15 @@ def test_artist_album_track_like_dislike_classes():
         for track in tracks:
             print(track.name)
 
-        # create likes
-        like1 = LikeDislike(entity_type='track', entity_id=track1.track_id, user_id=user1.user_id, liked=True)
-        like2 = LikeDislike(entity_type='track', entity_id=track2.track_id, user_id=user1.user_id, liked=True)
-        dislike1 = LikeDislike(entity_type='track', entity_id=track3.track_id, user_id=user1.user_id, liked=False)
+        # ------------------ create likes ------------------
+        like1 = LikeDislike(entity_type='track', entity_id='1', user_id=user1.user_id, liked=True)
+        like2 = LikeDislike(entity_type='track', entity_id='2', user_id=user1.user_id, liked=True)
+        dislike1 = LikeDislike(entity_type='track', entity_id='3', user_id=user1.user_id, liked=False)
 
         # create dislikes
-        dislike2 = LikeDislike(entity_type='track', entity_id=track4.track_id, user_id=user2.user_id, liked=False)
-        dislike3 = LikeDislike(entity_type='track', entity_id=track5.track_id, user_id=user2.user_id, liked=False)
-        like3 = LikeDislike(entity_type='track', entity_id=track6.track_id, user_id=user2.user_id, liked=True)
+        dislike2 = LikeDislike(entity_type='track', entity_id='4', user_id=user2.user_id, liked=False)
+        dislike3 = LikeDislike(entity_type='track', entity_id='5', user_id=user2.user_id, liked=False)
+        like3 = LikeDislike(entity_type='track', entity_id='6', user_id=user2.user_id, liked=True)
 
         db.session.add_all([like1, like2, like3, dislike1, dislike2, dislike3])
         db.session.commit()
@@ -193,6 +195,39 @@ def test_artist_album_track_like_dislike_classes():
         # print the results
         for like in likes_u2:
             print(like.entity_id)
+
+
+        # ------------------ create reccomended ------------------
+        reccomend1 = Reccomend(entity_type='track', entity_id='1', user_id=user1.user_id, reccomended=True)
+        reccomend2 = Reccomend(entity_type='track', entity_id='2', user_id=user1.user_id, reccomended=True)
+        reccomend3 = Reccomend(entity_type='track', entity_id='3', user_id=user1.user_id, reccomended=False)
+        reccomend4 = Reccomend(entity_type='track', entity_id='4', user_id=user2.user_id, reccomended=False)
+        reccomend5 = Reccomend(entity_type='track', entity_id='5', user_id=user2.user_id, reccomended=False)
+        reccomend6 = Reccomend(entity_type='track', entity_id='6', user_id=user2.user_id, reccomended=True)
+
+        db.session.add_all([reccomend1, reccomend2, reccomend3, reccomend4, reccomend5, reccomend6])
+        db.session.commit()
+
+        # query all reccomended tracks that already been reccomended
+        reccomended_tracks = db.session.query(Reccomend.entity_id)\
+            .filter(Reccomend.entity_type == 'track', Reccomend.reccomended == True)\
+            .all()
+        
+        # query all reccomended tracks that havent been reccomended
+        tracks_to_reccomend = db.session.query(Reccomend.entity_id)\
+            .filter(Reccomend.entity_type == 'track', Reccomend.reccomended == False)\
+            .all()
+        
+        # print results
+        for reccomend in reccomended_tracks:
+            print(reccomend.entity_id)
+
+        # print results
+        for to_reccomend in tracks_to_reccomend:
+            print(to_reccomend.entity_id)
+
+
+
         
 
 
