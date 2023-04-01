@@ -3,6 +3,19 @@ import logging
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
+""" 
+SQLAlchemy Notes 
+1) primary key id's are only added once its been committed to database, for ex: when db.commit() is called, then the pk is added to the record
+Syntax differences between sqlalchemy and traditional SQL:
+    SQLAlchemy                                          Traditional SQL
+a) .query(track_id)                                     select(track_id)
+b) .join(Artist, Artist.artist_id = Track.artist_id)    Track Inner Join Artist On Artist.artist_id = Track.artist_id
+c) .filter(Artist.name == 'The Weeknd')                 Where Artist.name == 'The Weeknd'
+d) .all()                                               No equivalent.
+.all() returns the queried items into a list
+"""                    
+
+
 test_app = Flask(__name__)
 
 # Specify the full path of the database file
@@ -56,6 +69,31 @@ class Track(db.Model):
     artist = db.relationship('Artist', backref=db.backref('tracks', lazy=True)) # FK relationship
     album = db.relationship('Album', backref=db.backref('tracks', lazy=True)) # FK relationship
 
+class LikeDislike(db.Model):
+    favorite_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    entity_type = db.Column(db.Enum('artist', 'album', 'track'), nullable=False)
+    entity_id = db.Column(db.Integer, nullable=False)
+    liked = db.Column(db.Boolean, nullable=False)
+
+    user = db.relationship('User', backref=db.backref('likes_dislikes', lazy=True))
+
+    __table_args__ = (
+        db.CheckConstraint("entity_type IN ('artist', 'album', 'track')"),
+    )
+
+    @property
+    def entity(self):
+        if self.entity_type == 'album':
+            return Album.query.get(self.entity_id)
+        elif self.entity_type == 'artist':
+            return Artist.query.get(self.entity_id)
+        elif self.entity_type == 'track':
+            return Track.query.get(self.entity_id)
+        else:
+            return None
+
+
 """ End Database Block """
 
 with test_app.app_context():
@@ -66,7 +104,7 @@ with test_app.app_context():
 
 
 """ Begin Database Test Block """
-def test_artist_album_track_classes():
+def test_artist_album_track_like_dislike_classes():
     with test_app.app_context():
         # create users
         user1 = User(email='user1@example.com', password='password1')
@@ -83,15 +121,18 @@ def test_artist_album_track_classes():
 
         # create tracks
         track1 = Track(artist=adele, album=adele_19, name='Daydreamer', image='daydreamer.jpg', description='Debut single by Adele', release_date=datetime(2007, 2, 26))
-        track2 = Track(artist=adele, album=adele_19, name='Hometown Glory', image='hometown_glory.jpg', description='Second single by Adele', release_date=datetime(2007, 10, 22))
         track3 = Track(artist=adele, album=adele_21, name='Rolling in the Deep', image='rolling_in_the_deep.jpg', description='Lead single by Adele', release_date=datetime(2010, 11, 29))
         track4 = Track(artist=adele, album=adele_21, name='Someone Like You', image='someone_like_you.jpg', description='Second single by Adele', release_date=datetime(2011, 1, 24))
+        track2 = Track(artist=adele, album=adele_19, name='Hometown Glory', image='hometown_glory.jpg', description='Second single by Adele', release_date=datetime(2007, 10, 22))
         track5 = Track(artist=ed_sheeran, album=ed_divide, name='Shape of You', image='shape_of_you.jpg', description='Lead single by Ed Sheeran', release_date=datetime(2017, 6, 5))
         track6 = Track(artist=ed_sheeran, album=ed_divide, name='Castle on the Hill', image='castle_on_the_hill.jpg', description='Second single by Ed Sheeran', release_date=datetime(2017, 1, 6))
 
+        print(adele.artist_id) # prints none
         # add objects to session and commit changes
         db.session.add_all([user1, user2, adele, ed_sheeran, adele_19, adele_21, ed_divide, track1, track2, track3, track4, track5, track6])
         db.session.commit()
+
+        print(adele.artist_id) # prints "1", primary keys are added once db.session.commit() is called
 
         # query the database
         tracks = db.session.query(Track.name)\
@@ -104,8 +145,59 @@ def test_artist_album_track_classes():
         for track in tracks:
             print(track.name)
 
+        # create likes
+        like1 = LikeDislike(entity_type='track', entity_id=track1.track_id, user_id=user1.user_id, liked=True)
+        like2 = LikeDislike(entity_type='track', entity_id=track2.track_id, user_id=user1.user_id, liked=True)
+        dislike1 = LikeDislike(entity_type='track', entity_id=track3.track_id, user_id=user1.user_id, liked=False)
+
+        # create dislikes
+        dislike2 = LikeDislike(entity_type='track', entity_id=track4.track_id, user_id=user2.user_id, liked=False)
+        dislike3 = LikeDislike(entity_type='track', entity_id=track5.track_id, user_id=user2.user_id, liked=False)
+        like3 = LikeDislike(entity_type='track', entity_id=track6.track_id, user_id=user2.user_id, liked=True)
+
+        db.session.add_all([like1, like2, like3, dislike1, dislike2, dislike3])
+        db.session.commit()
+
+        # query all track likes
+        likes = db.session.query(LikeDislike.entity_id)\
+                  .filter(LikeDislike.entity_type == 'track', LikeDislike.liked == True)\
+                  .all()
+        
+        # query all track dislikes
+        dislikes = db.session.query(LikeDislike.entity_id)\
+                  .filter(LikeDislike.entity_type == 'track', LikeDislike.liked == False)\
+                  .all()
+
+        # print the results
+        for like in likes:
+            print(like.entity_id)
+
+        # print the results
+        for dislike in dislikes:
+            print(dislike.entity_id)
+
+        # query all track likes by user 1
+        likes_u1 = db.session.query(LikeDislike.entity_id)\
+            .filter(LikeDislike.entity_type == 'track', LikeDislike.liked == True, LikeDislike.user_id == '1')\
+            .all()
+        
+        # print the results
+        for like in likes_u1:
+            print(like.entity_id)
+
+        # query all track likes by user 2
+        likes_u2 = db.session.query(LikeDislike.entity_id)\
+            .filter(LikeDislike.entity_type == 'track', LikeDislike.liked == True, LikeDislike.user_id == '2')\
+            .all()
+        
+        # print the results
+        for like in likes_u2:
+            print(like.entity_id)
+        
+
+
 
 #temporary
-test_artist_album_track_classes()
+test_artist_album_track_like_dislike_classes()
 
 """ End Database Test Block """
