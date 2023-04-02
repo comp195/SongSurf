@@ -2,6 +2,10 @@ import requests # pip install requests
 import time
 from collections import Counter
 
+#debugging
+import artist
+import album
+
 ### IMPORTANT API INFO ###
 USER_AGENT = 'wbuop'
 API_KEY = 'ebc5386ea6b0af15cae300e0da5a3af5'
@@ -40,12 +44,13 @@ def compare_and_output_top_5(top_tags, type):
 
     # Get the 5 most common tags
     # Output is a tuple e.g. ('rap', 5) where rap appears 5 times
-    undesirable_tags = ["seen live"]
-
     counter = Counter(top_tags)
     most_common_tuples = counter.most_common(5)
     print("Most common tuples: ")
     print(most_common_tuples)
+
+    # ADJUST LIST AS WE DEBUG AND TEST !!!
+    undesirable_tags = ["seen live"]
 
     most_common_tags = [t[0] for t in most_common_tuples if t[0] not in undesirable_tags]	# get the most common tags from the tuples
     print("Most commont tags: ")
@@ -102,5 +107,9 @@ def compare_and_output_top_5(top_tags, type):
     print(top_5_tuples)
     top_5_items = [t[0] for t in top_5_tuples]	# get the most common items from the tuples
     print(top_5_items)
+
+    #print("Testing info retriever: ")
+    #artist.get_artist_info(top_5_items[0])
+    #album.get_album_info(top_5_items[0])
 
     return top_5_items
