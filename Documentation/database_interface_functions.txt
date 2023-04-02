@@ -1,19 +1,38 @@
 Database interface functions:
-* type = [album or artist or track]
+* item_type = [album or artist or track]
 
-- get_album_favorites(user) 		-> returns multiple "album_id"
-- get_artist_favorites(user) 		-> returns multiple "artist_id"
-- get_track_favorites(user)		-> returns multiple "track_id"
-- add_favorite(User, item_id, type) 	-> returns nothing
+- get_album_likes(user) 			-> returns multiple "album_id"
+- get_artist_likes(user) 			-> returns multiple "artist_id"
+- get_track_likes(user)				-> returns multiple "track_id"
+- get_album_dislikes(user) 			-> returns multiple "album_id"
+- get_artist_dislikes(user) 			-> returns multiple "artist_id"
+- get_track_dislikes(user)			-> returns multiple "track_id"
+- set_liked(User, item_id, item_type) 		
+- set_disliked(User, item_id, item_type) 	
 
-- get_album_reccomendations(user) 	-> return multiple "album_id" with "recommended = false"
-- get_artist_reccomendations(user)	-> return multiple "artist_id" with "recommended = false"
-- get_track_reccomendations(user)	-> return multiple "track_id" with "recommended = false"
-- add_reccomendation(user, type, name, image, Optional description, Optional release_date) -> returns nothing  
+- get_album_reccomendations(user) 		-> return all "album_id" with "recommended = false"
+- get_artist_reccomendations(user)		-> return all "artist_id" with "recommended = false"
+- get_track_reccomendations(user)		-> return all "track_id" with "recommended = false"
+- set_recommended(user, item_id, item_type)	
 
-- get_name(item_id, type)		-> returns name
-- get_image(item_id, type)		-> returns image
-- get_description(item_id, type)	-> returns description
-- get_release_date(item_id, type)	-> returns release_date
-- set_recommended(item_id, type)	-> returns nothing
+- get_album(album_id)				-> returns "Album" object
+- get_artist(artist_id)				-> returns "Artist" object
+- get_track(track_id)				-> returns "Track" object
+- get_name(item_id, item_type)			-> returns name
+- get_image(item_id, item_type)			-> returns image
+- get_description(item_id, item_type)		-> returns description
+- get_release_date(item_id, item_type)		-> returns release_date
+- get_tracks_from_album(album_id)		-> returns multiple "track_id"
+- add_album(artist_id, name, image, description, release_date)
+- add_artist(name, image, description)
+- add_track(artist_id, album_id, name, image, description, release_date)
+
+
+
+# if have time:
+- get_tracks_from_artist()
+- get_albums_from_artist()
+
+
+
 

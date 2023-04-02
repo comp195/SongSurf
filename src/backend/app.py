@@ -25,7 +25,7 @@ print("* Running on http://127.0.0.1:8000")
 from database import init_db, User
 db = init_db(app)
 
-# #use this code to reset database
+#use this code to reset database
 # with app.app_context():
 #     # reset database
 #     db.drop_all()
