@@ -27,14 +27,20 @@ def compare_and_output_top_5(top_tags, type):
     Returns:
     top_5 (list): list of artists or albums or tracks
     """
+
+    # ADJUST LIST AS WE DEBUG AND TEST !!!
+    undesirable_tags = []   # list of tags to ignore
+
     if (type == 'artist'):
         METHOD_KEY = 'tag.getTopArtists'
         JSON_KEY_1 = 'topartists'
         additional_items = False
+        undesirable_tags = ["seen live"]
     elif (type == 'album'):
         METHOD_KEY = 'tag.getTopAlbums'
         JSON_KEY_1 = 'albums'
         additional_items = True
+        undesirable_tags = ["favorite albums", "albums I own", "favourite albums", "1001 Albums You Must Hear Before You Die"]
     elif (type == 'track'):
         METHOD_KEY = 'tag.getTopTracks'
         JSON_KEY_1 = 'tracks'
@@ -49,9 +55,6 @@ def compare_and_output_top_5(top_tags, type):
     print("Most common tuples: ")
     print(most_common_tuples)
 
-    # ADJUST LIST AS WE DEBUG AND TEST !!!
-    undesirable_tags = ["seen live"]
-
     most_common_tags = [t[0] for t in most_common_tuples if t[0] not in undesirable_tags]	# get the most common tags from the tuples
     print("Most commont tags: ")
     print(most_common_tags)
@@ -64,6 +67,7 @@ def compare_and_output_top_5(top_tags, type):
             most_common_tags.append(next_most_common_tag)
             i += 1
             print("New tag added: "+next_most_common_tag)
+        print("Length of most common tags: " + str(len(most_common_tags)))
     print("New most common tags: ")
     print(most_common_tags)
 
