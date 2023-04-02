@@ -40,9 +40,26 @@ def compare_and_output_top_5(top_tags, type):
 
     # Get the 5 most common tags
     # Output is a tuple e.g. ('rap', 5) where rap appears 5 times
+    undesirable_tags = ["seen live"]
+
     counter = Counter(top_tags)
     most_common_tuples = counter.most_common(5)
-    most_common_tags = [t[0] for t in most_common_tuples]	# get the most common tags from the tuples
+    print("Most common tuples: ")
+    print(most_common_tuples)
+
+    most_common_tags = [t[0] for t in most_common_tuples if t[0] not in undesirable_tags]	# get the most common tags from the tuples
+    print("Most commont tags: ")
+    print(most_common_tags)
+
+    # Add next most common tags until most_common_tags has 5 elements
+    i = 0
+    while len(most_common_tags) < 5:
+        next_most_common_tag = counter.most_common(6+i)[5+i][0]
+        if next_most_common_tag not in undesirable_tags:
+            most_common_tags.append(next_most_common_tag)
+            i += 1
+            print("New tag added: "+next_most_common_tag)
+    print("New most common tags: ")
     print(most_common_tags)
 
     # Use the tags to search for the top artists in those tags
