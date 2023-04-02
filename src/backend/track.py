@@ -12,6 +12,9 @@ headers = {
 }
 ###########################
 
+# *note - get_track() doesnt return album_id but has everything else. 
+# so you have to use get_track_info() and then you get the album_id
+#  - temporary solution: only set the album_id for tracks that were accessed by recommending albums. 
 def get_track(a1,a2,a3):
 	# Get tags of songs/tracks/tracks that the user inputted
 	tracks = [a1[0],a2[0],a3[0]]

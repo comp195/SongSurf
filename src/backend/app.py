@@ -1,30 +1,40 @@
+import os
 import logging
 from flask import Flask, render_template, url_for, request, redirect
 from flask_sqlalchemy import SQLAlchemy
+
+
 
 import artist as artist
 import album 
 import track
 
 app = Flask(__name__, static_folder='../frontend/static', template_folder='../frontend/templates')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///main.db' # configure database
+# Specify the full path of the database file
+DB_FILEPATH = os.path.join(os.path.dirname(__file__), 'instance', 'main.db')
+
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_FILEPATH}' # configure database
 
 # Set up logging
 logging.basicConfig(filename='error.log', level=logging.ERROR, format='%(asctime)s %(levelname)s: %(message)s')
 
-with app.app_context():
-    db = SQLAlchemy(app)
+
 print("* Running on http://127.0.0.1:8000")
 
-# Initialize database
-from database import *
+# initialize database and import the needed database objects
+from database import init_db, User
+db = init_db(app)
 
+# #use this code to reset database
+# with app.app_context():
+#     # reset database
+#     db.drop_all()
+#     db.create_all()
 
 # Define route for main page (search_page)
 @app.route('/', methods=['POST', 'GET'])
 def index():
     if request.method == 'POST': # If user clicks SURF
-        aas_searches = [] # create an empty list for storing the user's AAS searches
         
          # Check if any input fields are empty
         if not request.form['user_choice1'] or not request.form['user_choice2'] or not request.form['user_choice3']:
@@ -40,23 +50,16 @@ def index():
         if not request.form.get('show_type'):
             error_message = "Please select a category: Artists, Albums, or Songs"
             return render_template('search_page.html', message=error_message)
-
-        # Get the values from each input field and add them to the list
-        aas_searches.append(request.form['user_choice1']) # aas = album_artist_song_search
-        aas_searches.append(request.form['user_choice2'])
-        aas_searches.append(request.form['user_choice3'])
         
         # Create a new User object with the AAS searches and add it to the database
-        new_user = User(aas_searches=str(aas_searches))
+        new_user = User(email='test1@pacific.edu', password='uop1') # temporarily make email and password the same for all users created
         try:
             db.session.add(new_user)
             db.session.commit()
-            app.logger.info('Successfully added user with AAS searches: %s', aas_searches)
+            app.logger.info('Successfully added user')
         except Exception as e:
-            app.logger.error('Issue adding user with AAS searches %s. Error: %s', aas_searches, str(e))
+            app.logger.error('Issue adding user. Error: %s', str(e))
             print(e)
-
-        loading = "Loading..."
 
           # If artists were chosen, treat user input as all artists, etc.
         if request.form['show_type'] == 'Artists':	# if the Artists radio button was selected

@@ -1,18 +1,77 @@
-from app import db
+from datetime import datetime
+from flask_sqlalchemy import SQLAlchemy
 
-# Create User model with columns for the attributes
+db = SQLAlchemy()
+
+def init_db(app):
+    db.init_app(app)
+    return db
+
 class User(db.Model):
-    user_id = db.Column(db.Integer, primary_key=True) # User_ID Column
-    aas_searches = db.Column(db.String(300), nullable=False) # "album_artist_song_search" Column
-    song_favorites = db.Column(db.String(300), nullable=False) # Song Favorites Column
-    artist_favorites = db.Column(db.String(300), nullable=False) # Artist Favorites Column
-    album_favorites = db.Column(db.String(300), nullable=False) # Album Favorites Column
+    user_id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(60), nullable=False)
 
-    def __init__(self, aas_searches="", song_favorites="", artist_favorites="", album_favorites=""):
-        self.aas_searches = aas_searches
-        self.song_favorites = song_favorites
-        self.artist_favorites = artist_favorites
-        self.album_favorites = album_favorites
+class Artist(db.Model):
+    artist_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120), nullable=False)
+    image = db.Column(db.String(120))
+    description = db.Column(db.String(1000))
 
-    def __repr__(self):
-        return '<User_id %r>' % self.user_id
+class Album(db.Model):
+    album_id = db.Column(db.Integer, primary_key=True)
+    artist_id = db.Column(db.Integer, db.ForeignKey('artist.artist_id'), nullable=False)
+    name = db.Column(db.String(120), nullable=False)
+    image = db.Column(db.String(120))
+    description = db.Column(db.String(1000))
+    release_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    artist = db.relationship('Artist', backref=db.backref('albums', lazy=True)) # FK relationship
+
+class Track(db.Model):
+    track_id = db.Column(db.Integer, primary_key=True)
+    artist_id = db.Column(db.Integer, db.ForeignKey('artist.artist_id'), nullable=False)
+    album_id = db.Column(db.Integer, db.ForeignKey('album.album_id'))
+    name = db.Column(db.String(120), nullable=False)
+    image = db.Column(db.String(120))
+    description = db.Column(db.String(1000))
+    release_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    artist = db.relationship('Artist', backref=db.backref('tracks', lazy=True)) # FK relationship
+    album = db.relationship('Album', backref=db.backref('tracks', lazy=True)) # FK relationship
+
+class LikeDislike(db.Model):
+    favorite_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    entity_type = db.Column(db.Enum('artist', 'album', 'track'), nullable=False)
+    entity_id = db.Column(db.Integer, nullable=False)
+    liked = db.Column(db.Boolean, nullable=False)
+
+    user = db.relationship('User', backref=db.backref('likes_dislikes', lazy=True)) # FK relationship
+
+    __table_args__ = (
+        db.CheckConstraint("entity_type IN ('artist', 'album', 'track')"),
+    )
+
+class Reccomend(db.Model):
+    favorite_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    entity_type = db.Column(db.Enum('artist', 'album', 'track'), nullable=False)
+    entity_id = db.Column(db.Integer, nullable=False)
+    reccomended = db.Column(db.Boolean, nullable=False)
+
+    user = db.relationship('User', backref=db.backref('reccomended', lazy=True)) # FK relationship
+
+    __table_args__ = (
+        db.CheckConstraint("entity_type IN ('artist', 'album', 'track')"),
+    )
+
+# get functions
+def get_album_favorites(user):
+    likes = db.session.query(LikeDislike.entity_id)\
+            .filter(LikeDislike.entity_type == 'track', LikeDislike.liked == True)\
+            .all()
+    
+    # add functions
+
+    # set functions
