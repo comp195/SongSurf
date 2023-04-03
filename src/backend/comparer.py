@@ -15,7 +15,7 @@ headers = {
 }
 ###########################
 
-def compare_and_output_top_5(top_tags, type):
+def compare_and_output_top_5(top_tags, type, input):
     """
     1) Compare input tags and grab the top 5 most common tags
     2) Use the top 5 tags to request for top 50 artists, and output their names
@@ -109,7 +109,18 @@ def compare_and_output_top_5(top_tags, type):
     counter = Counter(top_items)
     top_5_tuples = counter.most_common(5) # grab 5 most common items
     print(top_5_tuples)
-    top_5_items = [t[0] for t in top_5_tuples]	# get the most common items from the tuples
+    top_5_items = [t[0] for t in top_5_tuples if t[0] not in input]	# get the most common items from the tuples, skips if one of the user inputs
+    print(top_5_items)
+
+    i = 0
+    while len(top_5_items) < 5:
+        next_most_common_item = counter.most_common(6+i)[5+i][0]
+        if next_most_common_item not in input:
+            top_5_items.append(next_most_common_item)
+            i += 1
+            print("New item added: "+next_most_common_item)
+        print("Length of artists: " + str(len(top_5_items)))
+    print("New items: ")
     print(top_5_items)
 
     #print("Testing info retriever: ")

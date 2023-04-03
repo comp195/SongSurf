@@ -44,7 +44,7 @@ def get_album(a1,a2,a3):
 
 		time.sleep(1)
 
-	top_5_albums = comparer.compare_and_output_top_5(top_tags, 'album')
+	top_5_albums = comparer.compare_and_output_top_5(top_tags, 'album', albums)
 	return top_5_albums
 
 def get_album_info(a1):

@@ -41,7 +41,7 @@ def get_artist(a1,a2,a3):
 
 		time.sleep(1)
 
-	top_5_artists = comparer.compare_and_output_top_5(top_tags, 'artist')
+	top_5_artists = comparer.compare_and_output_top_5(top_tags, 'artist', artists)
 	return top_5_artists
 
 def get_artist_info(a1):
