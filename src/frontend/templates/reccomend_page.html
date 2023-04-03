@@ -9,7 +9,10 @@
 
 {% block body %} 
 
-<h1>SongSurf</h1>
+<!-- <h1>SongSurf</h1> -->
+<div style="text-align: center;">
+  <a href="{{ url_for('home_page') }}" ><img src='static/css/images/SongSurf Logo.png' style="width:250px; height:100px;"></a>
+</div>
 <p> SongSurf allows you to discover new music that
   you'll love through an informative, attractive, and intuitive website. 
   Input your favorite artists, albums, or songs and receive recommendations based on what you love.
@@ -28,6 +31,9 @@
     {% endif %}
   {% endfor %}
   
+  <div style="text-align: center;">
+    <a href="{{ url_for('search_page') }}" ><img src='static/css/images/backarrow.png' style="width:75px; height:45px;"></a>
+  </div>
   
   
   </div>
