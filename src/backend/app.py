@@ -88,6 +88,10 @@ def index():
 def search_page():
     return render_template('search_page.html')
 
+@app.route('/home_page')
+def home_page():
+    return render_template('home_page.html')
+
 
 if __name__ == "__main__":
     app.run(debug=True, port = 8000) # when deployed, set debug=False
