@@ -87,6 +87,13 @@ input[type=submit] {
   flex: 1;
 }
 
+.error_message{
+  color: red;
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-top: 10px;
+}
+
 
 /* Media queries */
 
