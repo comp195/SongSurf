@@ -19,6 +19,13 @@ def get_artist(a1,a2,a3):
 	top_tags = []
 
 	for artist in artists:
+		# ----- PSEUDOCODE -----
+		# if artist in database
+			# retrieve tags from database
+		# else
+			# call api
+		# ----------------------
+
 		payload = {
 			'api_key': API_KEY,
 			'method': 'artist.getTopTags',
@@ -32,6 +39,9 @@ def get_artist(a1,a2,a3):
 
 		if r.status_code == 200: # if successful
 			tags = r.json()['toptags']['tag']
+			# ----- PSEUDOCODE -----
+			# add tags to database
+			# ----------------------
 
 			# Add the tags to toptag array
 			for tag in tags:

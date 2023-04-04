@@ -23,6 +23,12 @@ def get_track(a1,a2,a3):
 	top_tags = []
 
 	for i in range(len(tracks)):
+		# ----- PSEUDOCODE -----
+		# if track in database
+			# retrieve tags from database
+		# else
+			# call api
+		# ----------------------
 
 		payload = {
 			'api_key': API_KEY,
@@ -40,6 +46,10 @@ def get_track(a1,a2,a3):
 
 		if r.status_code == 200: # if successful
 			tags = r.json()['toptags']['tag']
+			# ----- PSEUDOCODE -----
+			# add tags to database
+			# ----------------------
+
 			# print(r.json())
 
 			# Add the tags to toptag array

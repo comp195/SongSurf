@@ -20,6 +20,12 @@ def get_album(a1,a2,a3):
 	top_tags = []
 
 	for i in range(len(albums)):
+		# ----- PSEUDOCODE -----
+		# if album in database
+			# retrieve tags from database
+		# else
+			# call api
+		# ----------------------
 
 		payload = {
 			'api_key': API_KEY,
@@ -35,6 +41,9 @@ def get_album(a1,a2,a3):
 
 		if r.status_code == 200: # if successful
 			tags = r.json()['toptags']['tag']
+			# ----- PSEUDOCODE -----
+			# add tags to database
+			# ----------------------
 
 			# Add the tags to toptag array
 			for tag in tags:
