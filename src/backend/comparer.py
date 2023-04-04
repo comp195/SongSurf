@@ -28,6 +28,9 @@ def compare_and_output_top_5(top_tags, type, input):
     top_5 (list): list of artists or albums or tracks
     """
 
+    if not top_tags:    #if top_tags is empty
+        return []
+
     # ADJUST LIST AS WE DEBUG AND TEST !!!
     undesirable_tags = []   # list of tags to ignore
 

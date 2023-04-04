@@ -65,18 +65,27 @@ def index():
         if request.form['show_type'] == 'Artists':	# if the Artists radio button was selected
             print("Artists")
             artists = artist.get_artist(request.form['user_choice1'], request.form['user_choice2'], request.form['user_choice3'])
+            if not artists:	# if tracks is empty
+            	error_message = "No tags were able to be found for any of the artists.  Please try other songs."
+            	return render_template('search_page.html', message=error_message)
             user_choice = request.form['show_type']
             recommendations = [artists[0], artists[1], artists[2], artists[3], artists[4]]
             return render_template('reccomend_page.html', user=new_user, user_choice = user_choice,recommendations=recommendations)
         elif request.form['show_type'] == 'Albums': # if the Albums radio button was selected
             print("Albums")
             albums = album.get_album((request.form['user_choice1'],request.form['user_choice4']), (request.form['user_choice2'],request.form['user_choice5']), (request.form['user_choice3'],request.form['user_choice6']))
+            if not albums:	# if albums is empty
+            	error_message = "No tags were able to be found for any of the albums.  Please try other songs."
+            	return render_template('search_page.html', message=error_message)
             user_choice = request.form['show_type']
             recommendations = [albums[0], albums[1], albums[2], albums[3], albums[4]]
             return render_template('reccomend_page.html', user=new_user, user_choice = user_choice,recommendations=recommendations)
         elif request.form['show_type'] == 'Songs': # if the Songs radio button was selected
             print("Songs")
             tracks = track.get_track((request.form['user_choice1'],request.form['user_choice4']), (request.form['user_choice2'],request.form['user_choice5']), (request.form['user_choice3'],request.form['user_choice6']))
+            if not tracks:	# if tracks is empty
+            	error_message = "No tags were able to be found for any of the tracks.  Please try other songs."
+            	return render_template('search_page.html', message=error_message)
             user_choice = request.form['show_type']
             recommendations = [tracks[0], tracks[1], tracks[2], tracks[3], tracks[4]]
             return render_template('reccomend_page.html', user=new_user, user_choice = user_choice,recommendations=recommendations)

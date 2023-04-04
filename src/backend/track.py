@@ -2,6 +2,7 @@ import requests # pip install requests
 import time
 from collections import Counter
 import comparer
+import json
 
 ### IMPORTANT API INFO ###
 USER_AGENT = 'wbuop'
@@ -35,8 +36,11 @@ def get_track(a1,a2,a3):
 		# API Call to last.fm
 		r = requests.get('https://ws.audioscrobbler.com/2.0/', headers=headers, params=payload)
 
+		# print(r.status_code)
+
 		if r.status_code == 200: # if successful
 			tags = r.json()['toptags']['tag']
+			# print(r.json())
 
 			# Add the tags to toptag array
 			for tag in tags:
