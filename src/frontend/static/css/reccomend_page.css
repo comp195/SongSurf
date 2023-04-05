@@ -1,4 +1,4 @@
-.recommendations {
+/* .recommendations {
     display: flex;
     flex-wrap: wrap;
   }
@@ -10,4 +10,24 @@
   
   .recommendation-column:last-child {
     margin-right: 0;
+  } */
+  .recommendations {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
   }
+  
+  .recommendations p {
+    margin: 10px;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .recommendations p:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px lightgreen;
+  }
+  
