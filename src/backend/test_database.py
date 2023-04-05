@@ -136,6 +136,16 @@ def test_artist_album_track_like_dislike_classes():
 
         print(adele.artist_id) # prints "1", primary keys are added once db.session.commit() is called
 
+        artist_name = "aDeLe" #Adele1
+        artist = db.session.query(Artist)\
+                    .filter(Artist.name.ilike(artist_name))\
+                    .first()
+        if artist:
+            print(artist.name)
+        else:
+            print(f"No artist found with the name '{artist_name}'")
+
+
         # query the database
         tracks = db.session.query(Track.name)\
                         .join(Album, Track.album_id == Album.album_id)\

@@ -1,5 +1,6 @@
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import IntegrityError # used to roll_back duplicate items
 
 db = SQLAlchemy()
 
@@ -14,7 +15,7 @@ class User(db.Model):
 
 class Artist(db.Model):
     artist_id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120), nullable=False)
+    name = db.Column(db.String(120), nullable=False, unique=True)
     image = db.Column(db.String(120))
     description = db.Column(db.String(1000))
 
@@ -28,6 +29,10 @@ class Album(db.Model):
 
     artist = db.relationship('Artist', backref=db.backref('albums', lazy=True)) # FK relationship
 
+    __table_args__ = ( # Prevent duplicate albums being added, by ensuring albums with the same name have a different artist
+        db.UniqueConstraint('name', 'artist_id', name='uq_album_name_artist'),
+    )
+
 class Track(db.Model):
     track_id = db.Column(db.Integer, primary_key=True)
     artist_id = db.Column(db.Integer, db.ForeignKey('artist.artist_id'), nullable=False)
@@ -39,6 +44,10 @@ class Track(db.Model):
 
     artist = db.relationship('Artist', backref=db.backref('tracks', lazy=True)) # FK relationship
     album = db.relationship('Album', backref=db.backref('tracks', lazy=True)) # FK relationship
+
+    __table_args__ = ( # Prevent duplicate tracks being added, by ensuring tracks with the same name have a different artist
+        db.UniqueConstraint('name', 'artist_id', name='uq_track_name_artist'),
+    )
 
 class LikeDislike(db.Model):
     favorite_id = db.Column(db.Integer, primary_key=True)
@@ -62,7 +71,8 @@ class Recommend(db.Model):
 
     user = db.relationship('User', backref=db.backref('recommended', lazy=True)) # FK relationship
 
-    __table_args__ = (
+    __table_args__ = ( # Prevent duplicates by ensuring only a unique pair of entity_type and entity_id exists only once
+        db.UniqueConstraint('entity_type', 'entity_id', name='uq_recommend_entity'),
         db.CheckConstraint("entity_type IN ('artist', 'album', 'track')"),
     )
 
@@ -141,18 +151,28 @@ def get_album_object(album_name, album_artist):
             .filter(Album.name.ilike(album_name), Album.artist.ilike(album_artist))\
             .all()
     return album
-def get_artist_object(artist_name):
-    #ilike() means case insensitve
-    artist = db.session.query(Artist)\
-            .filter(Artist.name.ilike(artist_name))\
-            .all()
+def get_artist_object(app, artist_name):
+    with app.app_context():
+        artist = db.session.query(Artist)\
+                    .filter(Artist.name.ilike(artist_name))\
+                    .first()
+        return artist
+
+
     return artist
-def get_track_object(track_name, track_artist):
-    #ilike() means case insensitve
-    track = db.session.query(Track)\
-            .filter(Track.name.ilike(track_name), Track.artist.ilike(track_artist))\
-            .all()
-    return track
+def get_track_object(app, track_name, track_artist):
+    with app.app_context():
+        # query the artist first
+        artist = get_artist_object(track_artist)
+        if artist:
+            #ilike() means case insensitve
+            track = db.session.query(Track)\
+                    .filter(Track.name.ilike(track_name), Track.artist.ilike(artist.name))\
+                    .all()
+            return track
+        else:
+            print(f"No artist found with the name '{track_artist}'")
+            return None
 
 def get_tracks_from_album(album_id):
     tracks = db.session.query(Track.track_id)\
@@ -161,16 +181,20 @@ def get_tracks_from_album(album_id):
     return tracks
 
 # For optional items, use "None" if not applicable to item. Ex: artist may not have album_id, so put "none" for album_id arg
-def add_item(item_type, item_name, item_image, item_description, item_artist_id=None, item_album_id=None, item_release_date=None):
-    if (item_type == 'album'):
-        item = Album(artist_id=item_artist_id, name=item_name, image=item_image, description=item_description, release_date=item_release_date)
-    elif (item_type == 'artist'):
-        item = Artist(name=item_name, image=item_image, description=item_description)
-    elif (item_type == 'track'):
-        item = Track(album_id=item_album_id, artist_id=item_artist_id, name=item_name, image=item_image, description=item_description, release_date=item_release_date)
-    
-    db.session.add(item)
-    db.session.commit()
+def add_item(app, item_type, item_name, item_image, item_description, item_artist_id=None, item_album_id=None, item_release_date=None):
+    with app.app_context():
+        if (item_type == 'album'):
+            item = Album(artist_id=item_artist_id, name=item_name, image=item_image, description=item_description, release_date=item_release_date)
+        elif (item_type == 'artist'):
+            item = Artist(name=item_name, image=item_image, description=item_description)
+        elif (item_type == 'track'):
+            item = Track(album_id=item_album_id, artist_id=item_artist_id, name=item_name, image=item_image, description=item_description, release_date=item_release_date)
+        
+        try:
+            db.session.add(item)
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
 
 
 
