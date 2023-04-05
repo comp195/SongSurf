@@ -145,12 +145,19 @@ def get_item_object_from_id(item_id, item_type):
                 .filter(Track.track_id == item_id)\
                 .one()
     return item
-def get_album_object(album_name, album_artist):
-    #ilike() means case insensitve
-    album = db.session.query(Album)\
-            .filter(Album.name.ilike(album_name), Album.artist.ilike(album_artist))\
-            .all()
-    return album
+def get_album_object(app, album_name, album_artist):
+    with app.app_context():
+        # query the artist first
+        artist = get_artist_object(app, album_artist)
+        if artist:
+            #ilike() means case insensitve
+            album = db.session.query(Album)\
+                    .filter(Album.name.ilike(album_name), Album.artist_id.ilike(artist.artist_id))\
+                    .first()
+            return album
+        else:
+            print(f"No artist found with the name '{album_artist}'")
+            return None
 def get_artist_object(app, artist_name):
     with app.app_context():
         artist = db.session.query(Artist)\
