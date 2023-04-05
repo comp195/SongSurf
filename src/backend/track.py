@@ -3,7 +3,7 @@ import time
 from collections import Counter
 import comparer
 import json
-
+from database import *
 ### IMPORTANT API INFO ###
 USER_AGENT = 'wbuop'
 API_KEY = 'ebc5386ea6b0af15cae300e0da5a3af5'
@@ -28,7 +28,11 @@ def get_track(a1,a2,a3):
 			# retrieve tags from database
 		# else
 			# call api
+
+		track = get_item_object()
 		# ----------------------
+
+
 
 		payload = {
 			'api_key': API_KEY,

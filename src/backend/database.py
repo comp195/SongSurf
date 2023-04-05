@@ -69,20 +69,6 @@ class Recommend(db.Model):
 """ ================== Begin Database Interface ================== """
 
 # ----------- Album, Artist, Track information functions -----------
-def get_item_object(item_id, item_type):
-    if (item_type == 'album'):
-        item = db.session.query(Album)\
-                .filter(Album.album_id == item_id)\
-                .one()
-    if (item_type == 'artist'):
-        item = db.session.query(Artist)\
-                .filter(Artist.artist_id == item_id)\
-                .one()
-    if (item_type == 'track'):
-        item = db.session.query(Track)\
-                .filter(Track.track_id == item_id)\
-                .one()
-    return item
 def get_name(item_id, item_type):
     if (item_type == 'album'):
         name = db.session.query(Album.name)\
@@ -135,6 +121,39 @@ def get_release_date(item_id, item_type):
                 .filter(Track.track_id == item_id)\
                 .one()
     return release_date
+def get_item_object_from_id(item_id, item_type):
+    if (item_type == 'album'):
+        item = db.session.query(Album)\
+                .filter(Album.album_id == item_id)\
+                .one()
+    if (item_type == 'artist'):
+        item = db.session.query(Artist)\
+                .filter(Artist.artist_id == item_id)\
+                .one()
+    if (item_type == 'track'):
+        item = db.session.query(Track)\
+                .filter(Track.track_id == item_id)\
+                .one()
+    return item
+def get_album_object(album_name, album_artist):
+    #ilike() means case insensitve
+    album = db.session.query(Album)\
+            .filter(Album.name.ilike(album_name), Album.artist.ilike(album_artist))\
+            .all()
+    return album
+def get_artist_object(artist_name):
+    #ilike() means case insensitve
+    artist = db.session.query(Artist)\
+            .filter(Artist.name.ilike(artist_name))\
+            .all()
+    return artist
+def get_track_object(track_name, track_artist):
+    #ilike() means case insensitve
+    track = db.session.query(Track)\
+            .filter(Track.name.ilike(track_name), Track.artist.ilike(track_artist))\
+            .all()
+    return track
+
 def get_tracks_from_album(album_id):
     tracks = db.session.query(Track.track_id)\
             .filter(Track.album_id == album_id)\
