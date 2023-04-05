@@ -158,16 +158,14 @@ def get_artist_object(app, artist_name):
                     .first()
         return artist
 
-
-    return artist
 def get_track_object(app, track_name, track_artist):
     with app.app_context():
         # query the artist first
-        artist = get_artist_object(track_artist)
+        artist = get_artist_object(app, track_artist)
         if artist:
             #ilike() means case insensitve
             track = db.session.query(Track)\
-                    .filter(Track.name.ilike(track_name), Track.artist.ilike(artist.name))\
+                    .filter(Track.name.ilike(track_name), Track.artist_id.ilike(artist.artist_id))\
                     .all()
             return track
         else:

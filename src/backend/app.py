@@ -32,7 +32,7 @@ db = init_db(app)
 #     db.create_all()
 
 # test
-# track.test_track(app)
+#track.test_track(app)
 
 # Define route for main page (search_page)
 @app.route('/', methods=['POST', 'GET'])

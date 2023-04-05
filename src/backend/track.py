@@ -16,7 +16,7 @@ headers = {
 # *note - get_track() doesnt return album_id but has everything else. 
 # so you have to use get_track_info() and then you get the album_id
 #  - temporary solution: only set the album_id for tracks that were accessed by recommending albums. 
-def get_track(db, a1,a2,a3):
+def get_track(app, a1,a2,a3):
 	# Get tags of songs/tracks/tracks that the user inputted
 	tracks = [a1[0],a2[0],a3[0]]
 	artists = [a1[1],a2[1],a3[1]]
@@ -30,10 +30,11 @@ def get_track(db, a1,a2,a3):
 			# call api
 		# ----------------------
 
-		track = get_track_object(db, tracks[i], artists[i])
+		track = get_track_object(app, tracks[i], artists[i])
 		if (track != None):
-			print()
+			print("FOUND " + track.name + " IN LOCAL DATABASE!")
 		else:
+			print(tracks[i] + " not in local database")
 
 			payload = {
 				'api_key': API_KEY,
@@ -73,5 +74,5 @@ def test_track(app):
 	
 
 	add_item(app, 'artist', 'Pink Floyd', 'solar.jpg', 'rock band')
-	add_item(app, 'track', 'Wish you were Here', 'daydreamer.jpg', 'Debut track', get_artist_object(app, 'Pink Floyd').name)
+	add_item(app, 'track', 'Wish you were Here', 'daydreamer.jpg', 'Debut track', get_artist_object(app, 'Pink Floyd').artist_id)
 	tracks = get_track(app, ('Wish you were Here','Pink Floyd'), ('Dreams','Fleetwood Mac'), ('Come as you are','Nirvana'))

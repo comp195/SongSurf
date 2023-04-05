@@ -15,18 +15,17 @@ Database interface functions:
 - get_track_reccomendations(user)		-> return all "track_id" with "recommended = false"
 - set_recommended(user, item_id, item_type)	
 
-- get_album(album_id)				-> returns "Album" object
-- get_artist(artist_id)				-> returns "Artist" object
-- get_track(track_id)				-> returns "Track" object
 - get_name(item_id, item_type)			-> returns name
 - get_image(item_id, item_type)			-> returns image
 - get_description(item_id, item_type)		-> returns description
 - get_release_date(item_id, item_type)		-> returns release_date
-- get_tracks_from_album(album_id)		-> returns multiple "track_id"
-- add_album(artist_id, name, image, description, release_date)
-- add_artist(name, image, description)
-- add_track(artist_id, album_id, name, image, description, release_date)
+- get_item_object_from_id(item_id, item_type)	-> return item object
+- get_album_object(album_name, artist_name)	-> return track object
+- get_artist_object(artist_name)		-> return artist object
+- get_track_object(track_name, artist_name)	-> return track object
 
+- get_tracks_from_album(album_id)		-> returns multiple "track_id"
+- add_item(item_type, item_name, item_image, item_description, item_artist_id=None, item_album_id=None, item_release_date=None)
 
 
 # if have time:
