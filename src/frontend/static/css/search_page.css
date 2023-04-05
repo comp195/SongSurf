@@ -41,18 +41,54 @@ input[type=text] {
   font-size: 1rem;
   padding: 0.5rem;
   border-radius: 0.5rem;
-  border: 1px solid lightgreen;
+  border: 1px solid #0097d0;
   background-color: #fff;
   margin-bottom: 0.5rem;
 }
 
-input[type=radio] {
-  margin-right: 0.5rem;
+input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkmark {
+  position: relative;
+  display: inline-block;
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #0097d0;
+}
+
+.checkmark:before {
+  content: "";
+  position: absolute;
+  display: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #0097d0;
+}
+
+input[type="radio"]:checked ~ .checkmark:before {
+  display: block;
+}
+
+label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  cursor: pointer;
 }
 
 input[type=submit] {
   font-size: 1.2rem;
-  background-color: lightgreen;
+  background-color: #76cf1b;
   color: #fff;
   border: none;
   border-radius: 0.5rem;
@@ -60,6 +96,11 @@ input[type=submit] {
   cursor: pointer;
   margin-top: 2rem;
   margin-bottom: 2rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+input[type=submit]:hover {
+  background-color: #5da417;
 }
 
 /* Styles for search section */
@@ -94,6 +135,12 @@ input[type=submit] {
   margin-top: 10px;
 }
 
+#left_input_label,
+#right_input_label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
 
 /* Media queries */
 

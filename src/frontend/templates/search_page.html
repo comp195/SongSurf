@@ -26,17 +26,20 @@
       <div class="search_radio_buttons"> <!-- Radio buttons to select what to show user -->
         <h4>Show Me:</h4>
         <label>
-          <input type="radio" name="show_type" value="Artists" onclick="updateSearchLabel('Artists'); hideAdditionalBoxes();">
+          <input type="radio" name="show_type" value="Artists" onclick="updateSearchLabel('Artist'); hideAdditionalBoxes();">
+          <span class="checkmark"></span>
           Artists
         </label>
         <br>
         <label>
-          <input type="radio" name="show_type" value="Albums" onclick="updateSearchLabel('Albums'); showAdditionalBoxes(3);">
+          <input type="radio" name="show_type" value="Albums" onclick="updateSearchLabel('Album'); showAdditionalBoxes(3);">
+          <span class="checkmark"></span>
           Albums
         </label>
         <br>
         <label>
-          <input type="radio" name="show_type" value="Songs" onclick="updateSearchLabel('Tracks'); showAdditionalBoxes(3);">
+          <input type="radio" name="show_type" value="Songs" onclick="updateSearchLabel('Track'); showAdditionalBoxes(3);">
+          <span class="checkmark"></span>
           Tracks
         </label>
         <br>
@@ -44,20 +47,35 @@
       
       <div class="search_boxes"> <!-- Search boxes for user to input what they love -->
         <h4>Enter up to 3 <span id="search_label"></span> you love:</h4>
+        <h4 id="label_title" style="font-weight:bold;"></h4>
         <h5>Enter the artist, album, or track name below (if you chose albums or track enter the artist's name on the right): </h5>
         <div class="search_boxes_wrapper">
           <div class="search_boxes_column">
             <ol>
-              <li><input type="text" name="user_choice1" id="user_choice1"></li>
-              <li><input type="text" name="user_choice2" id="user_choice2"></li>
-              <li><input type="text" name="user_choice3" id="user_choice3"></li>
+              <span id="left_input_label"></span>
+              <li>
+                <input type="text" name="user_choice1" id="user_choice1">
+              </li>
+              <li>
+                <input type="text" name="user_choice2" id="user_choice2">
+              </li>
+              <li>
+                <input type="text" name="user_choice3" id="user_choice3">
+              </li>
             </ol>
           </div>
           <div class="search_boxes_column">
             <ol>
-              <li id="additional_box_1" style="display: none;"><input type="text" name="user_choice4" id="user_choice4"></li>
-              <li id="additional_box_2" style="display: none;"><input type="text" name="user_choice5" id="user_choice5"></li>
-              <li id="additional_box_3" style="display: none;"><input type="text" name="user_choice6" id="user_choice6"></li>
+              <span id="right_input_label"></span>
+              <li id="additional_box_1" style="display: none;">
+                <input type="text" name="user_choice4" id="user_choice4">
+              </li>
+              <li id="additional_box_2" style="display: none;">
+                <input type="text" name="user_choice5" id="user_choice5">
+              </li>
+              <li id="additional_box_3" style="display: none;">
+                <input type="text" name="user_choice6" id="user_choice6">
+              </li>
             </ol>
           </div>
         </div>
@@ -88,4 +106,18 @@
 
    window.addEventListener('pageshow', hideLoading);
   </script>
+
+  <script>
+  function updateSearchLabel(label) {
+    var searchLabel = document.getElementById("search_label");
+    searchLabel.innerHTML = label;
+    if (label === "Artist") {
+      document.getElementById("left_input_label").innerHTML = "Artist name:";
+      document.getElementById("right_input_label").innerHTML = "";
+    } else {
+      document.getElementById("left_input_label").innerHTML = label + " name:";
+      document.getElementById("right_input_label").innerHTML = "Artist name:";
+    }
+  }
+</script>
 {% endblock %}
