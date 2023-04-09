@@ -79,72 +79,77 @@ class Recommend(db.Model):
 """ ================== Begin Database Interface ================== """
 
 # ----------- Album, Artist, Track information functions -----------
-def get_name(item_id, item_type):
-    if (item_type == 'album'):
-        name = db.session.query(Album.name)\
-                .filter(Album.album_id == item_id)\
-                .one()
-    if (item_type == 'artist'):
-        name = db.session.query(Artist.name)\
-                .filter(Artist.artist_id == item_id)\
-                .one()
-    if (item_type == 'track'):
-        name = db.session.query(Track.name)\
-                .filter(Track.track_id == item_id)\
-                .one()
-    return name
-def get_image(item_id, item_type):
-    if (item_type == 'album'):
-        image = db.session.query(Album.image)\
-                .filter(Album.album_id == item_id)\
-                .one()
-    if (item_type == 'artist'):
-        image = db.session.query(Artist.image)\
-                .filter(Artist.artist_id == item_id)\
-                .one()
-    if (item_type == 'track'):
-        image = db.session.query(Track.image)\
-                .filter(Track.track_id == item_id)\
-                .one()
-    return image
-def get_description(item_id, item_type):
-    if (item_type == 'album'):
-        desc = db.session.query(Album.description)\
-                .filter(Album.album_id == item_id)\
-                .one()
-    if (item_type == 'artist'):
-        desc = db.session.query(Artist.description)\
-                .filter(Artist.artist_id == item_id)\
-                .one()
-    if (item_type == 'track'):
-        desc = db.session.query(Track.description)\
-                .filter(Track.track_id == item_id)\
-                .one()
-    return desc
-def get_release_date(item_id, item_type):
-    if (item_type == 'album'):
-        release_date = db.session.query(Album.release_date)\
-                .filter(Album.album_id == item_id)\
-                .one()
-    if (item_type == 'track'):
-        release_date = db.session.query(Track.release_date)\
-                .filter(Track.track_id == item_id)\
-                .one()
-    return release_date
-def get_item_object_from_id(item_id, item_type):
-    if (item_type == 'album'):
-        item = db.session.query(Album)\
-                .filter(Album.album_id == item_id)\
-                .one()
-    if (item_type == 'artist'):
-        item = db.session.query(Artist)\
-                .filter(Artist.artist_id == item_id)\
-                .one()
-    if (item_type == 'track'):
-        item = db.session.query(Track)\
-                .filter(Track.track_id == item_id)\
-                .one()
-    return item
+def get_name(app, item_id, item_type):
+    with app.app_context():
+        if (item_type == 'album'):
+            name = db.session.query(Album.name)\
+                    .filter(Album.album_id == item_id)\
+                    .one()
+        if (item_type == 'artist'):
+            name = db.session.query(Artist.name)\
+                    .filter(Artist.artist_id == item_id)\
+                    .one()
+        if (item_type == 'track'):
+            name = db.session.query(Track.name)\
+                    .filter(Track.track_id == item_id)\
+                    .one()
+        return name
+def get_image(app, item_id, item_type):
+    with app.app_context():
+        if (item_type == 'album'):
+            image = db.session.query(Album.image)\
+                    .filter(Album.album_id == item_id)\
+                    .one()
+        if (item_type == 'artist'):
+            image = db.session.query(Artist.image)\
+                    .filter(Artist.artist_id == item_id)\
+                    .one()
+        if (item_type == 'track'):
+            image = db.session.query(Track.image)\
+                    .filter(Track.track_id == item_id)\
+                    .one()
+        return image
+def get_description(app, item_id, item_type):
+    with app.app_context():
+        if (item_type == 'album'):
+            desc = db.session.query(Album.description)\
+                    .filter(Album.album_id == item_id)\
+                    .one()
+        if (item_type == 'artist'):
+            desc = db.session.query(Artist.description)\
+                    .filter(Artist.artist_id == item_id)\
+                    .one()
+        if (item_type == 'track'):
+            desc = db.session.query(Track.description)\
+                    .filter(Track.track_id == item_id)\
+                    .one()
+        return desc
+def get_release_date(app, item_id, item_type):
+    with app.app_context():
+        if (item_type == 'album'):
+            release_date = db.session.query(Album.release_date)\
+                    .filter(Album.album_id == item_id)\
+                    .one()
+        if (item_type == 'track'):
+            release_date = db.session.query(Track.release_date)\
+                    .filter(Track.track_id == item_id)\
+                    .one()
+        return release_date
+def get_item_object_from_id(app, item_id, item_type):
+    with app.app_context():
+        if (item_type == 'album'):
+            item = db.session.query(Album)\
+                    .filter(Album.album_id == item_id)\
+                    .one()
+        if (item_type == 'artist'):
+            item = db.session.query(Artist)\
+                    .filter(Artist.artist_id == item_id)\
+                    .one()
+        if (item_type == 'track'):
+            item = db.session.query(Track)\
+                    .filter(Track.track_id == item_id)\
+                    .one()
+        return item
 def get_album_object(app, album_name, album_artist):
     with app.app_context():
         # query the artist first
