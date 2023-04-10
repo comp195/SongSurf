@@ -86,6 +86,12 @@ def compare_and_output_top_5(top_tags, type, input):
     top_items = []
 
     for tag in most_common_tags:
+        # ----- PSEUDOCODE -----
+		# if track in database
+			# retrieve tags from database
+		# else
+			# call api
+		# ----------------------
         # Get top 50 artists for tag
         limit = 50
 
@@ -129,6 +135,13 @@ def compare_and_output_top_5(top_tags, type, input):
         print("Length of artists: " + str(len(top_5_items)))
     print("New items: ")
     print(top_5_items)
+
+    # if artist
+        # get_artist_info(artist_name)
+        # add_artist_object()
+
+    # if track
+        # get_track_info()
 
     #print("Testing info retriever: ")
     #artist.get_artist_info(top_5_items[0])

@@ -22,19 +22,16 @@ def get_track(app, a1,a2,a3):
 	artists = [a1[1],a2[1],a3[1]]
 	top_tags = []
 
-	for i in range(len(tracks)):
-		# ----- PSEUDOCODE -----
-		# if track in database
-			# retrieve tags from database
-		# else
-			# call api
-		# ----------------------
+	num_track_to_recommend = 10
 
+	for i in range(len(tracks)):
 		track = get_track_object(app, tracks[i], artists[i])
 		if (track != None):
 			print("FOUND " + track.name + " IN LOCAL DATABASE!")
+			# add recommendation_# of tracks found to recommendations
 		else:
 			print(tracks[i] + " not in local database")
+			
 
 			payload = {
 				'api_key': API_KEY,

@@ -1,0 +1,9 @@
+PATRICK HERES THE PLAN
+1) Then implement the inserts in the api calls at least for Track first, then album, and artist.
+	The following steps apply to track, album, and artist.
+	1.1) leave get_track alone, dont put that pseudocode
+	1.2) instead, after comparer is called, then load all the recommendation tracks into the database
+	1.3) Then set the tracks as recommended to the user
+	1.4) then call it in the track.js
+	1.5) change get_track to get_track_recommendations
+2) also make code for track and album get queieres if not exists in database, to api call for the artist, and load the artist into the database, then proceed with adding track, and album to database

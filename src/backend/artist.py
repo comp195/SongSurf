@@ -72,9 +72,10 @@ def get_artist_info(a1):
 
 	image_url=data["artist"]["image"][-1]["#text"]
 	bio = data["artist"]["bio"]["summary"]
+	artist_link = data["artist"]["url"]
 
-	print(f"Image URL: {image_url}")
-	print(f"Bio: {bio}")
+	info = {'image': image_url, 'bio': bio, 'artist_link': artist_link}
+	return info
 
 # test
 
