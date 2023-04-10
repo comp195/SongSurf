@@ -198,7 +198,7 @@ def get_track_object(app, track_name, track_artist):
             #ilike() means case insensitve
             track = db.session.query(Track)\
                     .filter(Track.name.ilike(track_name), Track.artist_id.ilike(artist.artist_id))\
-                    .all()
+                    .first()
             return track
         else:
             print(f"No artist found with the name '{track_artist}'")

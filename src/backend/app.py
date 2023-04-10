@@ -32,7 +32,6 @@ db = init_db(app)
 #     db.drop_all()
 #     db.create_all()
 
-# test
 # user_developer = User(email='dev', password='dev') # user credientials for developer
 # with app.app_context():
 #     db.session.add(user_developer)
@@ -109,10 +108,22 @@ def index():
         
         elif request.form['show_type'] == 'Songs': # if the Songs radio button was selected
             print("Songs")
-            tracks = track.get_track_recommendations(app, (request.form['user_choice1'],request.form['user_choice4']), (request.form['user_choice2'],request.form['user_choice5']), (request.form['user_choice3'],request.form['user_choice6']))
-            if not tracks:	# if tracks is empty
-                error_message = "No tags were able to be found for any of the tracks.  Please try other songs."
-                return render_template('search_page.html', message=error_message)
+
+            # new implementation calling database instead
+            database.delete_current_recommendations(app, user_id) # start with new recommendations since "SURF" is clicked
+            track.get_track_recommendations(app, user_id, (request.form['user_choice1'],request.form['user_choice4']), (request.form['user_choice2'],request.form['user_choice5']), (request.form['user_choice3'],request.form['user_choice6']))
+            track_ids = database.get_track_recommendations(app, user_id)
+            track_objects = [database.get_item_object_from_id(app, track_id, 'track') for track_id in track_ids]
+            track_names = [track.name for track in track_objects]
+            artist_names = [database.get_name(app, track.artist_id, 'artist') for track in track_objects]
+            tracks = list(zip(track_names, artist_names)) # temporarily store them in tuples to output
+            print(tracks)
+
+            # old
+            # tracks = track.get_track_recommendations(app, (request.form['user_choice1'],request.form['user_choice4']), (request.form['user_choice2'],request.form['user_choice5']), (request.form['user_choice3'],request.form['user_choice6']))
+            # if not tracks:	# if tracks is empty
+            #     error_message = "No tags were able to be found for any of the tracks.  Please try other songs."
+            #     return render_template('search_page.html', message=error_message)
             user_choice = request.form['show_type']
             recommendations = [tracks[0], tracks[1], tracks[2], tracks[3], tracks[4]]
             return render_template('reccomend_page.html', user=user_id, user_choice = user_choice,recommendations=recommendations)

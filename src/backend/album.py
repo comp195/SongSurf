@@ -61,29 +61,33 @@ def get_album_recommendations(app, user_id, a1,a2,a3):
 	top_5_albums = comparer.compare_and_output_top_5(app, user_id, top_tags, 'album', albums)
 	return top_5_albums
 
-def get_album_info(a1):
+def get_album_info(album, album_artist):
 	payload = {
 		'api_key': API_KEY,
 		'method': 'album.getinfo',
 		'format': 'json',
-		'artist': a1[0],
-		'album':a1[1]
+		'artist': album_artist,
+		'album': album
 	}
 
-	print(a1[0])
-	print(a1[1])
 
 	r = requests.get('https://ws.audioscrobbler.com/2.0/', headers=headers, params=payload)
 	data = json.loads(r.text)
 
-	print(data)
+	image_url=data["album"]["image"][-1]["#text"]
+	bio = data["album"]["wiki"]["summary"]
+	album_link = data["album"]["url"]
+	#release_date = data["album"]["releasedate"]
+	release_date = "last.fm doesnt support release_date for albums"
+	track_names = [track["name"] for track in data["album"]["tracks"]["track"]]
 
-	image_url=data["album"]["image"][-1]["#text"]	# currently the requested data from last.fm does not return image urls, check later
 
-	print(f"Image URL: {image_url}")
+	info = {'image': image_url, 'description': bio, 'url_link': album_link}
+	return (info, track_names)
 
 # test
 def test_album(app):
 
-	add_item(app, 'album', "The Dark Side of the Moon", "daydreamer.jpg", "welcome to the dark side", get_artist_object(app, 'Pink Floyd').artist_id, None, datetime(1973, 3, 1))
+	(info, track_names) = get_album_info("The Dark Side of the Moon", "Pink Floyd")
+	#add_item(app, 'album', "The Dark Side of the Moon", "daydreamer.jpg", "welcome to the dark side", get_artist_object(app, 'Pink Floyd').artist_id, None, datetime(1973, 3, 1))
 	albums = get_album_recommendations(app, 1, ('The Dark Side of the Moon','Pink Floyd'), ('Rumours','Fleetwood Mac'), ('Nevermind','Nirvana'))

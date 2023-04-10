@@ -22,54 +22,66 @@ def get_track_recommendations(app, user_id, a1,a2,a3):
 	artists = [a1[1],a2[1],a3[1]]
 	top_tags = []
 
-	num_track_to_recommend = 10
 
 	for i in range(len(tracks)):
-		track = database.get_track_object(app, tracks[i], artists[i])
-		if (track != None):
-			print("FOUND " + track.name + " IN LOCAL DATABASE!")
-			# add recommendation_# of tracks found to recommendations
+
+		payload = {
+			'api_key': API_KEY,
+			'method': 'track.getTopTags',
+			'format': 'json',
+			'track': tracks[i],
+			'artist': artists[i],
+			'autocorrect': 1,	# corrects if user mispelled the track
+		}
+
+		# API Call to last.fm
+		r = requests.get('https://ws.audioscrobbler.com/2.0/', headers=headers, params=payload)
+
+		# print(r.status_code)
+
+		if r.status_code == 200: # if successful
+			tags = r.json()['toptags']['tag']
+			# ----- PSEUDOCODE -----
+			# add tags to database
+			# ----------------------
+
+			# print(r.json())
+
+			# Add the tags to toptag array
+			for tag in tags:
+				top_tags.append(tag['name'])
 		else:
-			print(tracks[i] + " not in local database")
-			
+			print(f'Request failed with status code {r.status_code}')
 
-			payload = {
-				'api_key': API_KEY,
-				'method': 'track.getTopTags',
-				'format': 'json',
-				'track': tracks[i],
-				'artist': artists[i],
-				'autocorrect': 1,	# corrects if user mispelled the track
-			}
+		time.sleep(1)
 
-			# API Call to last.fm
-			r = requests.get('https://ws.audioscrobbler.com/2.0/', headers=headers, params=payload)
+	comparer.compare_and_output_top_5(app, user_id, top_tags, 'track', tracks)
 
-			# print(r.status_code)
 
-			if r.status_code == 200: # if successful
-				tags = r.json()['toptags']['tag']
-				# ----- PSEUDOCODE -----
-				# add tags to database
-				# ----------------------
+def get_track_info(track, track_artist):
+	payload = {
+		'api_key': API_KEY,
+		'method': 'track.getinfo',
+		'format': 'json',
+		'track': track,
+		'artist': track_artist,
+	}
 
-				# print(r.json())
+	r = requests.get('https://ws.audioscrobbler.com/2.0/', headers=headers, params=payload)
+	data = json.loads(r.text)
 
-				# Add the tags to toptag array
-				for tag in tags:
-					top_tags.append(tag['name'])
-			else:
-				print(f'Request failed with status code {r.status_code}')
+	image_url=data["track"]["album"]["image"][-1]["#text"]
+	bio = data["track"]["wiki"]["summary"]
+	track_link = data["track"]["url"]
+	album_name = data["track"]["album"]["title"] 
 
-			time.sleep(1)
-
-	top_5_tracks = comparer.compare_and_output_top_5(app, top_tags, 'track', tracks)
-	return top_5_tracks
+	info = {'image': image_url, 'description': bio, 'url_link': track_link, 'album_name': album_name}
+	return info
 
 # test
 def test_track(app):
 	
-
-	database.add_item(app, 'artist', 'Pink Floyd', 'solar.jpg', 'rock band')
-	database.add_item(app, 'track', 'Wish you were Here', 'daydreamer.jpg', 'Debut track', database.get_artist_object(app, 'Pink Floyd').artist_id)
+	get_track_info('Wish you were Here', 'Pink Floyd')
+	#database.add_item(app, 'artist', 'Pink Floyd', 'solar.jpg', 'rock band')
+	#database.add_item(app, 'track', 'Wish you were Here', 'daydreamer.jpg', 'Debut track', database.get_artist_object(app, 'Pink Floyd').artist_id)
 	tracks = get_track_recommendations(app, 1, ('Wish you were Here','Pink Floyd'), ('Dreams','Fleetwood Mac'), ('Come as you are','Nirvana'))

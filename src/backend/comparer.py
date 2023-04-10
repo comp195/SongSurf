@@ -136,9 +136,8 @@ def compare_and_output_top_5(app, user_id, top_tags, type, input):
 
 def update_database_with_items(app, user_id, item_type, items):
     for item in items:
-        # first check if the item exists already in database, then skip adding it, but add it to recommend
-
         if (item_type == 'artist'):
+            # first check if the item exists already in database, then skip adding it, but add it to recommend
 
             if (database.get_artist_object(app, item) == None):
 
@@ -151,7 +150,33 @@ def update_database_with_items(app, user_id, item_type, items):
         elif (item_type == 'album'):
             info = album.get_album_info(item)
 
+            # add tracks that belong to album
+
         elif (item_type == 'track'):
-            info = track.get_track_info(item)
+            # first check if the item exists already in database, then skip adding it, but add it to recommend
+
+            if (database.get_track_object(app, item[0], item[1]) == None):
+
+                
+                # check if artist of track exists in database, if not then add it
+                if (database.get_artist_object(app, item[1]) == None):
+                    time.sleep(0.8)
+                    artist_info = artist.get_artist_info(item[1])
+                    database.add_item(app, 'artist', item[1], artist_info['image'], artist_info['description'], artist_info['url_link'])
+
+                cur_artist = database.get_artist_object(app, item[1])
+                info = track.get_track_info(item[0], item[1])
+                # check if album of track exists in database, if not then add it
+                if (database.get_album_object(app, info['album_name'], item[1]) == None):
+                    (album_info, album_tracks) = album.get_album_info(info['album_name'], item[1])
+                    database.add_item(app, 'album', info['album_name'], album_info['image'], album_info['description'], album_info['url_link'],cur_artist.artist_id)
+
+                cur_album = database.get_album_object(app, info['album_name'], item[1])
+                
+                # add the track
+                database.add_item(app, 'track', item[0], info['image'], info['description'], info['url_link'], cur_artist.artist_id, cur_album.album_id)
+
+            cur_track = database.get_track_object(app, item[0], item[1])
+            database.add_recommended(app, user_id, cur_track.track_id, 'track')
 
     

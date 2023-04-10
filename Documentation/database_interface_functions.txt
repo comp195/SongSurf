@@ -7,17 +7,21 @@ Database interface functions:
 - get_album_dislikes(user) 			-> returns multiple "album_id"
 - get_artist_dislikes(user) 			-> returns multiple "artist_id"
 - get_track_dislikes(user)			-> returns multiple "track_id"
+- add_liked(user, item_id, item_type)
 - set_liked(User, item_id, item_type) 		
 - set_disliked(User, item_id, item_type) 	
 
 - get_album_reccomendations(user) 		-> return all "album_id" with "recommended = false"
 - get_artist_reccomendations(user)		-> return all "artist_id" with "recommended = false"
 - get_track_reccomendations(user)		-> return all "track_id" with "recommended = false"
-- set_recommended(user, item_id, item_type)	
+- add_recommended(user, item_id, item_type)
+- set_recommended(user, item_id, item_type)
+- delete_current_recommendations(user_id)	
 
 - get_name(item_id, item_type)			-> returns name
 - get_image(item_id, item_type)			-> returns image
 - get_description(item_id, item_type)		-> returns description
+- get_url_link(item_id, item_type)		-> returns url_link
 - get_release_date(item_id, item_type)		-> returns release_date
 - get_item_object_from_id(item_id, item_type)	-> return item object
 - get_album_object(album_name, artist_name)	-> return track object

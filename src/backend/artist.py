@@ -3,7 +3,7 @@ import time
 from collections import Counter
 import comparer
 import json
-from database import *
+import database
 ### IMPORTANT API INFO ###
 USER_AGENT = 'wbuop'
 API_KEY = 'ebc5386ea6b0af15cae300e0da5a3af5'
@@ -41,8 +41,8 @@ def get_artist_recommendations(app, user_id, a1,a2,a3):
 
 		time.sleep(1)
 
-	top_5_artists = comparer.compare_and_output_top_5(app, user_id, top_tags, 'artist', artists)
-	return top_5_artists
+	comparer.compare_and_output_top_5(app, user_id, top_tags, 'artist', artists)
+
 
 def get_artist_info(a1):
 	payload = {
@@ -65,5 +65,5 @@ def get_artist_info(a1):
 
 def test_artist(app):
 
-	add_item(app, 'artist', 'Malz Monday', 'mm.jpg', 'Man of god walking with the devil', 'https://www.last.fm/music/Malz+Monday')
+	database.add_item(app, 'artist', 'Malz Monday', 'mm.jpg', 'Man of god walking with the devil', 'https://www.last.fm/music/Malz+Monday')
 	artists = get_artist_recommendations(app, 1,'Malz Monday', 'J Cole', 'Bas')
