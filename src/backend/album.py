@@ -13,7 +13,7 @@ headers = {
 }
 ###########################
 
-def get_album(app, a1,a2,a3):
+def get_album_recommendations(app, user_id, a1,a2,a3):
 	# Get tags of songs/albums/albums that the user inputted
 	albums = [a1[0],a2[0],a3[0]]
 	artists = [a1[1],a2[1],a3[1]]
@@ -58,7 +58,7 @@ def get_album(app, a1,a2,a3):
 
 			time.sleep(1)
 
-	top_5_albums = comparer.compare_and_output_top_5(top_tags, 'album', albums)
+	top_5_albums = comparer.compare_and_output_top_5(app, user_id, top_tags, 'album', albums)
 	return top_5_albums
 
 def get_album_info(a1):
@@ -86,4 +86,4 @@ def get_album_info(a1):
 def test_album(app):
 
 	add_item(app, 'album', "The Dark Side of the Moon", "daydreamer.jpg", "welcome to the dark side", get_artist_object(app, 'Pink Floyd').artist_id, None, datetime(1973, 3, 1))
-	albums = get_album(app, ('The Dark Side of the Moon','Pink Floyd'), ('Rumours','Fleetwood Mac'), ('Nevermind','Nirvana'))
+	albums = get_album_recommendations(app, 1, ('The Dark Side of the Moon','Pink Floyd'), ('Rumours','Fleetwood Mac'), ('Nevermind','Nirvana'))

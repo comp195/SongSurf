@@ -26,6 +26,7 @@ class Album(db.Model):
     name = db.Column(db.String(120), nullable=False)
     image = db.Column(db.String(120))
     description = db.Column(db.String(1000))
+    url_link = db.Column(db.String(1000))
     release_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     artist = db.relationship('Artist', backref=db.backref('albums', lazy=True)) # FK relationship
@@ -41,6 +42,7 @@ class Track(db.Model):
     name = db.Column(db.String(120), nullable=False)
     image = db.Column(db.String(120))
     description = db.Column(db.String(1000))
+    url_link = db.Column(db.String(1000))
     release_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     artist = db.relationship('Artist', backref=db.backref('tracks', lazy=True)) # FK relationship
@@ -125,6 +127,23 @@ def get_description(app, item_id, item_type):
                     .filter(Track.track_id == item_id)\
                     .one()
         return desc
+    
+def get_url_link(app, item_id, item_type):
+    with app.app_context():
+        if (item_type == 'album'):
+            url_link = db.session.query(Album.url_link)\
+                    .filter(Album.album_id == item_id)\
+                    .one()
+        if (item_type == 'artist'):
+            url_link = db.session.query(Artist.url_link)\
+                    .filter(Artist.artist_id == item_id)\
+                    .one()
+        if (item_type == 'track'):
+            url_link = db.session.query(Track.url_link)\
+                    .filter(Track.track_id == item_id)\
+                    .one()
+        return url_link
+
 def get_release_date(app, item_id, item_type):
     with app.app_context():
         if (item_type == 'album'):
@@ -193,14 +212,14 @@ def get_tracks_from_album(app, album_id):
         return tracks
 
 # For optional items, use "None" if not applicable to item. Ex: artist may not have album_id, so put "none" for album_id arg
-def add_item(app, item_type, item_name, item_image, item_description, item_artist_id=None, item_album_id=None, item_release_date=None):
+def add_item(app, item_type, item_name, item_image, item_description, item_link, item_artist_id=None, item_album_id=None, item_release_date=None):
     with app.app_context():
         if (item_type == 'album'):
-            item = Album(artist_id=item_artist_id, name=item_name, image=item_image, description=item_description, release_date=item_release_date)
+            item = Album(artist_id=item_artist_id, name=item_name, image=item_image, description=item_description, url_link=item_link, release_date=item_release_date)
         elif (item_type == 'artist'):
-            item = Artist(name=item_name, image=item_image, description=item_description)
+            item = Artist(name=item_name, image=item_image, description=item_description, url_link=item_link)
         elif (item_type == 'track'):
-            item = Track(album_id=item_album_id, artist_id=item_artist_id, name=item_name, image=item_image, description=item_description, release_date=item_release_date)
+            item = Track(album_id=item_album_id, artist_id=item_artist_id, name=item_name, image=item_image, description=item_description, url_link=item_link, release_date=item_release_date)
         
         try:
             db.session.add(item)
@@ -217,48 +236,67 @@ def get_album_likes(app, user_id):
         likes = db.session.query(LikeDislike.entity_id)\
                 .filter(LikeDislike.entity_type == 'album', LikeDislike.liked == True, LikeDislike.user_id == user_id)\
                 .all()
-        return likes
+        ids = [likes[0] for like in likes] # Extract only the first element (the id) of each tuple 
+        return ids
 def get_artist_likes(app, user_id):
     with app.app_context():
         likes = db.session.query(LikeDislike.entity_id)\
                 .filter(LikeDislike.entity_type == 'artist', LikeDislike.liked == True, LikeDislike.user_id == user_id)\
                 .all()
-        return likes
+        ids = [likes[0] for like in likes] # Extract only the first element (the id) of each tuple 
+        return ids
 def get_track_likes(app, user_id):
     with app.app_context():
         likes = db.session.query(LikeDislike.entity_id)\
                 .filter(LikeDislike.entity_type == 'track', LikeDislike.liked == True, LikeDislike.user_id == user_id)\
                 .all()
-        return likes
+        ids = [likes[0] for like in likes] # Extract only the first element (the id) of each tuple 
+        return ids
 
 def get_album_dislikes(app, user_id):
     with app.app_context():
         dislikes = db.session.query(LikeDislike.entity_id)\
                 .filter(LikeDislike.entity_type == 'album', LikeDislike.liked == False, LikeDislike.user_id == user_id)\
                 .all()
-        return dislikes
+        ids = [dislike[0] for dislike in dislikes] # Extract only the first element (the id) of each tuple 
+        return ids
 def get_artist_dislikes(app, user_id):
     with app.app_context():
         dislikes = db.session.query(LikeDislike.entity_id)\
                 .filter(LikeDislike.entity_type == 'artist', LikeDislike.liked == False, LikeDislike.user_id == user_id)\
                 .all()
-        return dislikes
+        ids = [dislike[0] for dislike in dislikes] # Extract only the first element (the id) of each tuple 
+        return ids
 def get_track_dislikes(app, user_id):
     with app.app_context():
         dislikes = db.session.query(LikeDislike.entity_id)\
                 .filter(LikeDislike.entity_type == 'track', LikeDislike.liked == False, LikeDislike.user_id == user_id)\
                 .all()
-        return dislikes
+        ids = [dislike[0] for dislike in dislikes] # Extract only the first element (the id) of each tuple 
+        return ids
+
+def add_liked(app, user_id, item_id, item_type):
+    with app.app_context():
+        item = LikeDislike(user_id=user_id,entity_type=item_type,entity_id=item_id,liked=True)
+        try:
+            db.session.add(item)
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
 
 def set_liked(app, user_id, item_id, item_type):
     with app.app_context():
-        liked = LikeDislike(user_id=user_id,entity_type=item_type,entity_id=item_id,liked=True)
-        db.session.add(liked)
+        item = db.session.query(LikeDislike)\
+            .filter(LikeDislike.user_id==user_id, LikeDislike.entity_id==item_id, LikeDislike.entity_type==item_type)\
+            .one()
+        item.liked = True
         db.session.commit()
 def set_disliked(app, user_id, item_id, item_type):
     with app.app_context():
-        dislike = LikeDislike(user_id=user_id,entity_type=item_type,entity_id=item_id,liked=False)
-        db.session.add(dislike)
+        item = db.session.query(LikeDislike)\
+            .filter(LikeDislike.user_id==user_id, LikeDislike.entity_id==item_id, LikeDislike.entity_type==item_type)\
+            .one()
+        item.liked = False
         db.session.commit()
 
 # ----------- recommendation functions -----------
@@ -268,25 +306,44 @@ def get_album_recommendations(app, user_id):
         recommendations = db.session.query(Recommend.entity_id)\
                 .filter(Recommend.entity_type == 'album', Recommend.recommended == False, Recommend.user_id == user_id)\
                 .all()
-        return recommendations
+        ids = [recommendation[0] for recommendation in recommendations] # Extract only the first element (the id) of each tuple 
+        return ids
 def get_artist_recommendations(app, user_id):
     with app.app_context():
         recommendations = db.session.query(Recommend.entity_id)\
                 .filter(Recommend.entity_type == 'artist', Recommend.recommended == False, Recommend.user_id == user_id)\
                 .all()
-        return recommendations
+        ids = [recommendation[0] for recommendation in recommendations] # Extract only the first element (the id) of each tuple 
+        return ids
 def get_track_recommendations(app, user_id):
     with app.app_context():
         recommendations = db.session.query(Recommend.entity_id)\
                 .filter(Recommend.entity_type == 'track', Recommend.recommended == False, Recommend.user_id == user_id)\
                 .all()
-        return recommendations
+        ids = [recommendation[0] for recommendation in recommendations] # Extract only the first element (the id) of each tuple 
+        return ids
+    
+def add_recommended(app, user_id, item_id, item_type):
+    with app.app_context():
+        item = Recommend(entity_type=item_type, entity_id=item_id, user_id=user_id, recommended=False)
+        try:
+            db.session.add(item)
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+
 def set_recommended(app, user_id, item_id, item_type):
     with app.app_context():
         item = db.session.query(Recommend)\
             .filter(Recommend.user_id==user_id, Recommend.entity_id==item_id, Recommend.entity_type==item_type)\
             .one()
         item.recommended = True
+        db.session.commit()
+
+def delete_current_recommendations(app, user_id):
+    with app.app_context():
+        # Delete all recommendations associated with the user ID
+        recommendations = Recommend.query.filter_by(user_id=user_id).delete()
         db.session.commit()
 
 

@@ -2,9 +2,10 @@ import requests # pip install requests
 import time
 from collections import Counter
 
-#debugging
+import database
 import artist
 import album
+import track
 
 ### IMPORTANT API INFO ###
 USER_AGENT = 'wbuop'
@@ -15,7 +16,7 @@ headers = {
 }
 ###########################
 
-def compare_and_output_top_5(top_tags, type, input):
+def compare_and_output_top_5(app, user_id, top_tags, type, input):
     """
     1) Compare input tags and grab the top 5 most common tags
     2) Use the top 5 tags to request for top 50 artists, and output their names
@@ -86,12 +87,6 @@ def compare_and_output_top_5(top_tags, type, input):
     top_items = []
 
     for tag in most_common_tags:
-        # ----- PSEUDOCODE -----
-		# if track in database
-			# retrieve tags from database
-		# else
-			# call api
-		# ----------------------
         # Get top 50 artists for tag
         limit = 50
 
@@ -136,15 +131,27 @@ def compare_and_output_top_5(top_tags, type, input):
     print("New items: ")
     print(top_5_items)
 
-    # if artist
-        # get_artist_info(artist_name)
-        # add_artist_object()
+    update_database_with_items(app, user_id, type, top_5_items)
 
-    # if track
-        # get_track_info()
 
-    #print("Testing info retriever: ")
-    #artist.get_artist_info(top_5_items[0])
-    #album.get_album_info(top_5_items[0])
+def update_database_with_items(app, user_id, item_type, items):
+    for item in items:
+        # first check if the item exists already in database, then skip adding it, but add it to recommend
 
-    return top_5_items
+        if (item_type == 'artist'):
+
+            if (database.get_artist_object(app, item) == None):
+
+                info = artist.get_artist_info(item)
+                database.add_item(app, 'artist', item, info['image'], info['description'], info['url_link'])
+
+            cur_artist = database.get_artist_object(app, item)
+            database.add_recommended(app, user_id, cur_artist.artist_id, 'artist')
+
+        elif (item_type == 'album'):
+            info = album.get_album_info(item)
+
+        elif (item_type == 'track'):
+            info = track.get_track_info(item)
+
+    
