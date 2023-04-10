@@ -210,6 +210,14 @@ def get_tracks_from_album(app, album_id):
                 .filter(Track.album_id == album_id)\
                 .all()
         return tracks
+    
+def set_album_id(app, item_id, album_id):
+    with app.app_context():
+        item = db.session.query(Track)\
+            .filter(Track.track_id==item_id)\
+            .one()
+        item.album_id = album_id
+        db.session.commit()
 
 # For optional items, use "None" if not applicable to item. Ex: artist may not have album_id, so put "none" for album_id arg
 def add_item(app, item_type, item_name, item_image, item_description, item_link, item_artist_id=None, item_album_id=None, item_release_date=None):

@@ -20,46 +20,34 @@ def get_album_recommendations(app, user_id, a1,a2,a3):
 	top_tags = []
 
 	for i in range(len(albums)):
-		# ----- PSEUDOCODE -----
-		# if album in database
-			# retrieve tags from database
-		# else
-			# call api
-		# ----------------------
-		album = get_album_object(app, albums[i], artists[i])
-		if (album != None):
-			print("FOUND " + album.name + " IN LOCAL DATABASE!")
+
+		payload = {
+			'api_key': API_KEY,
+			'method': 'album.getTopTags',
+			'format': 'json',
+			'album': albums[i],
+			'artist': artists[i],
+			'autocorrect': 1,	# corrects if user mispelled the album
+		}
+
+		# API Call to last.fm
+		r = requests.get('https://ws.audioscrobbler.com/2.0/', headers=headers, params=payload)
+
+		if r.status_code == 200: # if successful
+			tags = r.json()['toptags']['tag']
+			# ----- PSEUDOCODE -----
+			# add tags to database
+			# ----------------------
+
+			# Add the tags to toptag array
+			for tag in tags:
+				top_tags.append(tag['name'])
 		else:
-			print(albums[i] + " not in local database")
+			print(f'Request failed with status code {r.status_code}')
 
-			payload = {
-				'api_key': API_KEY,
-				'method': 'album.getTopTags',
-				'format': 'json',
-				'album': albums[i],
-				'artist': artists[i],
-				'autocorrect': 1,	# corrects if user mispelled the album
-			}
+		time.sleep(1)
 
-			# API Call to last.fm
-			r = requests.get('https://ws.audioscrobbler.com/2.0/', headers=headers, params=payload)
-
-			if r.status_code == 200: # if successful
-				tags = r.json()['toptags']['tag']
-				# ----- PSEUDOCODE -----
-				# add tags to database
-				# ----------------------
-
-				# Add the tags to toptag array
-				for tag in tags:
-					top_tags.append(tag['name'])
-			else:
-				print(f'Request failed with status code {r.status_code}')
-
-			time.sleep(1)
-
-	top_5_albums = comparer.compare_and_output_top_5(app, user_id, top_tags, 'album', albums)
-	return top_5_albums
+	comparer.compare_and_output_top_5(app, user_id, top_tags, 'album', albums)
 
 def get_album_info(album, album_artist):
 	payload = {
@@ -75,11 +63,17 @@ def get_album_info(album, album_artist):
 	data = json.loads(r.text)
 
 	image_url=data["album"]["image"][-1]["#text"]
-	bio = data["album"]["wiki"]["summary"]
 	album_link = data["album"]["url"]
 	#release_date = data["album"]["releasedate"]
 	release_date = "last.fm doesnt support release_date for albums"
 	track_names = [track["name"] for track in data["album"]["tracks"]["track"]]
+	image_url = data["album"]["image"][-1]["#text"]
+
+	try:
+		bio = data["album"]["wiki"]["summary"]
+	except KeyError:
+		bio = "No bio available for this album."
+
 
 
 	info = {'image': image_url, 'description': bio, 'url_link': album_link}
@@ -88,6 +82,6 @@ def get_album_info(album, album_artist):
 # test
 def test_album(app):
 
-	(info, track_names) = get_album_info("The Dark Side of the Moon", "Pink Floyd")
+	#(info, track_names) = get_album_info("The Dark Side of the Moon", "Pink Floyd")
 	#add_item(app, 'album', "The Dark Side of the Moon", "daydreamer.jpg", "welcome to the dark side", get_artist_object(app, 'Pink Floyd').artist_id, None, datetime(1973, 3, 1))
 	albums = get_album_recommendations(app, 1, ('The Dark Side of the Moon','Pink Floyd'), ('Rumours','Fleetwood Mac'), ('Nevermind','Nirvana'))

@@ -27,6 +27,7 @@ Database interface functions:
 - get_album_object(album_name, artist_name)	-> return track object
 - get_artist_object(artist_name)		-> return artist object
 - get_track_object(track_name, artist_name)	-> return track object
+- set_album_id(item_id, album_id)		
 
 - get_tracks_from_album(album_id)		-> returns multiple "track_id"
 - add_item(item_type, item_name, item_image, item_description, item_artist_id=None, item_album_id=None, item_release_date=None)
