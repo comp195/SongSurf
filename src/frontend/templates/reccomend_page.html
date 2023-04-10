@@ -21,15 +21,25 @@
 <div class="content">
   <h2>Here are some {{ user_choice }} based off what you like:</h2>
   <div class="recommendations">
-  {% for rec in recommendations %}
-    {% if rec is iterable and not rec|string %}
-      {% for r in rec %}
-        <p>{{ user_choice }} - {{ r }}</p>
-      {% endfor %}
-    {% else %}
+    {% for rec in recommendations %}
+    <div class="recommendation-container">
       <p>{{ user_choice }} - {{ rec }}</p>
-    {% endif %}
+      {% if rec is iterable and not rec|string %}
+        {% for r in rec %}
+          <div class="temp_section">
+            <img src="static/css/images/SongSurf Logo.png" alt="Temporary Image">
+            <p class="temp_description">This is a temporary description that should be limited to 100 characters.</p>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="temp_section">
+          <img src="static/css/images/SongSurf Logo.png" alt="Temporary Image">
+          <p class="temp_description">This is a temporary description that should be limited to 100 characters.</p>
+        </div>
+      {% endif %}
+    </div>
   {% endfor %}
+</div>
   
   <div style="text-align: center;">
     <a href="{{ url_for('search_page') }}" ><img src='static/css/images/backarrow.png' style="width:75px; height:45px;"></a>
