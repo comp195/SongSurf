@@ -37,22 +37,28 @@
           <p class="temp_description">This is a temporary description that should be limited to 100 characters.</p>
         </div>
       {% endif %}
+      <div class="like-dislike-container">
+        <div class="like-dislike">
+          <button class="like-button">Like</button>
+          <button class="dislike-button">Dislike</button>
+        </div>
+      </div>
     </div>
-  {% endfor %}
+{% endfor %}
 </div>
-  
-  <div style="text-align: center;">
-    <a href="{{ url_for('search_page') }}" ><img src='static/css/images/backarrow.png' style="width:75px; height:45px;"></a>
-  </div>
-  
-  
-  </div>
-  
+    
+<div style="text-align: center;">
+  <a href="{{ url_for('search_page') }}" ><img src='static/css/images/backarrow.png' style="width:75px; height:45px;"></a>
+</div>
+
+
+</div>
+
 </div>
 
 <div class="dev_only">
-  <p> Temporarily here: </p>
-  Your album artist song searches retrieved from the database:
+<p> Temporarily here: </p>
+Your album artist song searches retrieved from the database:
 </div>
 
 {% endblock %}

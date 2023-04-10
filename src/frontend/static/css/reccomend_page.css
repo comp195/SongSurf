@@ -5,7 +5,7 @@
   flex-wrap: wrap;
 }
 
-.recommendations > div {
+.recommendations > .recommendation-container {
   margin: 10px;
   width: calc(20% - 20px);
   display: flex;
@@ -16,7 +16,7 @@
   transition: all 0.3s ease;
 }
 
-.recommendations > div:hover {
+.recommendations >.recommendation-container:hover {
   transform: translateY(-5px);
   box-shadow: 0 5px 15px lightgreen;
 }
@@ -44,3 +44,40 @@
   max-width: 300px;
   text-align: center;
 }
+
+.like-button,
+.dislike-button {
+  align-items: center;
+  display: inline-block;
+  border: none; /* remove border */
+  margin: 0 5px;
+  padding: 5px 10px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  color: #000000;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.like-button:hover,
+.dislike-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.like-button {
+  background-color: #4CAF50;
+  color: #ffffff;
+}
+
+.dislike-button {
+  background-color: #f44336;
+  color: #ffffff;
+}
+
+.like-dislike-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
