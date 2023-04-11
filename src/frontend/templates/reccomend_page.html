@@ -18,6 +18,16 @@
   Input your favorite artists, albums, or songs and receive recommendations based on what you love.
   SongSurf also allows you to track your favorite discoveries for future use   .</p>
 
+<!-- Button to open the favorites tab -->
+<button class="favorites-button">Favorites</button>
+
+<!-- The sliding favorites tab -->
+<div class="favorites-tab">
+  <div class="close-button">&times;</div>
+  <h3>Your Favorites</h3>
+  <!-- Add your favorite items here -->
+</div>
+  
 <div class="content">
   <h2>Here are some {{ user_choice }} based off what you like:</h2>
   <div class="recommendations">
@@ -60,5 +70,21 @@
 <p> Temporarily here: </p>
 Your album artist song searches retrieved from the database:
 </div>
+
+<script>
+  const favoritesButton = document.querySelector('.favorites-button');
+  const favoritesTab = document.querySelector('.favorites-tab');
+  const closeButton = document.querySelector('.favorites-tab .close-button');
+
+  favoritesButton.addEventListener('click', () => {
+      favoritesTab.classList.add('open');
+      document.body.style.overflow = 'hidden'; // Hide the scrollbar when the tab is open
+  });
+
+  closeButton.addEventListener('click', () => {
+      favoritesTab.classList.remove('open');
+      document.body.style.overflow = 'auto'; // Show the scrollbar when the tab is closed
+  });
+</script>
 
 {% endblock %}

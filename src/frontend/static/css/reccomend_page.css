@@ -81,3 +81,44 @@
   margin-top: 10px;
 }
 
+.favorites-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #4CAF50;
+  color: #ffffff;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.favorites-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.favorites-tab {
+  position: fixed;
+  top: 0;
+  right: -300px; /* Starting position, hidden */
+  width: 300px;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: 0 0 5px rgba(0,0,0,0.3);
+  transition: right 0.3s ease-in-out;
+  z-index: 9999;
+}
+.favorites-tab.open {
+  right: 0; /* Show the tab when it's open */
+}
+.favorites-tab .close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 9999;
+}
