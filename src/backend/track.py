@@ -70,10 +70,17 @@ def get_track_info(track, track_artist):
 	r = requests.get('https://ws.audioscrobbler.com/2.0/', headers=headers, params=payload)
 	data = json.loads(r.text)
 
-	image_url=data["track"]["album"]["image"][-1]["#text"]
-	bio = data["track"]["wiki"]["summary"]
+	try:
+		image_url=data["track"]["album"]["image"][-1]["#text"]
+	except KeyError:
+		image_url = "No image available for this track"
+	
 	track_link = data["track"]["url"]
 	album_name = data["track"]["album"]["title"] 
+	try:
+		bio = data["track"]["wiki"]["summary"]
+	except KeyError:
+		bio = "No bio available for this track."
 
 	info = {'image': image_url, 'description': bio, 'url_link': track_link, 'album_name': album_name}
 	return info
