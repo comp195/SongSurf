@@ -48,13 +48,14 @@ def compare_and_output_top_5(app, user_id, top_tags, type, input):
         METHOD_KEY = 'tag.getTopAlbums'
         JSON_KEY_1 = 'albums'
         additional_items = True
-        undesirable_tags = ["favorite albums", "albums I own", "favourite albums", "1001 Albums You Must Hear Before You Die"]
+        undesirable_tags = ["albums I own", "1001 Albums You Must Hear Before You Die"]
     elif (type == 'track'):
         METHOD_KEY = 'tag.getTopTracks'
         JSON_KEY_1 = 'tracks'
         additional_items = True
-        
-        
+        undesirable_tags = []
+
+    undesirable_tags.extend(["favorite", "favourite"]) # Universal tags
 
     # Get the 5 most common tags
     # Output is a tuple e.g. ('rap', 5) where rap appears 5 times
@@ -63,7 +64,7 @@ def compare_and_output_top_5(app, user_id, top_tags, type, input):
     print("Most common tuples: ")
     print(most_common_tuples)
 
-    most_common_tags = [t[0] for t in most_common_tuples if t[0] not in undesirable_tags]	# get the most common tags from the tuples
+    most_common_tags = [t[0] for t in most_common_tuples if not any(t[0].startswith(tag) for tag in undesirable_tags)]	# get the most common tags from the tuples
     print("Most commont tags: ")
     print(most_common_tags)
 
