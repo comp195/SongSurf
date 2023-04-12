@@ -84,8 +84,6 @@ def index():
             artist.get_artist_recommendations(app, user_id, request.form['user_choice1'], request.form['user_choice2'], request.form['user_choice3'])
             artist_ids = database.get_artist_recommendations(app, user_id)
             artist_objects = [database.get_item_object_from_id(app, artist_id, 'artist') for artist_id in artist_ids]
-            artist_names = [artist.name for artist in artist_objects]
-            print(artist_names)
 
             # old
             # artists = artist.get_artist_recommendations(app, request.form['user_choice1'], request.form['user_choice2'], request.form['user_choice3'])
@@ -93,8 +91,7 @@ def index():
             #     error_message = "No tags were able to be found for any of the artists.  Please try other songs."
             #     return render_template('search_page.html', message=error_message)
             user_choice = request.form['show_type']
-            recommendations = [artist_names[0], artist_names[1], artist_names[2], artist_names[3], artist_names[4]]
-            return render_template('reccomend_page.html', user=user_id, user_choice = user_choice,recommendations=recommendations)
+            return render_template('reccomend_page.html', user=user_id, user_choice = user_choice,recommendations=artist_objects)
         
         elif request.form['show_type'] == 'Albums': # if the Albums radio button was selected
             print("Albums")
@@ -104,11 +101,8 @@ def index():
             album.get_album_recommendations(app, user_id, (request.form['user_choice1'],request.form['user_choice4']), (request.form['user_choice2'],request.form['user_choice5']), (request.form['user_choice3'],request.form['user_choice6']))
             album_ids = database.get_album_recommendations(app, user_id)
             album_objects = [database.get_item_object_from_id(app, album_id, 'album') for album_id in album_ids]
-            album_names = [album.name for album in album_objects]
-            artist_names = [database.get_name(app, album.artist_id, 'artist') for album in album_objects]
-            albums = list(zip(album_names, artist_names)) # temporarily store them in tuples to output
-            print(albums)
-
+            artist_names = [database.get_name(app, album.artist_id, 'artist') for album in album_objects] 
+            print(artist_names) # use this artist_names array later when clicking on a tile for more info of the album
 
             # old
             # albums = album.get_album_recommendations(app, (request.form['user_choice1'],request.form['user_choice4']), (request.form['user_choice2'],request.form['user_choice5']), (request.form['user_choice3'],request.form['user_choice6']))
@@ -116,8 +110,7 @@ def index():
             #     error_message = "No tags were able to be found for any of the albums.  Please try other songs."
             #     return render_template('search_page.html', message=error_message)
             user_choice = request.form['show_type']
-            recommendations = [albums[0], albums[1], albums[2], albums[3], albums[4]]
-            return render_template('reccomend_page.html', user=user_id, user_choice = user_choice,recommendations=recommendations)
+            return render_template('reccomend_page.html', user=user_id, user_choice = user_choice,recommendations=album_objects)
         
         elif request.form['show_type'] == 'Songs': # if the Songs radio button was selected
             print("Songs")
@@ -127,10 +120,8 @@ def index():
             track.get_track_recommendations(app, user_id, (request.form['user_choice1'],request.form['user_choice4']), (request.form['user_choice2'],request.form['user_choice5']), (request.form['user_choice3'],request.form['user_choice6']))
             track_ids = database.get_track_recommendations(app, user_id)
             track_objects = [database.get_item_object_from_id(app, track_id, 'track') for track_id in track_ids]
-            track_names = [track.name for track in track_objects]
-            artist_names = [database.get_name(app, track.artist_id, 'artist') for track in track_objects]
-            tracks = list(zip(track_names, artist_names)) # temporarily store them in tuples to output
-            print(tracks)
+            artist_names = [database.get_name(app, track.artist_id, 'artist') for track in track_objects] 
+            print(artist_names) # use this artist_names array later when clicking on a tile for more info of the track
 
             # old
             # tracks = track.get_track_recommendations(app, (request.form['user_choice1'],request.form['user_choice4']), (request.form['user_choice2'],request.form['user_choice5']), (request.form['user_choice3'],request.form['user_choice6']))
@@ -138,8 +129,7 @@ def index():
             #     error_message = "No tags were able to be found for any of the tracks.  Please try other songs."
             #     return render_template('search_page.html', message=error_message)
             user_choice = request.form['show_type']
-            recommendations = [tracks[0], tracks[1], tracks[2], tracks[3], tracks[4]]
-            return render_template('reccomend_page.html', user=user_id, user_choice = user_choice,recommendations=recommendations)
+            return render_template('reccomend_page.html', user=user_id, user_choice = user_choice,recommendations=track_objects)
 
     else: # If user visits the page
         return render_template('home_page.html')
