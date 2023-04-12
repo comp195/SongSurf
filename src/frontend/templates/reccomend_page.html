@@ -67,19 +67,26 @@
 </div>
 
 
+
+
 <script>
   const favoritesButton = document.querySelector('.favorites-button');
   const favoritesTab = document.querySelector('.favorites-tab');
   const closeButton = document.querySelector('.favorites-tab .close-button');
+  const overlay = document.createElement('div');
+  overlay.classList.add('overlay');
+  document.body.appendChild(overlay);
 
   favoritesButton.addEventListener('click', () => {
       favoritesTab.classList.add('open');
       document.body.style.overflow = 'hidden'; // Hide the scrollbar when the tab is open
+      overlay.style.display = 'block';
   });
 
   closeButton.addEventListener('click', () => {
       favoritesTab.classList.remove('open');
       document.body.style.overflow = 'auto'; // Show the scrollbar when the tab is closed
+      overlay.style.display = 'none';
   });
 </script>
 
