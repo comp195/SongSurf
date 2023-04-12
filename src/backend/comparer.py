@@ -70,11 +70,14 @@ def compare_and_output_top_5(app, user_id, top_tags, type, input):
     # Add next most common tags until most_common_tags has 5 elements
     i = 0
     while len(most_common_tags) < 5:
-        next_most_common_tag = counter.most_common(6+i)[5+i][0]
-        if next_most_common_tag not in undesirable_tags:
-            most_common_tags.append(next_most_common_tag)
-            i += 1
-            print("New tag added: "+next_most_common_tag)
+        if len(counter) >= 6+i:
+            next_most_common_tag = counter.most_common(6+i)[5+i][0]
+            if next_most_common_tag not in undesirable_tags:
+                most_common_tags.append(next_most_common_tag)
+                i += 1
+                print("New tag added: "+next_most_common_tag)
+        else:
+            break
         print("Length of most common tags: " + str(len(most_common_tags)))
     print("New most common tags: ")
     print(most_common_tags)
@@ -117,7 +120,10 @@ def compare_and_output_top_5(app, user_id, top_tags, type, input):
     counter = Counter(top_items)
     top_5_tuples = counter.most_common(5) # grab 5 most common items
     print(top_5_tuples)
-    top_5_items = [t[0] for t in top_5_tuples if t[0] not in input]	# get the most common items from the tuples, skips if one of the user inputs
+
+    input_lower = [i.lower() for i in input] # to account for inputs with case variations
+
+    top_5_items = [t[0] for t in top_5_tuples if t[0].lower() not in input_lower]	# get the most common items from the tuples, skips if one of the user inputs
     print(top_5_items)
 
     i = 0
