@@ -121,9 +121,12 @@ def compare_and_output_top_5(app, user_id, top_tags, type, input):
     top_5_tuples = counter.most_common(5) # grab 5 most common items
     print(top_5_tuples)
 
-    input_lower = [i.lower() for i in input] # to account for inputs with case variations
-
-    top_5_items = [t[0] for t in top_5_tuples if t[0].lower() not in input_lower]	# get the most common items from the tuples, skips if one of the user inputs
+    if(type == 'artist'):
+        input_lower = [i.lower() for i in input] # to account for inputs with case variations
+        top_5_items = [t[0] for t in top_5_tuples if t[0].lower() not in input_lower]	# get the most common items from the tuples, skips if one of the user inputs
+    else:
+        input_lower = [i[0].lower() for i in input] # to account for inputs with case variations
+        top_5_items = [t[0] for t in top_5_tuples if t[0][0].lower() not in input_lower]   # get the most common items from the tuples, skips if one of the user inputs
     print(top_5_items)
 
     i = 0
