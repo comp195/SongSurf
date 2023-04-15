@@ -149,13 +149,21 @@ def index():
     else: # If user visits the page
         return render_template('home_page.html')
     
-@app.route('/other_page')
+@app.route('/search_page')
 def search_page():
     return render_template('search_page.html')
 
 @app.route('/home_page')
 def home_page():
     return render_template('home_page.html')
+
+@app.route('/login_page')
+def login_page():
+    return render_template('login_page.html')
+
+@app.route('/signup_page')
+def signup_page():
+    return render_template('signup_page.html')
 
 
 if __name__ == "__main__":

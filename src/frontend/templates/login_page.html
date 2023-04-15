@@ -1,0 +1,42 @@
+  {% extends 'base.html' %}
+
+  {% block head %}
+  <title>SongSurf Homepage</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login_page.css') }}">
+  {% endblock %}
+  
+  {% block body %} 
+  
+
+  <html>
+  <head>
+    <title>Login Page</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="logo-container">
+        <img src="static/css/images/SongSurf Logo.png" alt="Logo">
+      </div>
+      <form class="form-container">
+        <div class="form-group">
+          <label for="username">Email or username</label>
+          <input type="text" id="username" name="username" placeholder="Enter your email or username">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter your password">
+        </div>
+        <button type="submit">Log In</button>
+      </form>
+      <div class="forgot-password">
+        <a href="#">Forgot password?</a>
+      </div>
+      <div class="signup-link">
+        <span>New to SongSurf? </span><a href="{{ url_for('signup_page') }}">Sign up now</a>
+      </div>
+    </div>
+  </body>
+  </html>
+  
+{% endblock %}
