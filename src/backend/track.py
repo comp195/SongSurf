@@ -4,6 +4,13 @@ from collections import Counter
 import comparer
 import json
 import database
+from googleapiclient.discovery import build
+
+### IMPORTANT YOUTUBE API INFO ###
+# MUST RUN IN CMD: pip install --upgrade google-api-python-client
+YOUTUBE_API_KEY = 'AIzaSyCGFt8DKXyW_i1RYNJHUCJ7OJt0m4coCTQ'
+##################################
+
 ### IMPORTANT API INFO ###
 USER_AGENT = 'wbuop'
 API_KEY = 'ebc5386ea6b0af15cae300e0da5a3af5'
@@ -84,6 +91,29 @@ def get_track_info(track, track_artist):
 
 	info = {'image': image_url, 'description': bio, 'url_link': track_link, 'album_name': album_name}
 	return info
+
+def get_track_sample(track, track_artist):
+	print("Retrieving video...")
+	youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
+
+	search_query = track + ' ' + track_artist
+	max_results = 1
+
+	search_response = youtube.search().list(
+		q=search_query,
+		type='video',
+		part='id,snippet',
+		maxResults=max_results
+	).execute()
+
+	videos = []
+	for item in search_response['items']:
+		video_id = item['id']['videoId']
+		video_title = item['snippet']['title']
+		videos.append({'video_id':video_id, 'video_title': video_title})
+
+	for video in videos:
+		print(f'Video ID: {video["video_id"]}, Video Title: {video["video_title"]}')
 
 # test
 def test_track(app):

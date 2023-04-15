@@ -4,6 +4,12 @@ from collections import Counter
 import comparer
 import json
 import database
+from googleapiclient.discovery import build
+
+### IMPORTANT YOUTUBE API INFO ###
+# MUST RUN IN CMD: pip install --upgrade google-api-python-client
+YOUTUBE_API_KEY = 'AIzaSyCGFt8DKXyW_i1RYNJHUCJ7OJt0m4coCTQ'
+##################################
 
 ### IMPORTANT API INFO ###
 USER_AGENT = 'wbuop'
@@ -13,11 +19,6 @@ headers = {
 	'user-agent': USER_AGENT
 }
 ###########################
-
-# YOUTUBE API
-# MUST RUN IN CMD: pip install --upgrade google-api-python-client
-from googleapiclient.discovery import build
-YOUTUBE_API_KEY = 'AIzaSyCGFt8DKXyW_i1RYNJHUCJ7OJt0m4coCTQ'
 
 def get_artist_recommendations(app, user_id, a1,a2,a3):
 	# Get tags of songs/artists/albums that the user inputted
@@ -72,7 +73,7 @@ def get_artist_sample(a1):
 	print("Retrieving video...")
 	youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
 
-	search_query = 'The Beach Boys'
+	search_query = a1
 	max_results = 1
 
 	search_response = youtube.search().list(
