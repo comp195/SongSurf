@@ -4,6 +4,7 @@ from collections import Counter
 import comparer
 import json
 import database
+
 ### IMPORTANT API INFO ###
 USER_AGENT = 'wbuop'
 API_KEY = 'ebc5386ea6b0af15cae300e0da5a3af5'
@@ -12,6 +13,11 @@ headers = {
 	'user-agent': USER_AGENT
 }
 ###########################
+
+# YOUTUBE API
+# MUST RUN IN CMD: pip install --upgrade google-api-python-client
+from googleapiclient.discovery import build
+YOUTUBE_API_KEY = 'AIzaSyCGFt8DKXyW_i1RYNJHUCJ7OJt0m4coCTQ'
 
 def get_artist_recommendations(app, user_id, a1,a2,a3):
 	# Get tags of songs/artists/albums that the user inputted
@@ -62,8 +68,29 @@ def get_artist_info(a1):
 	info = {'image': image_url, 'description': bio, 'url_link': artist_link}
 	return info
 
+def get_artist_sample(a1):
+	print("Retrieving video...")
+	youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
+
+	search_query = 'The Beach Boys'
+	max_results = 1
+
+	search_response = youtube.search().list(
+		q=search_query,
+		type='video',
+		part='id,snippet',
+		maxResults=max_results
+	).execute()
+
+	videos = []
+	for item in search_response['items']:
+		video_id = item['id']['videoId']
+		video_title = item['snippet']['title']
+		videos.append({'video_id':video_id, 'video_title': video_title})
+
+	for video in videos:
+		print(f'Video ID: {video["video_id"]}, Video Title: {video["video_title"]}')
 
 def test_artist(app):
-
 	database.add_item(app, 'artist', 'Malz Monday', 'mm.jpg', 'Man of god walking with the devil', 'https://www.last.fm/music/Malz+Monday')
 	artists = get_artist_recommendations(app, 1,'Malz Monday', 'J Cole', 'Bas')
