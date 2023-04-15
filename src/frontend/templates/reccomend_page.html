@@ -37,7 +37,8 @@
       {% if rec is iterable and not rec|string %}
         {% for r in rec %}
           <div class="reccomendation_section">
-            <img src={{rec.image}} alt="Image">
+            <!--<img src={{rec.image}} alt="Image">-->
+            <iframe src="https://www.youtube.com/embed/b9rnnWa7Esk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             {% if rec.description|length > 200 %}
               <p class="description">{{ rec.description[:200] }}...</p>
             {% else %}
@@ -47,7 +48,8 @@
         {% endfor %}
       {% else %}
         <div class="reccomendation_section">
-          <img src={{rec.image}} alt="Image">
+            <!--<img src={{rec.image}} alt="Image">-->
+            <iframe src="https://www.youtube.com/embed/b9rnnWa7Esk" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             {% if rec.description %}
               {% if rec.description|length > 200 %}
                 <p class="description">{{ rec.description[:200] }}...</p>
