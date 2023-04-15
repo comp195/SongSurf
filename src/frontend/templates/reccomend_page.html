@@ -36,15 +36,27 @@
       <p>{{ user_choice }} - {{ rec.name }}</p>
       {% if rec is iterable and not rec|string %}
         {% for r in rec %}
-          <div class="temp_section">
+          <div class="reccomendation_section">
             <img src={{rec.image}} alt="Image">
-            <p class="temp_description">{{ rec.description }}</p>
+            {% if rec.description|length > 200 %}
+              <p class="description">{{ rec.description[:200] }}...</p>
+            {% else %}
+              <p class="description">{{ rec.description }}</p>
+            {% endif %}
           </div>
         {% endfor %}
       {% else %}
-        <div class="temp_section">
+        <div class="reccomendation_section">
           <img src={{rec.image}} alt="Image">
-          <p class="temp_description">{{ rec.description }}</p>
+            {% if rec.description %}
+              {% if rec.description|length > 200 %}
+                <p class="description">{{ rec.description[:200] }}...</p>
+              {% else %}
+                <p class="description">{{ rec.description }}</p>
+              {% endif %}
+            {% else %}
+              <p class="description">No description available!</p>
+            {% endif %}
         </div>
       {% endif %}
       <div class="like-dislike-container">
@@ -61,25 +73,24 @@
   <a href="{{ url_for('search_page') }}" ><img src='static/css/images/backarrow.png' style="width:75px; height:45px;"></a>
 </div>
 
-
-</div>
-
-</div>
-
-
 <script>
   const favoritesButton = document.querySelector('.favorites-button');
   const favoritesTab = document.querySelector('.favorites-tab');
   const closeButton = document.querySelector('.favorites-tab .close-button');
+  const overlay = document.createElement('div');
+  overlay.classList.add('overlay');
+  document.body.appendChild(overlay);
 
   favoritesButton.addEventListener('click', () => {
       favoritesTab.classList.add('open');
       document.body.style.overflow = 'hidden'; // Hide the scrollbar when the tab is open
+      overlay.style.display = 'block';
   });
 
   closeButton.addEventListener('click', () => {
       favoritesTab.classList.remove('open');
       document.body.style.overflow = 'auto'; // Show the scrollbar when the tab is closed
+      overlay.style.display = 'none';
   });
 </script>
 

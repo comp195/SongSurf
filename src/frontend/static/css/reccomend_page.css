@@ -8,6 +8,7 @@
 .recommendations > .recommendation-container {
   margin: 10px;
   width: calc(20% - 20px);
+  height: 650px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,14 +26,14 @@
   margin: 10px;
 }
 
-.temp_section {
+.reccomendation_section {
   margin-top: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.temp_section img {
+.reccomendation_section img {
   width: 200px;
   height: 200px;
   object-fit: cover;
@@ -40,9 +41,10 @@
   margin-bottom: 20px;
 }
 
-.temp_description {
-  max-width: 300px;
+.description {
+  max-width: 280px;
   text-align: center;
+  word-wrap: break-word;
 }
 
 .like-button,
@@ -82,8 +84,8 @@
 }
 
 .favorites-button {
-  position: fixed;
-  top: 20px;
+  position: absolute;
+  top: 35px;
   right: 20px;
   background-color: #4CAF50;
   color: #ffffff;
@@ -121,4 +123,16 @@
   font-size: 24px;
   cursor: pointer;
   z-index: 9999;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+  z-index: 9998; /* make sure the overlay is on top of everything else */
+  pointer-events: none;
+  display: none;
 }

@@ -63,17 +63,17 @@ def index():
 
         # Check for unique inputs
         if (request.form['show_type'] == 'Artists'):
-        	all_choices = [request.form['user_choice1'], request.form['user_choice2'], request.form['user_choice3']]
+            all_choices = [request.form['user_choice1'], request.form['user_choice2'], request.form['user_choice3']]
         else:
-        	tuple1 = (request.form['user_choice1'], request.form['user_choice4'])
-        	tuple2 = (request.form['user_choice2'], request.form['user_choice5'])
-        	tuple3 = (request.form['user_choice3'], request.form['user_choice6'])
+            tuple1 = (request.form['user_choice1'], request.form['user_choice4'])
+            tuple2 = (request.form['user_choice2'], request.form['user_choice5'])
+            tuple3 = (request.form['user_choice3'], request.form['user_choice6'])
 
-        	all_choices = [tuple1, tuple2, tuple3]
+            all_choices = [tuple1, tuple2, tuple3]
 
         if len(all_choices) != len(set(all_choices)):
-        	error_message = "Please choose unique values for all input fields."
-        	return render_template('search_page.html', message=error_message)
+            error_message = "Please choose unique values for all input fields."
+            return render_template('search_page.html', message=error_message)
 
 
         # temporarily set user_id = 1 for developer account
@@ -149,13 +149,21 @@ def index():
     else: # If user visits the page
         return render_template('home_page.html')
     
-@app.route('/other_page')
+@app.route('/search_page')
 def search_page():
     return render_template('search_page.html')
 
 @app.route('/home_page')
 def home_page():
     return render_template('home_page.html')
+
+@app.route('/login_page')
+def login_page():
+    return render_template('login_page.html')
+
+@app.route('/signup_page')
+def signup_page():
+    return render_template('signup_page.html')
 
 
 if __name__ == "__main__":
