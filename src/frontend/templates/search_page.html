@@ -16,31 +16,30 @@
 
 <p> SongSurf allows you to discover new music that
   you'll love through an informative, attractive, and intuitive website. 
-  Input your favorite artists, albums, or songs and receive recommendations based on what you love.
-  SongSurf also allows you to track your favorite discoveries for future use   .</p>
+  Input your favorite artists, albums, or songs and receive recommendations based on what you love.</p>
 
   <form action="/" method="POST"> <!-- Everything within this form section interacts with backend to send data -->
 
     <div class="search_section">
 
       <div class="search_radio_buttons"> <!-- Radio buttons to select what to show user -->
-        <h4>Show Me:</h4>
+        <h4>Find Me:</h4>
         <label>
           <input type="radio" name="show_type" value="Artists" onclick="updateSearchLabel('Artist'); hideAdditionalBoxes();">
           <span class="checkmark"></span>
-          Artists
+          Artists &#127908;
         </label>
         <br>
         <label>
           <input type="radio" name="show_type" value="Albums" onclick="updateSearchLabel('Album'); showAdditionalBoxes(3);">
           <span class="checkmark"></span>
-          Albums
+          Albums &#127926;
         </label>
         <br>
         <label>
           <input type="radio" name="show_type" value="Songs" onclick="updateSearchLabel('Track'); showAdditionalBoxes(3);">
           <span class="checkmark"></span>
-          Tracks
+          Tracks &#127925;
         </label>
         <br>
       </div>
@@ -48,7 +47,7 @@
       <div class="search_boxes"> <!-- Search boxes for user to input what they love -->
         <h4>Enter up to 3 <span id="search_label"></span> you love:</h4>
         <h4 id="label_title" style="font-weight:bold;"></h4>
-        <h5>Enter the artist, album, or track name below (if you chose albums or track enter the artist's name on the right): </h5>
+        <h5>Note: if you chose albums or tracks enter the artist's name on the right </h5>
         <div class="search_boxes_wrapper">
           <div class="search_boxes_column">
             <ol>

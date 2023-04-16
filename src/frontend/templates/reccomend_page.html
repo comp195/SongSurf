@@ -13,10 +13,6 @@
 <div style="text-align: center;">
   <a href="{{ url_for('home_page') }}" ><img src='static/css/images/SongSurf Logo.png' style="width:250px; height:100px;"></a>
 </div>
-<p> SongSurf allows you to discover new music that
-  you'll love through an informative, attractive, and intuitive website. 
-  Input your favorite artists, albums, or songs and receive recommendations based on what you love.
-  SongSurf also allows you to track your favorite discoveries for future use   .</p>
 
 <!-- Button to open the favorites tab -->
 <button class="favorites-button">Favorites</button>
@@ -29,11 +25,11 @@
 </div>
   
 <div class="content">
-  <h2>Here are some {{ user_choice }} based off what you like:</h2>
+  <h2 style="text-align:center;">Here are some {{ user_choice }} that washed up on the beach! &#x1F30A;</h2>
   <div class="recommendations">
     {% for rec in recommendations %}
     <div class="recommendation-container">
-      <p>{{ user_choice }} - {{ rec.name }}</p>
+      <h3>{{ rec.name }}</h3>
       {% if rec is iterable and not rec|string %}
         {% for r in rec %}
           <div class="reccomendation_section">
