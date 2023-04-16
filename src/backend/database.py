@@ -239,6 +239,41 @@ def add_item(app, item_type, item_name, item_image, item_description, item_video
         except IntegrityError:
             db.session.rollback()
 
+# ----------- user functions -----------
+def check_if_valid_password(app, username, password):
+    with app.app_context():
+        try:
+            # query password of user
+            actual_password = db.session.query(User.password)\
+                    .filter(User.username == username)\
+                    .one()[0]
+        except Exception as e:
+            print(f"Error occurred while querying the password: {e}")
+            return False
+        # see if entered password matches
+        print("actual password: " + actual_password)
+        print("password: " + password)
+        return password == str(actual_password)
+
+        
+def add_user(app, first_name, last_name, username, password):
+    with app.app_context():
+        new_user = User(first_name=first_name, last_name=last_name, username=username, password=password)
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            return False
+        
+def get_user_id(app, username):
+    with app.app_context():
+        # query password of user
+        user_id = db.session.query(User.user_id)\
+                .filter(User.username == username)\
+                .one()[0]
+
+        return user_id
 
 
 # ----------- like/dislike functions -----------

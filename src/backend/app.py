@@ -1,7 +1,7 @@
 import os
 import logging
 import database
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask, render_template, url_for, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -15,6 +15,7 @@ app = Flask(__name__, static_folder='../frontend/static', template_folder='../fr
 DB_FILEPATH = os.path.join(os.path.dirname(__file__), 'instance', 'main.db')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_FILEPATH}' # configure database
+app.secret_key = 'stockton209' #Used for cookies
 
 # Set up logging
 logging.basicConfig(filename='error.log', level=logging.ERROR, format='%(asctime)s %(levelname)s: %(message)s')
@@ -75,9 +76,7 @@ def index():
             error_message = "Please choose unique values for all input fields."
             return render_template('search_page.html', message=error_message)
 
-
-        # temporarily set user_id = 1 for developer account
-        user_id = 1
+        user_id = session.get('logged_in_user_id')
 
         # ** use this code for registration page later on **
                 # # Create a new User object with the AAS searches and add it to the database
@@ -147,7 +146,7 @@ def index():
             return render_template('reccomend_page.html', user=user_id, user_choice = user_choice,recommendations=track_objects)
 
     else: # If user visits the page
-        return render_template('home_page.html')
+        return render_template('home_page.html', logged_in=False)
     
 @app.route('/search_page')
 def search_page():
@@ -166,7 +165,13 @@ def login_page():
         username = request.form['username']
         password = request.form['password']
         print(username + password)
-        return redirect('/home_page') # or wherever you want to redirect the user after they login
+        if (database.check_if_valid_password(app, username, password) == False):
+            invalid_message = "Incorrect username or password!"
+            return render_template('login_page.html', invalid_message=invalid_message)
+        
+        logged_in_user_id = database.get_user_id(app, username)
+        session['logged_in_user_id'] = logged_in_user_id
+        return render_template('home_page.html', logged_in=True, username=username)
     else:
         return render_template('login_page.html')
 
@@ -181,7 +186,12 @@ def signup_page():
         username = request.form['username']
         password = request.form['password']
         print(fname + lname + username + password)
-        return redirect('/home_page') # or wherever you want to redirect the user after they sign up
+        # first check if username already exists
+        if (database.add_user(app, fname, lname, username, password) == False or username == None):
+            invalid_message = "That username already exists. Please enter a different one."
+            return render_template('signup_page.html', invalid_message=invalid_message)
+        new_user = User(first_name='dev', last_name='dev', username='dev', password='dev')
+        return redirect('/login_page')
     else:
         return render_template('signup_page.html')
 

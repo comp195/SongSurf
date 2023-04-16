@@ -27,27 +27,27 @@
   <div class="slideshow-container">
   
   <div class="mySlides fade"> 
-    <div class="numbertext">1 / 4</div>
+    <div class="numbertext"></div>
     <img src="static/css/images/music1.png" style="width:1100px" height="350px">
-    <div class="text">image</div>
+    <div class="text"></div>
   </div>
   
   <div class="mySlides fade">
-    <div class="numbertext">2 / 4</div>
+    <div class="numbertext"></div>
     <img src="static/css/images/music2.png" style="width:1100px" height="350px">
-    <div class="text">image</div>
+    <div class="text"></div>
   </div>
   
   <div class="mySlides fade">
-    <div class="numbertext">3 / 4</div>
+    <div class="numbertext"></div>
     <img src="static/css/images/music3.png" style="width:1100px" height="350px">
-    <div class="text">image</div>
+    <div class="text"></div>
   </div>
   
   <div class="mySlides fade">
-    <div class="numbertext">4 / 4</div>
+    <div class="numbertext"></div>
     <img src="static/css/images/music4.png" style="width:1100px" height="350px">
-    <div class="text">image</div>
+    <div class="text"></div>
   </div>
   </div>
   <br>
@@ -84,13 +84,20 @@
   }
   </script>
   <div class="about-container">
-    <p>
-      Discover new music or artists that you'll love through an informative, attractive, and intuitive website.<br>
-      Join now to track your favorite discoveries for future use and for more personalized recommendations!
-      </p>
-      <a href="{{ url_for('login_page') }}">Join</a>
-      <h2></h2>
-      <a href="{{ url_for('search_page') }}">Surf as Guest</a>
+    {% if logged_in %}
+    <p> Discover new music or artists that you'll love through an informative, attractive, and intuitive website.</p>
+      <h2>Welcome {{ username }}!</h2> <p>Start Surfing Now! &#x1F30A;</p>
+      
+      <a href="{{ url_for('search_page') }}">Surf</a>
+    {% else %}
+      <p>
+        Discover new music or artists that you'll love through an informative, attractive, and intuitive website.<br>
+        Join now to track your favorite discoveries for future use and for more personalized recommendations!
+        </p>
+        <a href="{{ url_for('login_page') }}">Join</a>
+        <h2></h2>
+        <a href="{{ url_for('search_page') }}">Surf as Guest</a>
+    {% endif %}
       
 
   </div>
