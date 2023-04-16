@@ -41,7 +41,7 @@ db = init_db(app)
 #album.test_album(app)
 #artist.test_artist(app)
 
-# Define route for main page (search_page)
+# Define route for main page (home_page)
 @app.route('/', methods=['POST', 'GET'])
 def index():
     if request.method == 'POST': # If user clicks SURF
@@ -157,13 +157,34 @@ def search_page():
 def home_page():
     return render_template('home_page.html')
 
-@app.route('/login_page')
+@app.route('/login_page', methods=['POST', 'GET'])
 def login_page():
-    return render_template('login_page.html')
+    print("login here")
+    if request.method == 'POST': # if SIGN UP button is clicked
+        # handle form submission here
+        print("Check if valid username and password")
+        username = request.form['username']
+        password = request.form['password']
+        print(username + password)
+        return redirect('/home_page') # or wherever you want to redirect the user after they login
+    else:
+        return render_template('login_page.html')
 
-@app.route('/signup_page')
+@app.route('/signup_page', methods=['POST', 'GET'])
 def signup_page():
-    return render_template('signup_page.html')
+    print("signup here")
+    if request.method == 'POST': # if SIGN UP button is clicked
+        # handle form submission here
+        print("If valid user and password, then submit to database")
+        fname = request.form['first_name']
+        lname = request.form['last_name']
+        username = request.form['username']
+        password = request.form['password']
+        print(fname + lname + username + password)
+        return redirect('/home_page') # or wherever you want to redirect the user after they sign up
+    else:
+        return render_template('signup_page.html')
+
 
 
 if __name__ == "__main__":
