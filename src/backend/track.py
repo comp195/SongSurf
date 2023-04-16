@@ -60,7 +60,7 @@ def get_track_recommendations(app, user_id, a1,a2,a3):
 		else:
 			print(f'Request failed with status code {r.status_code}')
 
-		time.sleep(1)
+		time.sleep(0.8)
 
 	comparer.compare_and_output_top_5(app, user_id, top_tags, 'track', tracks)
 
@@ -89,10 +89,12 @@ def get_track_info(track, track_artist):
 	except KeyError:
 		bio = "No bio available for this track."
 
-	info = {'image': image_url, 'description': bio, 'url_link': track_link, 'album_name': album_name}
+	video_link = get_track_video(track, track_artist)
+
+	info = {'image': image_url, 'description': bio, 'video_link': video_link, 'url_link': track_link, 'album_name': album_name}
 	return info
 
-def get_track_sample(track, track_artist):
+def get_track_video(track, track_artist):
 	print("Retrieving video...")
 	youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
 
@@ -113,7 +115,9 @@ def get_track_sample(track, track_artist):
 		videos.append({'video_id':video_id, 'video_title': video_title})
 
 	for video in videos:
-		print(f'Video ID: {video["video_id"]}, Video Title: {video["video_title"]}')
+		#print(f'Video ID: {video["video_id"]}, Video Title: {video["video_title"]}')
+		video_link = "https://www.youtube.com/embed/" + video["video_id"]
+		return video_link
 
 # test
 def test_track(app):

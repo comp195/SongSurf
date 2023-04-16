@@ -10,7 +10,9 @@ def init_db(app):
 
 class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(120), unique=True, nullable=False)
+    first_name = db.Column(db.String(60), nullable=False)
+    last_name = db.Column(db.String(60), nullable=False)
+    username = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
 
 class Artist(db.Model):
@@ -18,6 +20,7 @@ class Artist(db.Model):
     name = db.Column(db.String(120), nullable=False, unique=True)
     image = db.Column(db.String(120))
     description = db.Column(db.String(1000))
+    video_link = db.Column(db.String(1000))
     url_link = db.Column(db.String(1000))
 
 class Album(db.Model):
@@ -26,6 +29,7 @@ class Album(db.Model):
     name = db.Column(db.String(120), nullable=False)
     image = db.Column(db.String(120))
     description = db.Column(db.String(1000))
+    video_link = db.Column(db.String(1000))
     url_link = db.Column(db.String(1000))
     release_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
@@ -220,14 +224,14 @@ def set_album_id(app, item_id, album_id):
         db.session.commit()
 
 # For optional items, use "None" if not applicable to item. Ex: artist may not have album_id, so put "none" for album_id arg
-def add_item(app, item_type, item_name, item_image, item_description, item_link, item_artist_id=None, item_album_id=None, item_release_date=None):
+def add_item(app, item_type, item_name, item_image, item_description, item_video_link, item_link, item_artist_id=None, item_album_id=None, item_release_date=None):
     with app.app_context():
         if (item_type == 'album'):
-            item = Album(artist_id=item_artist_id, name=item_name, image=item_image, description=item_description, url_link=item_link, release_date=item_release_date)
+            item = Album(artist_id=item_artist_id, name=item_name, image=item_image, description=item_description, video_link=item_video_link, url_link=item_link, release_date=item_release_date)
         elif (item_type == 'artist'):
-            item = Artist(name=item_name, image=item_image, description=item_description, url_link=item_link)
+            item = Artist(name=item_name, image=item_image, description=item_description, video_link=item_video_link, url_link=item_link)
         elif (item_type == 'track'):
-            item = Track(album_id=item_album_id, artist_id=item_artist_id, name=item_name, image=item_image, description=item_description, url_link=item_link, release_date=item_release_date)
+            item = Track(album_id=item_album_id, artist_id=item_artist_id, name=item_name, image=item_image, description=item_description, video_link=item_video_link, url_link=item_link, release_date=item_release_date)
         
         try:
             db.session.add(item)

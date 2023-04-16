@@ -11,7 +11,7 @@ from googleapiclient.discovery import build
 YOUTUBE_API_KEY = 'AIzaSyCGFt8DKXyW_i1RYNJHUCJ7OJt0m4coCTQ'
 ##################################
 
-### IMPORTANT API INFO ###
+### IMPORTANT Last.fm API INFO ###
 USER_AGENT = 'wbuop'
 API_KEY = 'ebc5386ea6b0af15cae300e0da5a3af5'
 
@@ -46,7 +46,7 @@ def get_artist_recommendations(app, user_id, a1,a2,a3):
 		else:
 			print(f'Request failed with status code {r.status_code}')
 
-		time.sleep(1)
+		time.sleep(0.8)
 
 	comparer.compare_and_output_top_5(app, user_id, top_tags, 'artist', artists)
 
@@ -66,10 +66,13 @@ def get_artist_info(a1):
 	bio = data["artist"]["bio"]["summary"]
 	artist_link = data["artist"]["url"]
 
-	info = {'image': image_url, 'description': bio, 'url_link': artist_link}
+	video_link = get_artist_video(a1)
+
+	info = {'image': image_url, 'description': bio, 'video_link': video_link, 'url_link': artist_link}
+
 	return info
 
-def get_artist_sample(a1):
+def get_artist_video(a1):
 	print("Retrieving video...")
 	youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
 
@@ -90,7 +93,10 @@ def get_artist_sample(a1):
 		videos.append({'video_id':video_id, 'video_title': video_title})
 
 	for video in videos:
-		print(f'Video ID: {video["video_id"]}, Video Title: {video["video_title"]}')
+		#print(f'Video ID: {video["video_id"]}, Video Title: {video["video_title"]}')
+		video_link = "https://www.youtube.com/embed/" + video["video_id"]
+		return video_link
+
 
 def test_artist(app):
 	database.add_item(app, 'artist', 'Malz Monday', 'mm.jpg', 'Man of god walking with the devil', 'https://www.last.fm/music/Malz+Monday')

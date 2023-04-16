@@ -32,7 +32,7 @@ db = init_db(app)
 #     db.drop_all()
 #     db.create_all()
 
-# user_developer = User(email='dev', password='dev') # user credientials for developer
+# user_developer = User(first_name='dev', last_name='dev', username='dev', password='dev') # user credientials for developer
 # with app.app_context():
 #     db.session.add(user_developer)
 #     db.session.commit()

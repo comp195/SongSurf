@@ -52,7 +52,7 @@ def get_album_recommendations(app, user_id, a1,a2,a3):
 		else:
 			print(f'Request failed with status code {r.status_code}')
 
-		time.sleep(1)
+		time.sleep(0.8)
 
 	comparer.compare_and_output_top_5(app, user_id, top_tags, 'album', albums)
 
@@ -81,12 +81,12 @@ def get_album_info(album, album_artist):
 	except KeyError:
 		bio = "No bio available for this album."
 
+	video_link = get_album_video(album, album_artist)
 
-
-	info = {'image': image_url, 'description': bio, 'url_link': album_link}
+	info = {'image': image_url, 'description': bio, 'video_link': video_link, 'url_link': album_link}
 	return (info, track_names)
 
-def get_album_sample(album, album_artist):
+def get_album_video(album, album_artist):
 	print("Retrieving video...")
 	youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
 
@@ -107,7 +107,9 @@ def get_album_sample(album, album_artist):
 		videos.append({'video_id':video_id, 'video_title': video_title})
 
 	for video in videos:
-		print(f'Video ID: {video["video_id"]}, Video Title: {video["video_title"]}')
+		# print(f'Video ID: {video["video_id"]}, Video Title: {video["video_title"]}')
+		video_link = "https://www.youtube.com/embed/" + video["video_id"]
+		return video_link
 
 # test
 def test_album(app):
