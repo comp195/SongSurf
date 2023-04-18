@@ -39,9 +39,13 @@
             <!--<img src={{rec.image}} alt="Image">-->
             <iframe src="{{ rec.video_link }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             {% if rec.description|length > 200 %}
-              <p class="description">{{ rec.description[:200] }}...</p>
+              <div class="description-container">
+                <p class="description">{{ rec.description[:200] }}<span>...<a class="link" href={{rec.url_link}} target="_blank">Read More!</a></span></p>
+              </div>
             {% else %}
-              <p class="description">{{ rec.description }}</p>
+              <div class="description-container">
+                <p class="description">{{ rec.description }}<span><a class="link" href={{rec.url_link}} target="_blank">Read More!</a></span></p>
+              </div>
             {% endif %}
           </div>
         {% endfor %}
@@ -51,12 +55,18 @@
             <iframe src="{{ rec.video_link }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             {% if rec.description %}
               {% if rec.description|length > 200 %}
-                <p class="description">{{ rec.description[:200] }}...</p>
+                <div class="description-container">
+                  <p class="description">{{ rec.description[:200] }}<span>...<a class="link" href={{rec.url_link}} target="_blank">Read More!</a></span></p>
+                </div>
               {% else %}
-                <p class="description">{{ rec.description }}</p>
+                <div class="description-container">
+                  <p class="description">{{ rec.description}}<span><a class="link" href={{rec.url_link}} target="_blank">Read More!</a></span></p>
+                </div>
               {% endif %}
             {% else %}
-              <p class="description">No description available!</p>
+              <div class="description-container">
+                <p class="description">No description available!</p>
+              </div>
             {% endif %}
         </div>
       {% endif %}
