@@ -46,6 +46,7 @@ class Track(db.Model):
     name = db.Column(db.String(120), nullable=False)
     image = db.Column(db.String(120))
     description = db.Column(db.String(1000))
+    video_link = db.Column(db.String(1000))
     url_link = db.Column(db.String(1000))
     release_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 

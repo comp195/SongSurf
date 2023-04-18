@@ -83,7 +83,10 @@ def get_track_info(track, track_artist):
 		image_url = "No image available for this track"
 	
 	track_link = data["track"]["url"]
-	album_name = data["track"]["album"]["title"] 
+	try:
+		album_name = data["track"]["album"]["title"] 
+	except KeyError:
+		album_name = "N/A"
 	try:
 		bio = data["track"]["wiki"]["summary"]
 	except KeyError:

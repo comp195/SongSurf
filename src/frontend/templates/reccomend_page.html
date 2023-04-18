@@ -30,6 +30,9 @@
     {% for rec in recommendations %}
     <div class="recommendation-container">
       <h3>{{ rec.name }}</h3>
+      {% if item_type == 'album' or item_type == 'track' %}
+      <!-- <h3>By {{ rec.artist_name }}</h3> This currently doesnt work --> 
+      {% endif %}
       {% if rec is iterable and not rec|string %}
         {% for r in rec %}
           <div class="reccomendation_section">

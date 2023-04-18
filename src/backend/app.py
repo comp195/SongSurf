@@ -34,8 +34,9 @@ db = init_db(app)
 #     db.create_all()
 
 # user_developer = User(first_name='dev', last_name='dev', username='dev', password='dev') # user credientials for developer
+# guest = User(first_name='guest', last_name='guest', username='guest', password='guest') # user credientials for guest
 # with app.app_context():
-#     db.session.add(user_developer)
+#     db.session.add(guest)
 #     db.session.commit()
 
 #track.test_track(app)
@@ -77,6 +78,9 @@ def index():
             return render_template('search_page.html', message=error_message)
 
         user_id = session.get('logged_in_user_id')
+        if (user_id == None):
+            user_id = 2    # Set to guest user
+        print(user_id)
 
         # ** use this code for registration page later on **
                 # # Create a new User object with the AAS searches and add it to the database
@@ -105,7 +109,7 @@ def index():
             #     error_message = "No tags were able to be found for any of the artists.  Please try other songs."
             #     return render_template('search_page.html', message=error_message)
             user_choice = request.form['show_type']
-            return render_template('reccomend_page.html', user=user_id, user_choice = user_choice,recommendations=artist_objects)
+            return render_template('reccomend_page.html', user=user_id, user_choice = user_choice,recommendations=artist_objects, item_type = 'artist')
         
         elif request.form['show_type'] == 'Albums': # if the Albums radio button was selected
             print("Albums")
@@ -124,7 +128,7 @@ def index():
             #     error_message = "No tags were able to be found for any of the albums.  Please try other songs."
             #     return render_template('search_page.html', message=error_message)
             user_choice = request.form['show_type']
-            return render_template('reccomend_page.html', user=user_id, user_choice = user_choice,recommendations=album_objects)
+            return render_template('reccomend_page.html', user=user_id, user_choice = user_choice,recommendations=album_objects, item_type='album', artist_names=artist_names)
         
         elif request.form['show_type'] == 'Songs': # if the Songs radio button was selected
             print("Songs")
@@ -143,7 +147,7 @@ def index():
             #     error_message = "No tags were able to be found for any of the tracks.  Please try other songs."
             #     return render_template('search_page.html', message=error_message)
             user_choice = request.form['show_type']
-            return render_template('reccomend_page.html', user=user_id, user_choice = user_choice,recommendations=track_objects)
+            return render_template('reccomend_page.html', user=user_id, user_choice = user_choice,recommendations=track_objects, item_type='track', artist_names=artist_names)
 
     else: # If user visits the page
         return render_template('home_page.html', logged_in=False)

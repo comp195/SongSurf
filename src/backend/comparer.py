@@ -174,17 +174,18 @@ def update_database_with_items(app, user_id, item_type, items):
                 database.add_item(app, 'album', item[0], info['image'], info['description'], info['video_link'], info['url_link'], cur_artist.artist_id)
                 cur_album = database.get_album_object(app, item[0], item[1])
 
-                # add tracks that belong to the album if it doesnt exist
-                for album_track in album_tracks:
-                    if (database.get_track_object(app, album_track, item[1]) == None):
-                        print("adding track: " + album_track)
-                        time.sleep(0.8)
-                        track_info = track.get_track_info(album_track, item[1])
-                        database.add_item(app, 'track', album_track, track_info['image'], track_info['description'], track_info['video_link'], track_info['url_link'], cur_artist.artist_id, cur_album.album_id)
+                """ Currently, adding every track for an album is a feature that costs to many api calls. """
+                # # add tracks that belong to the album if it doesnt exist
+                # for album_track in album_tracks:
+                #     if (database.get_track_object(app, album_track, item[1]) == None):
+                #         print("adding track: " + album_track)
+                #         time.sleep(0.5)
+                #         track_info = track.get_track_info(album_track, item[1])
+                #         database.add_item(app, 'track', album_track, track_info['image'], track_info['description'], track_info['video_link'], track_info['url_link'], cur_artist.artist_id, cur_album.album_id)
 
-                    # ensure the track's album_id is correct
-                    cur_track = database.get_track_object(app, album_track, item[1])
-                    database.set_album_id(app, cur_track.track_id, cur_album.album_id)
+                #     # ensure the track's album_id is correct
+                #     cur_track = database.get_track_object(app, album_track, item[1])
+                #     database.set_album_id(app, cur_track.track_id, cur_album.album_id)
                         
             # add the album to recommendation table
             cur_album = database.get_album_object(app, item[0], item[1])
