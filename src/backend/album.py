@@ -77,7 +77,7 @@ def get_album_info(album, album_artist):
 	image_url = data["album"]["image"][-1]["#text"]
 
 	try:
-		bio = data["album"]["wiki"]["summary"]
+		bio = data["album"]["wiki"]["summary"].split("<a")[0]
 	except KeyError:
 		bio = "No bio available for this album."
 

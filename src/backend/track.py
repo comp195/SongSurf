@@ -88,7 +88,7 @@ def get_track_info(track, track_artist):
 	except KeyError:
 		album_name = "N/A"
 	try:
-		bio = data["track"]["wiki"]["summary"]
+		bio = data["track"]["wiki"]["summary"].split("<a")[0]
 	except KeyError:
 		bio = "No bio available for this track."
 

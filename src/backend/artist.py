@@ -63,7 +63,7 @@ def get_artist_info(a1):
 	data = json.loads(r.text)
 
 	image_url=data["artist"]["image"][-1]["#text"]
-	bio = data["artist"]["bio"]["summary"]
+	bio = data["artist"]["bio"]["summary"].split("<a")[0]
 	artist_link = data["artist"]["url"]
 
 	video_link = get_artist_video(a1)
