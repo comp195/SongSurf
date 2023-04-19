@@ -36,6 +36,7 @@ db = init_db(app)
 # user_developer = User(first_name='dev', last_name='dev', username='dev', password='dev') # user credientials for developer
 # guest = User(first_name='guest', last_name='guest', username='guest', password='guest') # user credientials for guest
 # with app.app_context():
+#     db.session.add(user_developer)
 #     db.session.add(guest)
 #     db.session.commit()
 
