@@ -68,12 +68,22 @@ def get_album_info(album, album_artist):
 
 	r = requests.get('https://ws.audioscrobbler.com/2.0/', headers=headers, params=payload)
 	data = json.loads(r.text)
-
-	image_url=data["album"]["image"][-1]["#text"]
+	# # special case
+	# if (data["message"] == 'Album not found'):
+	# 	print(album)
+	# 	print(album_artist)
+	# 	print(data)
+	try:
+		image_url=data["album"]["image"][-1]["#text"]
+	except KeyError:
+		image_url="N/A"
+	
 	album_link = data["album"]["url"]
 	#release_date = data["album"]["releasedate"]
 	release_date = "last.fm doesnt support release_date for albums"
-	track_names = [track["name"] for track in data["album"]["tracks"]["track"]]
+	""" We dont get the tracks of each album as currently the info for each yt api call is too much """
+	#track_names = [track["name"] for track in data["album"]["tracks"]["track"]]
+	track_names = None
 	image_url = data["album"]["image"][-1]["#text"]
 
 	try:
@@ -113,7 +123,7 @@ def get_album_video(album, album_artist):
 
 # test
 def test_album(app):
-
+	get_album_info('Stan', 'Eminem')
 	#(info, track_names) = get_album_info("The Dark Side of the Moon", "Pink Floyd")
 	#add_item(app, 'album', "The Dark Side of the Moon", "daydreamer.jpg", "welcome to the dark side", get_artist_object(app, 'Pink Floyd').artist_id, None, datetime(1973, 3, 1))
 	albums = get_album_recommendations(app, 1, ('The Dark Side of the Moon','Pink Floyd'), ('Rumours','Fleetwood Mac'), ('Nevermind','Nirvana'))

@@ -233,11 +233,15 @@ def add_item(app, item_type, item_name, item_image, item_description, item_video
             item = Artist(name=item_name, image=item_image, description=item_description, video_link=item_video_link, url_link=item_link)
         elif (item_type == 'track'):
             item = Track(album_id=item_album_id, artist_id=item_artist_id, name=item_name, image=item_image, description=item_description, video_link=item_video_link, url_link=item_link, release_date=item_release_date)
-        
+
+
         try:
+            print(item)
             db.session.add(item)
             db.session.commit()
         except IntegrityError:
+            print("Could'nt add ")
+            print(item_name)
             db.session.rollback()
 
 # ----------- user functions -----------

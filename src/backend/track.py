@@ -124,8 +124,9 @@ def get_track_video(track, track_artist):
 
 # test
 def test_track(app):
-	
-	get_track_info('Wish you were Here', 'Pink Floyd')
+	database.add_item(app, 'track', 'Stress out', 'No image availabile for this track', '"Stressed Out" is a song written and recorded by American alternative hip hop band Twenty One Pilots for their fourth studio album, Blurryface (2015). Written by Tyler Joseph and produced by Mike Elizondo, the lyrics discuss the harsh end of adolescence and the transition to adulthood. The song was released as a single on April 28, 2015 on the Google Play Store and Amazon, and was issued to top 40 radio stations on November 10. "Stressed Out" reached number two on the US Billboard Hot 100, and number one on Hot Rock Songs and Mainstream Top 40.'
+		   , 'https://www.youtube.com/embed/pXRviuL6vMY', 'https://www.last.fm/music/Twenty+One+Pilots/_/Stressed+Out')
+	get_track_info('stressed out', 'twenty one pilots')
 	#database.add_item(app, 'artist', 'Pink Floyd', 'solar.jpg', 'rock band')
 	#database.add_item(app, 'track', 'Wish you were Here', 'daydreamer.jpg', 'Debut track', database.get_artist_object(app, 'Pink Floyd').artist_id)
 	tracks = get_track_recommendations(app, 1, ('Wish you were Here','Pink Floyd'), ('Dreams','Fleetwood Mac'), ('Come as you are','Nirvana'))
