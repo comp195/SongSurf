@@ -62,7 +62,7 @@ def get_track_recommendations(app, user_id, a1,a2,a3):
 
 		time.sleep(0.8)
 
-	comparer.compare_and_output_top_5(app, user_id, top_tags, 'track', tracks)
+	comparer.compare_and_output_top_50(app, user_id, top_tags, 'track', tracks)
 
 
 def get_track_info(track, track_artist):

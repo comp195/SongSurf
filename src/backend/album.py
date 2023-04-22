@@ -54,7 +54,7 @@ def get_album_recommendations(app, user_id, a1,a2,a3):
 
 		time.sleep(0.8)
 
-	comparer.compare_and_output_top_5(app, user_id, top_tags, 'album', albums)
+	comparer.compare_and_output_top_50(app, user_id, top_tags, 'album', albums)
 
 def get_album_info(album, album_artist):
 	payload = {

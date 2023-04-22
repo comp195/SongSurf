@@ -16,7 +16,7 @@ headers = {
 }
 ###########################
 
-def compare_and_output_top_5(app, user_id, top_tags, type, input):
+def compare_and_output_top_50(app, user_id, top_tags, type, input):
     """
     1) Compare input tags and grab the top 5 most common tags
     2) Use the top 5 tags to request for top 50 artists, and output their names
@@ -119,29 +119,29 @@ def compare_and_output_top_5(app, user_id, top_tags, type, input):
 
 
     counter = Counter(top_items)
-    top_5_tuples = counter.most_common(5) # grab 5 most common items
-    print(top_5_tuples)
+    top_50_tuples = counter.most_common(50) # grab 50 most common items
+    print(top_50_tuples)
 
     if(type == 'artist'):
         input_lower = [i.lower() for i in input] # to account for inputs with case variations
-        top_5_items = [t[0] for t in top_5_tuples if t[0].lower() not in input_lower]	# get the most common items from the tuples, skips if one of the user inputs
+        top_50_items = [t[0] for t in top_50_tuples if t[0].lower() not in input_lower]	# get the most common items from the tuples, skips if one of the user inputs
     else:
         input_lower = [i[0].lower() for i in input] # to account for inputs with case variations
-        top_5_items = [t[0] for t in top_5_tuples if t[0][0].lower() not in input_lower]   # get the most common items from the tuples, skips if one of the user inputs
-    print(top_5_items)
+        top_50_items = [t[0] for t in top_50_tuples if t[0][0].lower() not in input_lower]   # get the most common items from the tuples, skips if one of the user inputs
+    print(top_50_items)
 
     i = 0
-    while len(top_5_items) < 5:
+    while len(top_50_items) < 50:
         next_most_common_item = counter.most_common(6+i)[5+i][0]
         if next_most_common_item not in input:
-            top_5_items.append(next_most_common_item)
+            top_50_items.append(next_most_common_item)
             i += 1
             print("New item added: "+next_most_common_item)
-        print("Length of artists: " + str(len(top_5_items)))
+        print("Length of artists: " + str(len(top_50_items)))
     print("New items: ")
-    print(top_5_items)
+    print(top_50_items)
 
-    update_database_with_items(app, user_id, type, top_5_items)
+    update_database_with_items(app, user_id, type, top_50_items)
 
 
 def update_database_with_items(app, user_id, item_type, items):
