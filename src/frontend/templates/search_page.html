@@ -18,7 +18,7 @@
   you'll love through an informative, attractive, and intuitive website. 
   Input your favorite artists, albums, or songs and receive recommendations based on what you love.</p>
 
-  <form action="/" method="POST"> <!-- Everything within this form section interacts with backend to send data -->
+  <form action="/search_page" method="POST"> <!-- Everything within this form section interacts with backend to send data -->
 
     <div class="search_section">
 
@@ -37,7 +37,7 @@
         </label>
         <br>
         <label>
-          <input type="radio" name="show_type" value="Songs" onclick="updateSearchLabel('Track'); showAdditionalBoxes(3);">
+          <input type="radio" name="show_type" value="Tracks" onclick="updateSearchLabel('Track'); showAdditionalBoxes(3);">
           <span class="checkmark"></span>
           Tracks &#127925;
         </label>

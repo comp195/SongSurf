@@ -79,8 +79,8 @@ class Recommend(db.Model):
 
     user = db.relationship('User', backref=db.backref('recommended', lazy=True)) # FK relationship
 
-    __table_args__ = ( # Prevent duplicates by ensuring only a unique pair of entity_type and entity_id exists only once
-        db.UniqueConstraint('entity_type', 'entity_id', name='uq_recommend_entity'),
+    __table_args__ = ( # Prevent duplicates by ensuring only a unique pair of entity_type and entity_id exists only once and for different users
+        db.UniqueConstraint('entity_type', 'entity_id', 'user_id', name='uq_recommend_entity_user'),
         db.CheckConstraint("entity_type IN ('artist', 'album', 'track')"),
     )
 
@@ -382,6 +382,8 @@ def add_recommended(app, user_id, item_id, item_type):
             db.session.add(item)
             db.session.commit()
         except IntegrityError:
+            print("Failed adding ")
+            print(item_id)
             db.session.rollback()
 
 def set_recommended(app, user_id, item_id, item_type):

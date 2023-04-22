@@ -3,8 +3,8 @@
 
 
 {% block head %}
-<title>SongSurf Reccomendations</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/reccomend_page.css') }}">
+<title>SongSurf recommendations</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/recommend_page.css') }}">
 {% endblock %}
 
 {% block body %} 
@@ -25,7 +25,7 @@
 </div>
   
 <div class="content">
-  <h2 style="text-align:center;">Here are some {{ user_choice }} that washed up on the beach! &#x1F30A;</h2>
+  <h2 style="text-align:center;">Here are some {{ user_choice }} you caught in the wave! &#x1F30A;</h2>
   <div class="recommendations">
     {% for rec in recommendations %}
     <div class="recommendation-container">
@@ -35,7 +35,7 @@
       {% endif %}
       {% if rec is iterable and not rec|string %}
         {% for r in rec %}
-          <div class="reccomendation_section">
+          <div class="recommendation_section">
             <!--<img src={{rec.image}} alt="Image">-->
             <iframe src="{{ rec.video_link }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             {% if rec.description|length != 1 %}
@@ -50,13 +50,13 @@
               {% endif %}
             {% else %}
               <div class="description-container">
-                <p class="description">No description available! Click "More Information" to see other details about the reccomendation!<span><a class="link" href={{rec.url_link}} target="_blank">More Information!</a></span></p>
+                <p class="description">No description available! Click "More Information" to see other details about the recommendation!<span><a class="link" href={{rec.url_link}} target="_blank">More Information!</a></span></p>
               </div>
             {% endif %}
           </div>
         {% endfor %}
       {% else %}
-        <div class="reccomendation_section">
+        <div class="recommendation_section">
             <!--<img src={{rec.image}} alt="Image">-->
             <iframe src="{{ rec.video_link }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             {% if rec.description|length != 1 %}
@@ -71,7 +71,7 @@
               {% endif %}
             {% else %}
               <div class="description-container">
-                <p class="description">No description available! Click "More Information" to see other details about the reccomendation!<span><a class="link" href={{rec.url_link}} target="_blank">More Information!</a></span></p>
+                <p class="description">No description available! Click "More Information" to see other details about the recommendation!<span><a class="link" href={{rec.url_link}} target="_blank">More Information!</a></span></p>
               </div>
             {% endif %}
         </div>
@@ -89,6 +89,25 @@
 <div style="text-align: center;">
   <a href="{{ url_for('search_page') }}" ><img src='static/css/images/backarrow.png' style="width:75px; height:45px;"></a>
 </div>
+  <form action="/recommend_page" method="POST">
+    <input type="submit" value="Catch Another Wave &#x1F6F3;" onclick="showLoading()"> <!-- SURF Button to go to recommend_page -->
+    
+  </form>
+
+<script src="../static/javascript/search_box.js"></script>
+
+<script>
+function showLoading() {
+document.getElementById("loading").style.display = "block";
+document.getElementById("submit-button").disabled = true;
+}
+function hideLoading() {
+document.getElementById("loading").style.display = "none";
+document.getElementById("submit-button").disabled = false;
+}
+
+window.addEventListener('pageshow', hideLoading);
+</script>
 
 <script>
   const favoritesButton = document.querySelector('.favorites-button');

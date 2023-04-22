@@ -27,7 +27,7 @@ print("* Running on http://127.0.0.1:8000")
 from database import init_db, User
 db = init_db(app)
 
-# use this code to reset database
+# # use this code to reset database
 # with app.app_context():
 #     # reset database
 #     db.drop_all()
@@ -47,6 +47,10 @@ db = init_db(app)
 # Define route for main page (home_page)
 @app.route('/', methods=['POST', 'GET'])
 def index():
+    return render_template('home_page.html', logged_in=False)
+
+@app.route('/search_page', methods=['POST', 'GET'])
+def search_page():
     if request.method == 'POST': # If user clicks SURF
         
          # Check if any input fields are empty
@@ -81,81 +85,74 @@ def index():
         user_id = session.get('logged_in_user_id')
         if (user_id == None):
             user_id = 2    # Set to guest user
+            session['logged_in_user_id'] = 2
         print(user_id)
 
-        # ** use this code for registration page later on **
-                # # Create a new User object with the AAS searches and add it to the database
-                # new_user = User(email='test1@pacific.edu', password='uop1') # temporarily make email and password the same for all users created
-                # try:
-                #     db.session.add(new_user)
-                #     db.session.commit()
-                #     app.logger.info('Successfully added user')
-                # except Exception as e:
-                #     app.logger.error('Issue adding user. Error: %s', str(e))
-                #     print(e)
-
-          # If artists were chosen, treat user input as all artists, etc.
-        if request.form['show_type'] == 'Artists':	# if the Artists radio button was selected
-            print("Artists")
-
-            # new implementation calling database instead
-            database.delete_current_recommendations(app, user_id) # start with new recommendations since "SURF" is clicked
-            artist.get_artist_recommendations(app, user_id, request.form['user_choice1'], request.form['user_choice2'], request.form['user_choice3'])
-            artist_ids = database.get_artist_recommendations(app, user_id)
-            artist_objects = [database.get_item_object_from_id(app, artist_id, 'artist') for artist_id in artist_ids]
-
-            # old
-            # artists = artist.get_artist_recommendations(app, request.form['user_choice1'], request.form['user_choice2'], request.form['user_choice3'])
-            # if not artists:	# if tracks is empty
-            #     error_message = "No tags were able to be found for any of the artists.  Please try other songs."
-            #     return render_template('search_page.html', message=error_message)
+        # If artists were chosen, treat user input as all artists, etc.
+        if request.form['show_type'] == 'Artists':
             user_choice = request.form['show_type']
-            return render_template('reccomend_page.html', user=user_id, user_choice = user_choice,recommendations=artist_objects, item_type = 'artist')
-        
-        elif request.form['show_type'] == 'Albums': # if the Albums radio button was selected
-            print("Albums")
-
-            # new implementation calling database instead
-            database.delete_current_recommendations(app, user_id) # start with new recommendations since "SURF" is clicked
-            album.get_album_recommendations(app, user_id, (request.form['user_choice1'],request.form['user_choice4']), (request.form['user_choice2'],request.form['user_choice5']), (request.form['user_choice3'],request.form['user_choice6']))
-            album_ids = database.get_album_recommendations(app, user_id)
-            album_objects = [database.get_item_object_from_id(app, album_id, 'album') for album_id in album_ids]
-            artist_names = [database.get_name(app, album.artist_id, 'artist') for album in album_objects] 
-            print(artist_names) # use this artist_names array later when clicking on a tile for more info of the album
-
-            # old
-            # albums = album.get_album_recommendations(app, (request.form['user_choice1'],request.form['user_choice4']), (request.form['user_choice2'],request.form['user_choice5']), (request.form['user_choice3'],request.form['user_choice6']))
-            # if not albums:	# if albums is empty
-            #     error_message = "No tags were able to be found for any of the albums.  Please try other songs."
-            #     return render_template('search_page.html', message=error_message)
+            recommendations = get_recommendations('artist', user_id, [request.form['user_choice1'], request.form['user_choice2'], request.form['user_choice3']])
+            session['item_type'] = 'artist'
+            if not recommendations:
+                error_message = "No tags were able to be found for any of the artists. Please try other artists."
+                return render_template('search_page.html', message=error_message)
+            return render_template('recommend_page.html', user=user_id, user_choice=user_choice, item_type='artist', recommendations=recommendations, artist_names=None)
+        elif request.form['show_type'] == 'Albums':
             user_choice = request.form['show_type']
-            return render_template('reccomend_page.html', user=user_id, user_choice = user_choice,recommendations=album_objects, item_type='album', artist_names=artist_names)
-        
-        elif request.form['show_type'] == 'Songs': # if the Songs radio button was selected
-            print("Songs")
-
-            # new implementation calling database instead
-            database.delete_current_recommendations(app, user_id) # start with new recommendations since "SURF" is clicked
-            track.get_track_recommendations(app, user_id, (request.form['user_choice1'],request.form['user_choice4']), (request.form['user_choice2'],request.form['user_choice5']), (request.form['user_choice3'],request.form['user_choice6']))
-            track_ids = database.get_track_recommendations(app, user_id)
-            track_objects = [database.get_item_object_from_id(app, track_id, 'track') for track_id in track_ids]
-            artist_names = [database.get_name(app, track.artist_id, 'artist') for track in track_objects] 
-            print(artist_names) # use this artist_names array later when clicking on a tile for more info of the track
-
-            # old
-            # tracks = track.get_track_recommendations(app, (request.form['user_choice1'],request.form['user_choice4']), (request.form['user_choice2'],request.form['user_choice5']), (request.form['user_choice3'],request.form['user_choice6']))
-            # if not tracks:	# if tracks is empty
-            #     error_message = "No tags were able to be found for any of the tracks.  Please try other songs."
-            #     return render_template('search_page.html', message=error_message)
+            recommendations, artist_names = get_recommendations('album', user_id, [request.form['user_choice1'], request.form['user_choice2'], request.form['user_choice3'], request.form['user_choice4'], request.form['user_choice5'], request.form['user_choice6']])
+            session['item_type'] = 'album'
+            if not recommendations:
+                error_message = "No tags were able to be found for any of the albums. Please try other albums."
+                return render_template('search_page.html', message=error_message)
+            return render_template('recommend_page.html', user=user_id, user_choice=user_choice, item_type='album', recommendations=recommendations, artist_names=artist_names)
+        elif request.form['show_type'] == 'Tracks':
             user_choice = request.form['show_type']
-            return render_template('reccomend_page.html', user=user_id, user_choice = user_choice,recommendations=track_objects, item_type='track', artist_names=artist_names)
-
+            recommendations, artist_names = get_recommendations('track', user_id, [request.form['user_choice1'], request.form['user_choice2'], request.form['user_choice3'], request.form['user_choice4'], request.form['user_choice5'], request.form['user_choice6']])
+            session['item_type'] = 'track'
+            if not recommendations:
+                error_message = "No tags were able to be found for any of the tracks. Please try other tracks."
+                return render_template('search_page.html', message=error_message)
+            return render_template('recommend_page.html', user=user_id, user_choice=user_choice, item_type='track', recommendations=recommendations, artist_names=artist_names)
+   
     else: # If user visits the page
-        return render_template('home_page.html', logged_in=False)
+        return render_template('search_page.html')
     
-@app.route('/search_page')
-def search_page():
-    return render_template('search_page.html')
+@app.route('/recommend_page', methods=['POST', 'GET'])
+def recommend_page():
+    print("recommend here")
+    user_id = session.get('logged_in_user_id')
+    item_type = session.get('item_type')
+    if request.method == 'POST': # if refresh button is clicked, show more recommendations
+        print("Clicked refresh")
+        print(item_type)
+        # If artists were chosen, treat user input as all artists, etc.
+        if item_type == 'artist':
+            artist_ids = database.get_artist_recommendations(app, user_id)
+            recommendations = [database.get_item_object_from_id(app, artist_id, 'artist') for artist_id in artist_ids]
+            if not recommendations:
+                error_message = "No tags were able to be found for any of the artists.  Please try other artists."
+                return render_template('search_page.html', message=error_message)
+            return render_template('recommend_page.html', user=user_id, user_choice='Artists', recommendations=recommendations, item_type='artist')
+
+        elif item_type == 'album':
+            album_ids = database.get_album_recommendations(app, user_id)
+            recommendations = [database.get_item_object_from_id(app, album_id, 'album') for album_id in album_ids]
+            artist_names = [database.get_name(app, album.artist_id, 'artist') for album in recommendations]
+            if not recommendations:
+                error_message = "No tags were able to be found for any of the albums.  Please try other albums."
+                return render_template('search_page.html', message=error_message)
+            return render_template('recommend_page.html', user=user_id, user_choice='Albums', recommendations=recommendations, item_type='album', artist_names=artist_names)
+
+        elif item_type == 'track':
+            track_ids = database.get_track_recommendations(app, user_id)
+            recommendations = [database.get_item_object_from_id(app, track_id, 'track') for track_id in track_ids]
+            artist_names = [database.get_name(app, track.artist_id, 'artist') for track in recommendations]
+            if not recommendations:
+                error_message = "No tags were able to be found for any of the tracks.  Please try other tracks."
+                return render_template('search_page.html', message=error_message)
+            return render_template('recommend_page.html', user=user_id, user_choice='Tracks', recommendations=recommendations, item_type='track', artist_names=artist_names)
+    else:
+        return render_template('recommend_page.html', user=user_id, item_type=item_type, recommendations=recommendations, artist_names=artist_names)
 
 @app.route('/home_page')
 def home_page():
@@ -199,6 +196,37 @@ def signup_page():
         return redirect('/login_page')
     else:
         return render_template('signup_page.html')
+
+
+def get_recommendations(show_type, user_id, user_choices):
+    # Delete current recommendations to start fresh
+    database.delete_current_recommendations(app, user_id)
+
+    if show_type == 'artist':
+        # Get artist recommendations based on user choices
+        artist.get_artist_recommendations(app, user_id, user_choices[0], user_choices[1], user_choices[2])
+        artist_ids = database.get_artist_recommendations(app, user_id)
+        artist_objects = [database.get_item_object_from_id(app, artist_id, 'artist') for artist_id in artist_ids]
+
+        return artist_objects
+
+    elif show_type == 'album':
+        # Get album recommendations based on user choices
+        album.get_album_recommendations(app, user_id, (user_choices[0], user_choices[3]), (user_choices[1], user_choices[4]), (user_choices[2], user_choices[5]))
+        album_ids = database.get_album_recommendations(app, user_id)
+        album_objects = [database.get_item_object_from_id(app, album_id, 'album') for album_id in album_ids]
+        artist_names = [database.get_name(app, album.artist_id, 'artist') for album in album_objects]
+
+        return album_objects, artist_names
+
+    elif show_type == 'track':
+        # Get track recommendations based on user choices
+        track.get_track_recommendations(app, user_id, (user_choices[0], user_choices[3]), (user_choices[1], user_choices[4]), (user_choices[2], user_choices[5]))
+        track_ids = database.get_track_recommendations(app, user_id)
+        track_objects = [database.get_item_object_from_id(app, track_id, 'track') for track_id in track_ids]
+        artist_names = [database.get_name(app, track.artist_id, 'artist') for track in track_objects]
+
+        return track_objects, artist_names
 
 
 
