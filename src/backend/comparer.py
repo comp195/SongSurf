@@ -16,10 +16,10 @@ headers = {
 }
 ###########################
 
-def compare_and_output_top_50(app, user_id, top_tags, type, input):
+def compare_and_output_top_21(app, user_id, top_tags, type, input):
     """
     1) Compare input tags and grab the top 5 most common tags
-    2) Use the top 5 tags to request for top 50 artists, and output their names
+    2) Use the top 5 tags to request for top 21 artists, and output their names
     
     Parameters:
     tags (list): list of tags to compare to
@@ -91,8 +91,8 @@ def compare_and_output_top_50(app, user_id, top_tags, type, input):
     top_items = []
 
     for tag in most_common_tags:
-        # Get top 50 artists for tag
-        limit = 50
+        # Get top 21 artists for tag
+        limit = 21
 
         payload = {
             'api_key': API_KEY,
@@ -119,29 +119,29 @@ def compare_and_output_top_50(app, user_id, top_tags, type, input):
 
 
     counter = Counter(top_items)
-    top_50_tuples = counter.most_common(50) # grab 50 most common items
-    print(top_50_tuples)
+    top_21_tuples = counter.most_common(21) # grab 21 most common items
+    print(top_21_tuples)
 
     if(type == 'artist'):
         input_lower = [i.lower() for i in input] # to account for inputs with case variations
-        top_50_items = [t[0] for t in top_50_tuples if t[0].lower() not in input_lower]	# get the most common items from the tuples, skips if one of the user inputs
+        top_21_items = [t[0] for t in top_21_tuples if t[0].lower() not in input_lower]	# get the most common items from the tuples, skips if one of the user inputs
     else:
         input_lower = [i[0].lower() for i in input] # to account for inputs with case variations
-        top_50_items = [t[0] for t in top_50_tuples if t[0][0].lower() not in input_lower]   # get the most common items from the tuples, skips if one of the user inputs
-    print(top_50_items)
+        top_21_items = [t[0] for t in top_21_tuples if t[0][0].lower() not in input_lower]   # get the most common items from the tuples, skips if one of the user inputs
+    print(top_21_items)
 
     i = 0
-    while len(top_50_items) < 50:
+    while len(top_21_items) < 21:
         next_most_common_item = counter.most_common(6+i)[5+i][0]
         if next_most_common_item not in input:
-            top_50_items.append(next_most_common_item)
+            top_21_items.append(next_most_common_item)
             i += 1
             print("New item added: "+next_most_common_item)
-        print("Length of artists: " + str(len(top_50_items)))
+        print("Length of artists: " + str(len(top_21_items)))
     print("New items: ")
-    print(top_50_items)
+    print(top_21_items)
 
-    update_database_with_items(app, user_id, type, top_50_items)
+    update_database_with_items(app, user_id, type, top_21_items)
 
 
 def update_database_with_items(app, user_id, item_type, items):
@@ -164,7 +164,7 @@ def update_database_with_items(app, user_id, item_type, items):
                 
                 # check if artist of album exists in database, if not then add it
                 if (database.get_artist_object(app, item[1]) == None):
-                    time.sleep(0.8)
+                    time.sleep(0.7)
                     artist_info = artist.get_artist_info(item[1])
                     database.add_item(app, 'artist', item[1], artist_info['image'], artist_info['description'], artist_info['video_link'], artist_info['url_link'])
 
@@ -201,7 +201,7 @@ def update_database_with_items(app, user_id, item_type, items):
                 
                 # check if artist of track exists in database, if not then add it
                 if (database.get_artist_object(app, item[1]) == None):
-                    time.sleep(0.8)
+                    time.sleep(0.7)
                     artist_info = artist.get_artist_info(item[1])
                     database.add_item(app, 'artist', item[1], artist_info['image'], artist_info['description'], artist_info['video_link'], artist_info['url_link'])
 

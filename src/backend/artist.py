@@ -46,9 +46,9 @@ def get_artist_recommendations(app, user_id, a1,a2,a3):
 		else:
 			print(f'Request failed with status code {r.status_code}')
 
-		time.sleep(0.8)
+		time.sleep(0.7)
 
-	comparer.compare_and_output_top_50(app, user_id, top_tags, 'artist', artists)
+	comparer.compare_and_output_top_21(app, user_id, top_tags, 'artist', artists)
 
 
 def get_artist_info(a1):

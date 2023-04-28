@@ -1,5 +1,5 @@
 body {
-  background-color: #f2f2f2;
+  background-color: #c9e9cb;
 }
 
 .recommendations {
@@ -16,7 +16,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #fff;
+  background-color: #f2f2f2;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   border-radius: 1rem;
@@ -72,12 +72,13 @@ body {
   display: inline-block;
   border: none; /* remove border */
   margin: 0 5px;
-  padding: 5px 10px;
+  padding: 10px 15px;
   border-radius: 10px;
   background-color: #ffffff;
   color: #000000;
   font-weight: bold;
   transition: all 0.3s ease;
+  font-size: 30px;
 }
 
 .like-button:hover,
