@@ -29,7 +29,7 @@
   <div class="recommendations">
     {% for rec in recommendations %}
     <div class="recommendation-container">
-      <h3>{{ rec.name }}</h3>
+      <h2>{{ rec.name }}</h2>
       {% if item_type == 'album' or item_type == 'track' %}
       <!-- <h3>By {{ rec.artist_name }}</h3> This currently doesnt work --> 
       {% endif %}
@@ -41,7 +41,7 @@
             {% if rec.description|length != 1 %}
               {% if rec.description|length > 235 %}
                 <div class="description-container">
-                  <p class="description">{{ rec.description[:235] }}<span>...<a class="link" href={{rec.url_link}} target="_blank">Read More!</a></span></p>
+                  <p class="description">{{ rec.description[:150] }}<span>...<a class="link" href={{rec.url_link}} target="_blank">Read More!</a></span></p>
                 </div>
               {% else %}
                 <div class="description-container">
@@ -62,7 +62,7 @@
             {% if rec.description|length != 1 %}
               {% if rec.description|length > 235 %}
                 <div class="description-container">
-                  <p class="description">{{ rec.description[:235] }}<span>...<a class="link" href={{rec.url_link}} target="_blank">Read More!</a></span></p>
+                  <p class="description">{{ rec.description[:150] }}<span>...<a class="link" href={{rec.url_link}} target="_blank">Read More!</a></span></p>
                 </div>
               {% else %}
                 <div class="description-container">
@@ -78,8 +78,8 @@
       {% endif %}
       <div class="like-dislike-container">
         <div class="like-dislike">
-          <button class="like-button">Like</button>
-          <button class="dislike-button">Dislike</button>
+          <button class="like-button">&#x1F44D;</button>
+          <button class="dislike-button">&#x1F44E;</button>
         </div>
       </div>
     </div>

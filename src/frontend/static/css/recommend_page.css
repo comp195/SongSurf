@@ -72,12 +72,13 @@ body {
   display: inline-block;
   border: none; /* remove border */
   margin: 0 5px;
-  padding: 5px 10px;
+  padding: 10px 15px;
   border-radius: 10px;
   background-color: #ffffff;
   color: #000000;
   font-weight: bold;
   transition: all 0.3s ease;
+  font-size: 30px;
 }
 
 .like-button:hover,
