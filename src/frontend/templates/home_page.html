@@ -15,12 +15,19 @@
   
   <!--<td align="center" style="color:#ffffff;font-size:50px;text-shadow:2px 2px 2px #27ae60">SongSurf</td>-->
   <td>
-    <div style="margin-left: 120px; margin-right: 10;">
-      <img src='static/css/images/SongSurf Logo.png' style="width:250px" height="100px">
-    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div style="margin-left: 120px;">
+        <img src='static/css/images/SongSurf Logo.png' style="width:250px" height="100px">
+      </div>
+      <div style="position: relative;">
+        <div style="position: absolute; top: 15px; right: 0; font-size: small;">
+          <p>Contact Us</p>
+        </div>
+        <img src='static/css/images/linkedin-square-logo.png' onclick="openSites()" style="cursor: pointer; position: absolute; top: -35px; right: 80px;">
+      </div>
+    </div>       
   </td>
     
-  
   </tr>
   </table><br><br><br><br><br><br><br>
   
@@ -83,15 +90,28 @@
   </script>
   <div class="about-container">
     {% if logged_in %}
-    <p> Discover new music or artists that you'll love through an informative, attractive, and intuitive website.</p>
+    <p>Music has always been an integral part of human culture, providing a means of expression, entertainment, and even therapy. Whether it's to lift our spirits, soothe 
+      our minds, or simply enjoy the rhythm and melody, music has a profound impact on our emotions and well-being.
+
+      However, with the vast array of music genres, artists, and platforms available today, it can be overwhelming to navigate and discover new music that resonates with us. 
+      That's where an informative, attractive, and intuitive website comes in handy.
+      
+      SongSurf is a well-designed music discovery website that can offer personalized recommendations based on what you input. By joining such a website, you can not only 
+      discover new music that you'll love but also track your favorite discoveries, explore new genres, and broaden your musical horizons. </p>
       <h2>Welcome {{ username }}!</h2> <p>Start Surfing Now! &#x1F30A;</p>
       
       <a href="{{ url_for('search_page') }}">Surf</a>
     {% else %}
       <p>
-        Discover new music or artists that you'll love through an informative, attractive, and intuitive website.<br>
-        Join now to track your favorite discoveries for future use and for more personalized recommendations!
-        </p>
+        Music has always been an integral part of human culture, providing a means of expression, entertainment, and even therapy. Whether it's to lift our spirits, soothe 
+          our minds, or simply enjoy the rhythm and melody, music has a profound impact on our emotions and well-being. </p>
+    
+         <p> However, with the vast array of music genres, artists, and platforms available today, it can be overwhelming to navigate and discover new music that resonates with us. 
+          That's where an informative, attractive, and intuitive website comes in handy.</p>
+          
+          <p>SongSurf is a well-designed music discovery website that can offer personalized recommendations based on what you input. By joining such a website, you can not only 
+          discover new music that you'll love but also track your favorite discoveries, explore new genres, and broaden your musical horizons.</p>
+          <p>Join now to track your favorite discoveries for future use and for more personalized recommendations!</p>
         <a href="{{ url_for('login_page') }}">Join</a>
         <h2></h2>
         <a href="{{ url_for('search_page') }}">Surf as Guest</a>
@@ -100,6 +120,13 @@
 
   </div>
 
+  <script>
+    function openSites() {
+      window.open('https://www.linkedin.com/in/shahbaj-s-3a42b6233/', '_blank');
+      window.open('https://www.linkedin.com/in/patricknisperos/', '_blank');
+      window.open('https://www.linkedin.com/in/william-balbuena-490a49230/', '_blank');
+    }
+  </script>
 
 </body>
 </html>
