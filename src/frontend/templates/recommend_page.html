@@ -20,8 +20,9 @@
 <!-- The sliding favorites tab -->
 <div class="favorites-tab">
   <div class="close-button">&times;</div>
-  <h3>Your Favorites</h3>
-  <!-- Add your favorite items here -->
+  <div style= "text-align: center; align-items: center;"><h3>Your Favorites</h3>
+  </div>
+    <!-- Add your favorite items here -->
 </div>
   
 <div class="content">
@@ -86,13 +87,18 @@
 {% endfor %}
 </div>
     
-<div style="text-align: center;">
-  <a href="{{ url_for('search_page') }}" ><img src='static/css/images/backarrow.png' style="width:75px; height:45px;"></a>
+<div style="display: flex; align-items: center; justify-content: center;">
+  <div style="margin-right: 235px;">
+    <a href="{{ url_for('search_page') }}" ><img src='static/css/images/backarrow.png' style="width:75px; height:45px;"></a>
+  </div>
+  <div style="width: calc(20% - 15px); margin-left: 550px;">
+    <form action="/recommend_page" method="POST">
+      <h2><input type="submit" class="surf-button" value="&#x1F3C4; Catch Another Wave! &#x1F30A;" style="width: 100%;" onclick="showLoading()"> </h2> <!-- SURF Button to go to recommend_page -->
+    </form> 
+  </div>
 </div>
-  <form action="/recommend_page" method="POST">
-    <h2><input type="submit" class="surf-button" value="&#x1F3C4; Catch Another Wave! &#x1F30A;" onclick="showLoading()"> </h2> <!-- SURF Button to go to recommend_page -->
-    
-  </form>
+
+
 
 <script src="../static/javascript/search_box.js"></script>
 

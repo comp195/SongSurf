@@ -10,9 +10,9 @@ body {
 }
 
 .recommendations > .recommendation-container {
-  margin: 10px;
-  width: calc(20% - 20px);
-  height: 650px;
+  margin: 30px;
+  width: calc(20% - 15px);
+  height: 575px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,7 +24,7 @@ body {
 
 .recommendations >.recommendation-container:hover {
   transform: translateY(-5px);
-  box-shadow: 0 5px 15px lightgreen;
+  box-shadow: 0 5px 15px green;
 }
 
 .recommendations p {
@@ -104,28 +104,25 @@ body {
 }
 
 .surf-button {
-  font-size: 30px;
+  font-size: 24px;
   display: block;
   margin: auto;
   position: relative;
-  background-color: #0288c6;
+  background-color: #0097d0;
   color: #ffffff;
   border: none;
   padding: 12px;
   border-radius: 20px;
   font-weight: bold;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-
+  width: calc(20% - 15px);
 }
 
 
 .surf-button:hover {
   background-color: #0074a8;
-  
+  transform: translateY(-2px);
 }
-
-
-
 
 
 .favorites-button {
@@ -153,7 +150,7 @@ body {
   right: -300px; /* Starting position, hidden */
   width: 300px;
   height: 100%;
-  background-color: #fff;
+  background-color: #f2f2f2;
   box-shadow: 0 0 5px rgba(0,0,0,0.3);
   transition: right 0.3s ease-in-out;
   z-index: 9999;
