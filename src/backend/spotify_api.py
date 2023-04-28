@@ -22,27 +22,62 @@ os.environ['SPOTIPY_REDIRECT_URI'] = redirect_uri
 client_credentials_manager = SpotifyClientCredentials()
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
-song_name = "Ambitionz Az A Ridah"
-artist_name = "2Pac"
+song_name = "Caroline, No"
+artist_name = "The Beach Boys"
+album_name = "Pet Sounds"
 
-# Creates search query with song and artist name
-results = sp.search(q='track:' + song_name + ' artist:' + artist_name, type='track')
+mode = "artist"
 
-# Get the URI of the first search result track, or set a default value if no results found
-if len(results['tracks']['items']) > 0:
-    track_uri = results['tracks']['items'][0]['uri']	# get track uri
+# GET TRACK 
+if mode == "song":
+	results = sp.search(q='track:' + song_name + ' artist:' + artist_name, type='track')	# search for track
 
-    # Get devices that are playing Spotify
-    scope = "user-read-playback-state,user-modify-playback-state"
-    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_id,
-                                                   client_secret=client_secret,
-                                                   redirect_uri=redirect_uri,
-                                                   scope=scope))
+	if len(results['tracks']['items']) > 0:
+	    track_uri = results['tracks']['items'][0]['uri']	# get track uri
+	else:
+	    print("No results found for " + song_name + " by " + artist_name)
 
-    devices = sp.devices()
-    deviceID = devices['devices'][0]['id']
+# GET TOP ARTIST TRACK
+if mode == "artist":
+	results = sp.search(q='artist:' + artist_name, type='artist')	# search fr artist
+	
+	if len(results['artists']['items']) > 0:
+	    artist_uri = results['artists']['items'][0]['uri']	# get artist uri
+	else:
+	    print("No results found for " + artist_name)
 
-    # Play on first device found
-    sp.start_playback(deviceID, None, [track_uri])
-else:
-    print("No results found for " + song_name + " by " + artist_name)
+	top_tracks = sp.artist_top_tracks(artist_uri)	# get top tracks from artist
+
+	if len(top_tracks['tracks']) > 0:
+	    track_uri = top_tracks['tracks'][0]['uri']	# get top track uri
+	else:
+	    print("No top tracks found for " + artist_name)
+
+# GET FIRST TRACK FROM ALBUM
+if mode == "album":
+	results = sp.search(q='album:' + album_name + ' artist:' + artist_name, type='album')	# search for album
+	
+	if len(results['albums']['items']) > 0:
+	    album_uri = results['albums']['items'][0]['uri']	# get album uri
+	else:
+	    print("No results found for " + album_name + " by " + artist_name)
+
+	album_tracks = sp.album_tracks(album_uri)	# gets list of tracks from album
+
+	if album_tracks['items']:
+	    track_uri = album_tracks['items'][0]['uri']	# get first track from album
+	else:
+	    print("No tracks found for " + album_name + " by " + artist_name)
+
+# Get devices that are playing Spotify
+scope = "user-read-playback-state,user-modify-playback-state"
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_id,
+                                               client_secret=client_secret,
+                                               redirect_uri=redirect_uri,
+                                               scope=scope))
+
+devices = sp.devices()
+deviceID = devices['devices'][0]['id']
+
+# Play on first device found
+sp.start_playback(deviceID, None, [track_uri])

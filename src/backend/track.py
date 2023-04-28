@@ -6,10 +6,28 @@ import json
 import database
 from googleapiclient.discovery import build
 
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+from spotipy.oauth2 import SpotifyOAuth
+import os
+
 ### IMPORTANT YOUTUBE API INFO ###
 # MUST RUN IN CMD: pip install --upgrade google-api-python-client
 YOUTUBE_API_KEY = 'AIzaSyCGFt8DKXyW_i1RYNJHUCJ7OJt0m4coCTQ'
 ##################################
+
+##### API INFORMATION ######
+client_id = '52d2576fa6ce4b1b8c45eb1b35107ef4'
+client_secret = '66c44d6c558b4b2eb90946c81d233390'
+redirect_uri = 'http://127.0.0.1:8000'
+
+os.environ['SPOTIPY_CLIENT_ID'] = client_id
+os.environ['SPOTIPY_CLIENT_SECRET'] = client_secret
+os.environ['SPOTIPY_REDIRECT_URI'] = redirect_uri
+
+client_credentials_manager = SpotifyClientCredentials()
+sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
+#############################
 
 ### IMPORTANT API INFO ###
 USER_AGENT = 'wbuop'
@@ -96,6 +114,20 @@ def get_track_info(track, track_artist):
 
 	info = {'image': image_url, 'description': bio, 'video_link': video_link, 'url_link': track_link, 'album_name': album_name}
 	return info
+
+def get_track_audio(a1):
+	print("Retrieving audio...")
+
+	song_name = "a1"
+
+	results = sp.search(q='track:' + song_name + ' artist:' + artist_name, type='track')	# search for track
+
+	if len(results['tracks']['items']) > 0:
+	    track_uri = results['tracks']['items'][0]['uri']	# get track uri
+	else:
+	    print("No results found for " + song_name + " by " + artist_name)
+
+	return track_uri
 
 def get_track_video(track, track_artist):
 	print("Retrieving video...")
