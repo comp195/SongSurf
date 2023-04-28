@@ -103,6 +103,31 @@ body {
   margin-top: 10px;
 }
 
+.surf-button {
+  font-size: 30px;
+  display: block;
+  margin: auto;
+  position: relative;
+  background-color: #0288c6;
+  color: #ffffff;
+  border: none;
+  padding: 12px;
+  border-radius: 20px;
+  font-weight: bold;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+
+}
+
+
+.surf-button:hover {
+  background-color: #0074a8;
+  
+}
+
+
+
+
+
 .favorites-button {
   position: absolute;
   top: 35px;
