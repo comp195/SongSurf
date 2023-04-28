@@ -6,6 +6,11 @@ import json
 from database import *
 from googleapiclient.discovery import build
 
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+from spotipy.oauth2 import SpotifyOAuth
+import os
+
 ### IMPORTANT YOUTUBE API INFO ###
 # MUST RUN IN CMD: pip install --upgrade google-api-python-client
 YOUTUBE_API_KEY = 'AIzaSyCGFt8DKXyW_i1RYNJHUCJ7OJt0m4coCTQ'
@@ -95,6 +100,25 @@ def get_album_info(album, album_artist):
 
 	info = {'image': image_url, 'description': bio, 'video_link': video_link, 'url_link': album_link}
 	return (info, track_names)
+
+def get_album_audio(a1):
+	print("Retrieving audio...")
+
+	album_name = "a1"
+
+	results = sp.search(q='album:' + album_name + ' artist:' + artist_name, type='album')	# search for album
+	
+	if len(results['albums']['items']) > 0:
+	    album_uri = results['albums']['items'][0]['uri']	# get album uri
+	else:
+	    print("No results found for " + album_name + " by " + artist_name)
+
+	album_tracks = sp.album_tracks(album_uri)	# gets list of tracks from album
+
+	if album_tracks['items']:
+	    track_uri = album_tracks['items'][0]['uri']	# get first track from album
+	else:
+	    print("No tracks found for " + album_name + " by " + artist_name)
 
 def get_album_video(album, album_artist):
 	print("Retrieving video...")

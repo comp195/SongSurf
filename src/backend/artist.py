@@ -6,9 +6,28 @@ import json
 import database
 from googleapiclient.discovery import build
 
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+from spotipy.oauth2 import SpotifyOAuth
+import os
+
 ### IMPORTANT YOUTUBE API INFO ###
 # MUST RUN IN CMD: pip install --upgrade google-api-python-client
 YOUTUBE_API_KEY = 'AIzaSyCGFt8DKXyW_i1RYNJHUCJ7OJt0m4coCTQ'
+
+##### API INFORMATION ######
+client_id = '52d2576fa6ce4b1b8c45eb1b35107ef4'
+client_secret = '66c44d6c558b4b2eb90946c81d233390'
+redirect_uri = 'http://127.0.0.1:8000'
+
+os.environ['SPOTIPY_CLIENT_ID'] = client_id
+os.environ['SPOTIPY_CLIENT_SECRET'] = client_secret
+os.environ['SPOTIPY_REDIRECT_URI'] = redirect_uri
+
+client_credentials_manager = SpotifyClientCredentials()
+sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
+#############################
+
 ##################################
 
 ### IMPORTANT Last.fm API INFO ###
@@ -72,6 +91,30 @@ def get_artist_info(a1):
 
 	return info
 
+def get_artist_audio(a1):
+	print("Retrieving audio...")
+
+	artist_name = "a1"
+
+	results = sp.search(q='artist:' + artist_name, type='artist')	# search fr artist
+	
+	if len(results['artists']['items']) > 0:
+	    artist_uri = results['artists']['items'][0]['uri']	# get artist uri
+	else:
+	    print("No results found for " + artist_name)
+
+	top_tracks = sp.artist_top_tracks(artist_uri)	# get top tracks from artist
+
+	if len(top_tracks['tracks']) > 0:
+	    track_uri = top_tracks['tracks'][0]['uri']	# get top track uri
+	else:
+	    print("No top tracks found for " + artist_name)
+
+
+def test_artist(app):
+	database.add_item(app, 'artist', 'Malz Monday', 'mm.jpg', 'Man of god walking with the devil', 'https://www.last.fm/music/Malz+Monday')
+	artists = get_artist_recommendations(app, 1,'Malz Monday', 'J Cole', 'Bas')
+
 def get_artist_video(a1):
 	print("Retrieving video...")
 	youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
@@ -96,8 +139,3 @@ def get_artist_video(a1):
 		#print(f'Video ID: {video["video_id"]}, Video Title: {video["video_title"]}')
 		video_link = "https://www.youtube.com/embed/" + video["video_id"]
 		return video_link
-
-
-def test_artist(app):
-	database.add_item(app, 'artist', 'Malz Monday', 'mm.jpg', 'Man of god walking with the devil', 'https://www.last.fm/music/Malz+Monday')
-	artists = get_artist_recommendations(app, 1,'Malz Monday', 'J Cole', 'Bas')
