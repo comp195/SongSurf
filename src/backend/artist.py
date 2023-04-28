@@ -110,6 +110,8 @@ def get_artist_audio(a1):
 	else:
 	    print("No top tracks found for " + artist_name)
 
+	return track_uri
+
 
 def test_artist(app):
 	database.add_item(app, 'artist', 'Malz Monday', 'mm.jpg', 'Man of god walking with the devil', 'https://www.last.fm/music/Malz+Monday')

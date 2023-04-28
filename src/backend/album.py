@@ -133,6 +133,8 @@ def get_album_audio(a1):
 	else:
 	    print("No tracks found for " + album_name + " by " + artist_name)
 
+	return track_uri
+
 def get_album_video(album, album_artist):
 	print("Retrieving video...")
 	youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
