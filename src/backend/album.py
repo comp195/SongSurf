@@ -16,6 +16,19 @@ import os
 YOUTUBE_API_KEY = 'AIzaSyCGFt8DKXyW_i1RYNJHUCJ7OJt0m4coCTQ'
 ##################################
 
+##### API INFORMATION ######
+client_id = '52d2576fa6ce4b1b8c45eb1b35107ef4'
+client_secret = '66c44d6c558b4b2eb90946c81d233390'
+redirect_uri = 'http://127.0.0.1:8000'
+
+os.environ['SPOTIPY_CLIENT_ID'] = client_id
+os.environ['SPOTIPY_CLIENT_SECRET'] = client_secret
+os.environ['SPOTIPY_REDIRECT_URI'] = redirect_uri
+
+client_credentials_manager = SpotifyClientCredentials()
+sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
+#############################
+
 ### IMPORTANT LAST.FM API INFO ###
 USER_AGENT = 'wbuop'
 API_KEY = 'ebc5386ea6b0af15cae300e0da5a3af5'
