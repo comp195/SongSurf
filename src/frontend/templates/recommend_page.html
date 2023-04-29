@@ -20,9 +20,28 @@
 <!-- The sliding favorites tab -->
 <div class="favorites-tab">
   <div class="close-button">&times;</div>
-  <div style= "text-align: center; align-items: center;"><h3>Your Favorites</h3>
+  <div style= "text-align: center; align-items: center;"><h2>Your Favorites</h2>
   </div>
     <!-- Add your favorite items here -->
+    <h2> Artists &#127908; </h2>
+    {% for favorite in favorites %}
+      {% if favorite.artist_id is defined and favorite.album_id is not defined %}
+        <h3>{{ favorite.name }}</h3>
+      {% endif %}
+    {% endfor %}
+    <h2> Albums &#127926; </h2>
+    {% for favorite in favorites %}
+      {% if favorite.album_id is defined %}
+        <h3>{{ favorite.name }}</h3>
+      {% endif %}
+    {% endfor %}
+    <h2> Tracks &#127925; </h2>
+    {% for favorite in favorites %}
+      {% if favorite.track_id is defined %}
+        <h3>{{ favorite.name }}</h3>
+      {% endif %}
+    {% endfor %}
+
 </div>
   
 <div class="content">
@@ -77,12 +96,24 @@
             {% endif %}
         </div>
       {% endif %}
-      <div class="like-dislike-container">
-        <div class="like-dislike">
-          <button class="like-button">&#x1F44D;</button>
-          <button class="dislike-button">&#x1F44E;</button>
+      <form action="/recommend_page" method="POST">
+        <div class="like-dislike-container">
+          <div class="like-dislike">
+            {% if item_type == 'album' %}
+            <button class="like-button" name="like_dislike_button" onclick="sendFeedback('like', '{{ rec.album_id }}')">&#x1F44D;</button>
+            <button class="dislike-button" name="like_dislike_button" onclick="sendFeedback('dislike', '{{ rec.album_id }}')">&#x1F44E;</button>
+            {% endif %}
+            {% if item_type == 'artist' %}
+            <button class="like-button" name="like_dislike_button" onclick="sendFeedback('like', '{{ rec.artist_id }}')">&#x1F44D;</button>
+            <button class="dislike-button" name="like_dislike_button" onclick="sendFeedback('dislike', '{{ rec.artist_id }}')">&#x1F44E;</button>
+            {% endif %}
+            {% if item_type == 'track' %}
+            <button class="like-button" name="like_dislike_button" onclick="sendFeedback('like', '{{ rec.track_id }}')">&#x1F44D;</button>
+            <button class="dislike-button" name="like_dislike_button" onclick="sendFeedback('dislike', '{{ rec.track_id }}')">&#x1F44E;</button>
+            {% endif %}
+          </div>
         </div>
-      </div>
+      </form>
     </div>
 {% endfor %}
 </div>
@@ -93,10 +124,33 @@
   </div>
   <div style="width: calc(20% - 15px); margin-left: 550px;">
     <form action="/recommend_page" method="POST">
-      <h2><input type="submit" class="surf-button" value="&#x1F3C4; Catch Another Wave! &#x1F30A;" style="width: 100%;" onclick="showLoading()"> </h2> <!-- SURF Button to go to recommend_page -->
+      <h2><input type="submit" class="surf-button" name="refresh_button" value="&#x1F3C4; Catch Another Wave! &#x1F30A;" style="width: 100%;" onclick="showLoading()"> </h2> <!-- SURF Button to go to recommend_page -->
     </form> 
   </div>
 </div>
+
+
+
+<script>
+  function sendFeedback(feedback, recId) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/recommend_page');
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        console.log(xhr.responseText);
+      } else {
+        console.log('Request failed. Status:', xhr.status);
+      }
+    };
+    xhr.onerror = function() {
+      console.log('Request failed. Network Error.');
+    };
+    var formData = 'feedback=' + encodeURIComponent(feedback) +
+                   '&recId=' + encodeURIComponent(recId);
+    xhr.send(formData);
+  }
+</script>
 
 
 

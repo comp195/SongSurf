@@ -67,6 +67,7 @@ class LikeDislike(db.Model):
     user = db.relationship('User', backref=db.backref('likes_dislikes', lazy=True)) # FK relationship
 
     __table_args__ = (
+        db.UniqueConstraint('user_id', 'entity_type', 'entity_id'), # ensure a user cant like an item more than once
         db.CheckConstraint("entity_type IN ('artist', 'album', 'track')"),
     )
 
@@ -288,21 +289,21 @@ def get_album_likes(app, user_id):
         likes = db.session.query(LikeDislike.entity_id)\
                 .filter(LikeDislike.entity_type == 'album', LikeDislike.liked == True, LikeDislike.user_id == user_id)\
                 .all()
-        ids = [likes[0] for like in likes] # Extract only the first element (the id) of each tuple 
+        ids = [like[0] for like in likes] # Extract only the first element (the id) of each tuple 
         return ids
 def get_artist_likes(app, user_id):
     with app.app_context():
         likes = db.session.query(LikeDislike.entity_id)\
                 .filter(LikeDislike.entity_type == 'artist', LikeDislike.liked == True, LikeDislike.user_id == user_id)\
                 .all()
-        ids = [likes[0] for like in likes] # Extract only the first element (the id) of each tuple 
+        ids = [like[0] for like in likes] # Extract only the first element (the id) of each tuple 
         return ids
 def get_track_likes(app, user_id):
     with app.app_context():
         likes = db.session.query(LikeDislike.entity_id)\
                 .filter(LikeDislike.entity_type == 'track', LikeDislike.liked == True, LikeDislike.user_id == user_id)\
                 .all()
-        ids = [likes[0] for like in likes] # Extract only the first element (the id) of each tuple 
+        ids = [like[0] for like in likes] # Extract only the first element (the id) of each tuple 
         return ids
 
 def get_album_dislikes(app, user_id):
