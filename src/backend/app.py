@@ -4,11 +4,27 @@ import database
 from flask import Flask, render_template, url_for, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 
-
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+from spotipy.oauth2 import SpotifyOAuth
+import requests
 
 import artist as artist
 import album 
 import track
+
+##### API INFORMATION ######
+client_id = '52d2576fa6ce4b1b8c45eb1b35107ef4'
+client_secret = '66c44d6c558b4b2eb90946c81d233390'
+redirect_uri = 'http://127.0.0.1:8000'
+
+os.environ['SPOTIPY_CLIENT_ID'] = client_id
+os.environ['SPOTIPY_CLIENT_SECRET'] = client_secret
+os.environ['SPOTIPY_REDIRECT_URI'] = redirect_uri
+
+client_credentials_manager = SpotifyClientCredentials()
+sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
+#############################
 
 app = Flask(__name__, static_folder='../frontend/static', template_folder='../frontend/templates')
 # Specify the full path of the database file
@@ -58,14 +74,15 @@ def search_page():
             error_message = "Please fill out all three input fields."
             return render_template('search_page.html', message=error_message)
 
+        
+        # Check if a radio button is selected
+        if not request.form.get('radio_button'):
+            error_message = "Please select a category: Artists, Albums, or Songs"
+            return render_template('search_page.html', message=error_message)
+
          # Check if any input fields are empty
         if (request.form['show_type'] == 'Albums' or request.form['show_type'] == 'Songs') and (not request.form['user_choice4'] or not request.form['user_choice5'] or not request.form['user_choice6']):
             error_message = "Please fill out all the artist input fields."
-            return render_template('search_page.html', message=error_message)
-        
-        # Check if a radio button is selected
-        if not request.form.get('show_type'):
-            error_message = "Please select a category: Artists, Albums, or Songs"
             return render_template('search_page.html', message=error_message)
 
         # Check for unique inputs
@@ -285,6 +302,24 @@ def get_recommendations(show_type, user_id, user_choices):
 
         return track_objects, artist_names
 
+# Function called to play a song on Spotify
+def play_song(track_uri):
+	scope = "user-read-playback-state,user-modify-playback-state"
+	sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_id,
+	                                               client_secret=client_secret,
+	                                               redirect_uri=redirect_uri,
+	                                               scope=scope))
+
+	current_track = sp.current_playback()
+	if current_track is not None:
+	    # If a song is playing, pause it
+	    sp.pause_playback()
+
+	devices = sp.devices()
+	deviceID = devices['devices'][0]['id']
+
+	# Play on first device found
+	sp.start_playback(deviceID, None, [track_uri])
 
 
 if __name__ == "__main__":
