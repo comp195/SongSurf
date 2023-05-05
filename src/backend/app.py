@@ -149,6 +149,10 @@ def recommend_page():
         favorites = [database.get_item_object_from_id(app, item, item_type) for item in favorite_ids]
         
         if feedback == "like" or feedback == "dislike": # if like/dislike is clicked
+            if (user_id == 2): # if guest
+                guest_error_message = "Please make an account to get like or dislike music."
+                print(guest_error_message)
+                return render_template('recommend_page.html', user=user_id, item_type=item_type, recommendations=recommendations, artist_names=artist_names, favorites=favorites, guest_error_message=guest_error_message)
             feedback = request.form.get('feedback')
             rec_id = request.form.get('recId')
             print(feedback)
@@ -169,13 +173,13 @@ def recommend_page():
             print(item_type)
             # If artists were chosen, treat user input as all artists, etc.
             if item_type == 'artist':
+                for rec in recommendations: # Set recommendation = true
+                    database.set_recommended(app, user_id, rec.artist_id, 'artist')
                 artist_ids = database.get_artist_recommendations(app, user_id)
                 recommendations = [database.get_item_object_from_id(app, artist_id, 'artist') for artist_id in artist_ids][:3]
                 if not recommendations:
                     error_message = "No tags were able to be found for any of the artists.  Please try other artists."
                     return render_template('search_page.html', message=error_message)
-                for rec in recommendations: # Set recommendation = true
-                    database.set_recommended(app, user_id, rec.artist_id, 'artist')
                 return render_template('recommend_page.html', user=user_id, user_choice='Artists', recommendations=recommendations, item_type='artist', favorites=favorites)
 
             elif item_type == 'album':

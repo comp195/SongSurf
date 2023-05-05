@@ -97,18 +97,18 @@ def get_artist_audio(a1):
 	artist_name = a1
 
 	results = sp.search(q='artist:' + artist_name, type='artist')	# search fr artist
-	
+
 	if len(results['artists']['items']) > 0:
-	    artist_uri = results['artists']['items'][0]['uri']	# get artist uri
+		artist_uri = results['artists']['items'][0]['uri']	# get artist uri
 	else:
-	    print("No results found for " + artist_name)
+		print("No results found for " + artist_name)
 
 	top_tracks = sp.artist_top_tracks(artist_uri)	# get top tracks from artist
 
 	if len(top_tracks['tracks']) > 0:
-	    track_uri = top_tracks['tracks'][0]['uri']	# get top track uri
+		track_uri = top_tracks['tracks'][0]['uri']	# get top track uri
 	else:
-	    print("No top tracks found for " + artist_name)
+		print("No top tracks found for " + artist_name)
 
 	return track_uri
 
@@ -118,16 +118,16 @@ def get_artist_image(a1):
 	artist_name = "a1"
 
 	results = sp.search(q='artist:' + artist_name, type='artist')	# search fr artist
-	
+
 	if len(results['artists']['items']) > 0:
-	    artist_uri = results['artists']['items'][0]['uri']	# get artist uri
+		artist_uri = results['artists']['items'][0]['uri']	# get artist uri
 	else:
-	    print("No results found for " + artist_name)
+		print("No results found for " + artist_name)
 
 	artist = sp.artist(artist_id)
-    picture_url = artist['images'][0]['url']
+	picture_url = artist['images'][0]['url']
 
-    return picture_url
+	return picture_url
 
 
 def test_artist(app):

@@ -23,29 +23,36 @@
   <div style= "text-align: center; align-items: center;"><h2>Your Favorites</h2>
   </div>
     <!-- Add your favorite items here -->
-    <h2> Artists &#127908; </h2>
-    {% for favorite in favorites %}
-      {% if favorite.artist_id is defined and favorite.album_id is not defined %}
-        <h3>{{ favorite.name }}</h3>
-      {% endif %}
-    {% endfor %}
-    <h2> Albums &#127926; </h2>
-    {% for favorite in favorites %}
-      {% if favorite.album_id is defined %}
-        <h3>{{ favorite.name }}</h3>
-      {% endif %}
-    {% endfor %}
-    <h2> Tracks &#127925; </h2>
-    {% for favorite in favorites %}
-      {% if favorite.track_id is defined %}
-        <h3>{{ favorite.name }}</h3>
-      {% endif %}
-    {% endfor %}
+    {% if user == 2 %}
+    <div>
+      <h1 style="text-align: center;"> <span>To see favorites</span><a href="{{ url_for('login_page') }}"><br>Join SongSurf</a><h1>
+    </div>
+    {% else %}
+      <h2> Artists &#127908; </h2>
+      {% for favorite in favorites %}
+        {% if favorite.artist_id is defined and favorite.album_id is not defined %}
+          <h3>{{ favorite.name }}</h3>
+        {% endif %}
+      {% endfor %}
+      <h2> Albums &#127926; </h2>
+      {% for favorite in favorites %}
+        {% if favorite.album_id is defined %}
+          <h3>{{ favorite.name }}</h3>
+        {% endif %}
+      {% endfor %}
+      <h2> Tracks &#127925; </h2>
+      {% for favorite in favorites %}
+        {% if favorite.track_id is defined %}
+          <h3>{{ favorite.name }}</h3>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
 
 </div>
   
 <div class="content">
-  <h2 style="text-align:center;">Here are some {{ user_choice }} you caught in the wave! &#x1F30A;</h2>
+  <h2 style="text-align:center;">Here are some {{ user_choice }} {{ guest_error_message }} you caught in the wave! &#x1F30A;</h2>
   <div class="recommendations">
     {% for rec in recommendations %}
     <div class="recommendation-container">
@@ -128,7 +135,11 @@
     </form> 
   </div>
 </div>
-
+{% if user == 2 %}
+<div>
+  <h1 style="text-align: center;"> <span>To like/dislike and more - </span><a href="{{ url_for('login_page') }}">Join SongSurf</a><h1>
+</div>
+{% endif %}
 
 
 <script>

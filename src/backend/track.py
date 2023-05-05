@@ -121,9 +121,9 @@ def get_track_audio(song_name, artist_name):
 	results = sp.search(q='track:' + song_name + ' artist:' + artist_name, type='track')	# search for track
 
 	if len(results['tracks']['items']) > 0:
-	    track_uri = results['tracks']['items'][0]['uri']	# get track uri
+		track_uri = results['tracks']['items'][0]['uri']	# get track uri
 	else:
-	    print("No results found for " + song_name + " by " + artist_name)
+		print("No results found for " + song_name + " by " + artist_name)
 
 	return track_uri
 
@@ -131,16 +131,16 @@ def get_track_image(song_name, artist_name):
 	print("Retrieving image...")
 
 	results = sp.search(q='track:' + song_name + ' artist:' + artist_name, type='track')	# search for track
-	
+
 	if len(results['tracks']['items']) > 0:
-	    track_uri = results['tracks']['items'][0]['uri']	# get track uri
+		track_uri = results['tracks']['items'][0]['uri']	# get track uri
 	else:
-	    print("No results found for " + song_name + " by " + artist_name)
+		print("No results found for " + song_name + " by " + artist_name)
 
 	artist = sp.artist(artist_uri)
 	picture_url = artist['images'][0]['url']
 
-    return picture_url
+	return picture_url
 
 def get_track_video(track, track_artist):
 	print("Retrieving video...")
