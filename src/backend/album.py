@@ -114,10 +114,8 @@ def get_album_info(album, album_artist):
 	info = {'image': image_url, 'description': bio, 'video_link': video_link, 'url_link': album_link}
 	return (info, track_names)
 
-def get_album_audio(a1):
+def get_album_audio(album_name, artist_name):
 	print("Retrieving audio...")
-
-	album_name = "a1"
 
 	results = sp.search(q='album:' + album_name + ' artist:' + artist_name, type='album')	# search for album
 	
@@ -134,6 +132,21 @@ def get_album_audio(a1):
 	    print("No tracks found for " + album_name + " by " + artist_name)
 
 	return track_uri
+
+def get_album_image(album_name, artist_name):
+	print("Retrieving image...")
+
+	results = sp.search(q='album:' + album_name + ' artist:' + artist_name, type='album')	# search for album
+	
+	if len(results['albums']['items']) > 0:
+	    album_uri = results['albums']['items'][0]['uri']	# get album uri
+	else:
+	    print("No results found for " + album_name + " by " + artist_name)
+
+	album = sp.album(album_uri)
+	picture_url = album['images'][0]['url']
+
+    return picture_url
 
 def get_album_video(album, album_artist):
 	print("Retrieving video...")

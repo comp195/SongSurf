@@ -94,7 +94,7 @@ def get_artist_info(a1):
 def get_artist_audio(a1):
 	print("Retrieving audio...")
 
-	artist_name = "a1"
+	artist_name = a1
 
 	results = sp.search(q='artist:' + artist_name, type='artist')	# search fr artist
 	
@@ -111,6 +111,23 @@ def get_artist_audio(a1):
 	    print("No top tracks found for " + artist_name)
 
 	return track_uri
+
+def get_artist_image(a1):
+	print("Retrieving image...")
+
+	artist_name = "a1"
+
+	results = sp.search(q='artist:' + artist_name, type='artist')	# search fr artist
+	
+	if len(results['artists']['items']) > 0:
+	    artist_uri = results['artists']['items'][0]['uri']	# get artist uri
+	else:
+	    print("No results found for " + artist_name)
+
+	artist = sp.artist(artist_id)
+    picture_url = artist['images'][0]['url']
+
+    return picture_url
 
 
 def test_artist(app):
