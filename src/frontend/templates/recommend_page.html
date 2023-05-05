@@ -24,9 +24,11 @@
   </div>
     <!-- Add your favorite items here -->
     {% if user == 2 %}
-    <div>
-      <h1 style="text-align: center;"> <span>To see favorites</span><a href="{{ url_for('login_page') }}"><br>Join SongSurf</a><h1>
+    <div style="display: flex; flex-direction: column; align-items: center; text-align: center;">
+      <p style="font-size: large;">To see your favorites, join SongSurf!</p>
+      <a href="{{ url_for('login_page') }}" style="text-decoration: none; padding: 10px 20px; background-color: #0097d0; color: #fff; border-radius: 5px; font-weight: bold;">Join</a>
     </div>
+    
     {% else %}
       <h2 style= "text-align: center; align-items: center;"> <u>Artists &#127908;</u> </h2>
       {% for favorite in favorites %}
@@ -148,7 +150,11 @@
 </div>
 {% if user == 2 %}
 <div>
-  <h1 style="text-align: center;"> <span>To like/dislike and more - </span><a href="{{ url_for('login_page') }}">Join SongSurf</a><h1>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    <p style="font-size: medium;">To use the like and dislike features and more, join SongSurf!</p>
+    <a href="{{ url_for('login_page') }}" style="text-decoration: none; padding: 10px 20px; background-color: #0097d0; color: #fff; border-radius: 5px; font-weight: bold;">Join</a>
+  </div>
+  
 </div>
 {% endif %}
 
