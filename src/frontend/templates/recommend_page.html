@@ -38,7 +38,7 @@
       {% endfor %}
       <h2 style= "text-align: center; align-items: center;"> <u>Albums &#127926;</u> </h2>
       {% for favorite in favorites %}
-        {% if favorite.album_id is defined %}
+        {% if favorite.album_id is defined and favorite.track_id is not defined %}
           <li style= "text-align: center; align-items: center;">{{ favorite.name }}</li>
         {% endif %}
       {% endfor %}
