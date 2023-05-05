@@ -10,6 +10,42 @@ __SongSurf__ allows you to discover new music that you'll love through an inform
 * Intuitive and easy to use interface
 * and more!
 
+### How to [Install and Run](Documentation/HOW_TO_RUN.txt)
+1. Install [Python 3](https://www.python.org/downloads/)
+2. Clone repository, then enter
+``` 
+unix/win> git clone https://github.com/comp195/SongSurf.git
+unix/win> cd SongSurf
+```
+3. Create a virtual environment
+``` 
+windows> python -m venv my_venv
+or
+unix> python3 -m venv my_venv
+```
+4. Activate virtual environment
+```
+windows> my_venv\Scripts\activate
+or
+unix> source my_venv/bin/activate
+```
+5. Install the required libraries
+```
+windows> pip install -r requirements.txt
+or
+unix> pip3 install -r requirements.txt
+```
+6. Run the flask server
+```
+windows> python src/backend/app.py
+or
+unix> python3 src/backend/app.py
+```
+7. Open the website link in the console
+```
+http://127.0.0.1:8000
+```
+
 ## Application - Demonstration
 ### Welcome User
 <img src="Images/home_page.PNG" 
@@ -48,19 +84,7 @@ __SongSurf__ allows you to discover new music that you'll love through an inform
 2. William Balbuena: w_balbuena@u.pacific.edu
 3. Patrick Nisperos: p_nisperos@u.pacific.edu
 
-### Development Environment
-How to get a working development environment:
-1. Install [Python 3](https://www.python.org/downloads/)
-2. Create a virtual environment
-``` 
-windows> python -m venv my_venv
-or
-unix> python3 -m venv my_venv
-```
-3. Install the required libraries
-```
-unix/win> pip install -r requirements.txt
-```
+
 
 ### Tech Stack
 - [Flask](https://flask.palletsprojects.com/en/2.2.x/) - 🛠️ The Python micro framework for building web applications.
