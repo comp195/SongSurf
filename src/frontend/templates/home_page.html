@@ -116,9 +116,14 @@ function showSlides() {
         <p>SongSurf is a well-designed music discovery website that can offer personalized recommendations based on what you input. By joining such a website, you can not only 
         discover new music that you'll love but also track your favorite discoveries, explore new genres, and broaden your musical horizons.</p>
         <p>Join now to track your favorite discoveries for future use and for more personalized recommendations!</p>
-      <a class="button" href="{{ url_for('signup_page') }}">Join</a>
-      <h2></h2>
-      <a class="button" href="{{ url_for('search_page') }}">Surf as Guest</a>
+      
+
+      <form action="/home_page" method="POST">
+        <button type="submit" class="button">Join</button>
+        <h2></h2>
+        <input type="hidden" name="logged_in_user_id" value="2">
+        <button type="submit" class="button">Surf as Guest</button>
+      </form>
   {% endif %}
     
 

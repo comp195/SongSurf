@@ -230,9 +230,18 @@ def recommend_page():
     else:
         return render_template('recommend_page.html', user=user_id, item_type=item_type, recommendations=recommendations, artist_names=artist_names, favorites=favorites)
 
-@app.route('/home_page')
+@app.route('/home_page', methods=['POST', 'GET'])
 def home_page():
-    return render_template('home_page.html')
+    if request.method == 'POST': # if join/surf as guest is clicked
+        user_id = int(request.form['logged_in_user_id'])
+        print(user_id)
+        if (user_id == 2):
+            session['logged_in_user_id'] = 2
+            return redirect('/search_page')
+        else:
+            return redirect('/signup_page')
+    else:
+        return render_template('home_page.html')
 
 @app.route('/login_page', methods=['POST', 'GET'])
 def login_page():
