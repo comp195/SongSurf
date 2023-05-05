@@ -124,6 +124,8 @@ def search_page():
 def recommend_page():
     print("recommend here")
     user_id = session.get('logged_in_user_id')
+    print("user id = ")
+    print(user_id)
     item_type = session.get('item_type')
     if request.method == 'POST':  # If a POST request is received (feedback submission)
         feedback = request.form.get('feedback')
@@ -183,25 +185,26 @@ def recommend_page():
                 return render_template('recommend_page.html', user=user_id, user_choice='Artists', recommendations=recommendations, item_type='artist', favorites=favorites)
 
             elif item_type == 'album':
+                for rec in recommendations: # Set recommendation = true
+                    database.set_recommended(app, user_id, rec.album_id, 'album')
                 album_ids = database.get_album_recommendations(app, user_id)
                 recommendations = [database.get_item_object_from_id(app, album_id, 'album') for album_id in album_ids][:3]
                 artist_names = [database.get_name(app, album.artist_id, 'artist') for album in recommendations]
                 if not recommendations:
                     error_message = "No tags were able to be found for any of the albums.  Please try other albums."
                     return render_template('search_page.html', message=error_message)
-                for rec in recommendations: # Set recommendation = true
-                    database.set_recommended(app, user_id, rec.album_id, 'album')
+
                 return render_template('recommend_page.html', user=user_id, user_choice='Albums', recommendations=recommendations, item_type='album', artist_names=artist_names, favorites=favorites)
 
             elif item_type == 'track':
+                for rec in recommendations: # Set recommendation = true
+                    database.set_recommended(app, user_id, rec.track_id, 'track')
                 track_ids = database.get_track_recommendations(app, user_id)
                 recommendations = [database.get_item_object_from_id(app, track_id, 'track') for track_id in track_ids][:3]
                 artist_names = [database.get_name(app, track.artist_id, 'artist') for track in recommendations]
                 if not recommendations:
                     error_message = "No tags were able to be found for any of the tracks.  Please try other tracks."
                     return render_template('search_page.html', message=error_message)
-                for rec in recommendations: # Set recommendation = true
-                    database.set_recommended(app, user_id, rec.track_id, 'track')
                 return render_template('recommend_page.html', user=user_id, user_choice='Tracks', recommendations=recommendations, item_type='track', artist_names=artist_names, favorites=favorites)
         else:
             return render_template('recommend_page.html', user=user_id, item_type=item_type, recommendations=recommendations, artist_names=artist_names, favorites=favorites)

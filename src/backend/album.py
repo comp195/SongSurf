@@ -109,9 +109,9 @@ def get_album_info(album, album_artist):
 	except KeyError:
 		bio = "No bio available for this album."
 
-	video_link = get_album_video(album, album_artist)
+	audio_link = get_album_audio(album, album_artist)
 
-	info = {'image': image_url, 'description': bio, 'video_link': video_link, 'url_link': album_link}
+	info = {'image': image_url, 'description': bio, 'audio_link': audio_link, 'url_link': album_link}
 	return (info, track_names)
 
 def get_album_audio(album_name, artist_name):

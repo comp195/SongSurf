@@ -12,7 +12,7 @@ body {
 .recommendations > .recommendation-container {
   margin: 30px;
   width: calc(20% - 15px);
-  height: 575px;
+  height: 700px;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -63,16 +63,18 @@
       {% if rec is iterable and not rec|string %}
         {% for r in rec %}
           <div class="recommendation_section">
-            <!--<img src={{rec.image}} alt="Image">-->
-            <iframe src="{{ rec.video_link }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            <img src={{rec.image}} style="width:250px; height:250px;" alt="Image">
+            <!-- <iframe src="{{ rec.video_link }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> -->
             {% if rec.description|length != 1 %}
               {% if rec.description|length > 235 %}
                 <div class="description-container">
                   <p class="description">{{ rec.description[:150] }}<span>...<a class="link" href={{rec.url_link}} target="_blank">Read More!</a></span></p>
+                  <p class="description"><a class="link" href={{rec.audio_link}} target="_blank"><br>Listen Now</a></span></p>
                 </div>
               {% else %}
                 <div class="description-container">
                   <p class="description">{{ rec.description }}<span><a class="link" href={{rec.url_link}} target="_blank">Read More!</a></span></p>
+                  <p class="description"><a class="link" href={{rec.audio_link}} target="_blank"><br>Listen Now</a></span></p>
                 </div>
               {% endif %}
             {% else %}
@@ -84,16 +86,18 @@
         {% endfor %}
       {% else %}
         <div class="recommendation_section">
-            <!--<img src={{rec.image}} alt="Image">-->
-            <iframe src="{{ rec.video_link }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            <img src={{rec.image}} style="width:250px; height:250px;" alt="Image">
+            <!-- <iframe src="{{ rec.video_link }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> -->
             {% if rec.description|length != 1 %}
               {% if rec.description|length > 235 %}
                 <div class="description-container">
                   <p class="description">{{ rec.description[:150] }}<span>...<a class="link" href={{rec.url_link}} target="_blank">Read More!</a></span></p>
+                  <p class="description"><a class="link" href={{rec.audio_link}} target="_blank"><br>Listen Now</a></span></p>
                 </div>
               {% else %}
                 <div class="description-container">
                   <p class="description">{{ rec.description}}<span><a class="link" href={{rec.url_link}} target="_blank">Read More!</a></span></p>
+                  <p class="description"><a class="link" href={{rec.audio_link}} target="_blank"><br>Listen Now</a></span></p>
                 </div>
               {% endif %}
             {% else %}

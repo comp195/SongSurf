@@ -110,9 +110,9 @@ def get_track_info(track, track_artist):
 	except KeyError:
 		bio = "No bio available for this track."
 
-	video_link = get_track_video(track, track_artist)
+	audio_link = get_track_audio(track, track_artist)
 
-	info = {'image': image_url, 'description': bio, 'video_link': video_link, 'url_link': track_link, 'album_name': album_name}
+	info = {'image': image_url, 'description': bio, 'audio_link': audio_link, 'url_link': track_link, 'album_name': album_name}
 	return info
 
 def get_track_audio(song_name, artist_name):

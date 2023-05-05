@@ -81,13 +81,14 @@ def get_artist_info(a1):
 	r = requests.get('https://ws.audioscrobbler.com/2.0/', headers=headers, params=payload)
 	data = json.loads(r.text)
 
-	image_url=data["artist"]["image"][-1]["#text"]
+	image_url= get_artist_image(a1)
 	bio = data["artist"]["bio"]["summary"].split("<a")[0]
 	artist_link = data["artist"]["url"]
 
-	video_link = get_artist_video(a1)
+	#video_link = get_artist_video(a1)
+	audio_link = get_artist_audio(a1)
 
-	info = {'image': image_url, 'description': bio, 'video_link': video_link, 'url_link': artist_link}
+	info = {'image': image_url, 'description': bio, 'audio_link': audio_link, 'url_link': artist_link}
 
 	return info
 
