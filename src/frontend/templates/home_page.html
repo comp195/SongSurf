@@ -27,7 +27,7 @@
         <p>Sign In</p>
       </div>
       <img src='static/css/images/linkedin-square-logo.png' onclick="openSites()" style="cursor: pointer; position: absolute; top: -35px; right: 80px;">
-      <a href="{{ url_for('signup_page') }}"><img src="static/css/images/profile.png" style="cursor: pointer; position: absolute; top: -35px; right: 175px;"></a>
+      <a href="{{ url_for('login_page') }}"><img src="static/css/images/profile.png" style="cursor: pointer; position: absolute; top: -35px; right: 175px;"></a>
     </div>
   </div>       
 </td>
@@ -102,9 +102,9 @@ function showSlides() {
     
     SongSurf is a well-designed music discovery website that can offer personalized recommendations based on what you input. By joining such a website, you can not only 
     discover new music that you'll love but also track your favorite discoveries, explore new genres, and broaden your musical horizons. </p>
-    <h2>Welcome {{ username }}!</h2> <p>Start Surfing Now! &#x1F30A;</p>
+    <h2 style="color: black;">Welcome {{ username }}!</h2> <p>Start Surfing Now! &#x1F30A;</p>
     
-    <a href="{{ url_for('search_page') }}">Surf</a>
+    <a class="button" href="{{ url_for('search_page') }}">Surf</a>
   {% else %}
     <p>
       Music has always been an integral part of human culture, providing a means of expression, entertainment, and even therapy. Whether it's to lift our spirits, soothe 
