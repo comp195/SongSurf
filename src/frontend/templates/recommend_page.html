@@ -78,7 +78,6 @@
               {% else %}
                 <div class="description-container">
                   <p class="description">{{ rec.description }}<span><a class="link" href={{rec.url_link}} target="_blank">Read More!</a></span></p>
-                  <p class="description"><a class="link" href={{rec.audio_link}} target="_blank"><br>Listen Now</a></span></p>
                 </div>
               {% endif %}
             {% else %}
@@ -103,7 +102,6 @@
               {% else %}
                 <div class="description-container">
                   <p class="description">{{ rec.description}}<span><a class="link" href={{rec.url_link}} target="_blank">Read More!</a></span></p>
-                  <p class="description"><a class="link" href={{rec.audio_link}} target="_blank"><br>Listen Now</a></span></p>
                 </div>
               {% endif %}
             {% else %}
@@ -140,9 +138,14 @@
     <a href="{{ url_for('search_page') }}" ><img src='static/css/images/backarrow.png' style="width:75px; height:45px;"></a>
   </div>
   <div style="width: calc(20% - 15px); margin-left: 550px;">
+    {% if not no_more_recs %}
     <form action="/recommend_page" method="POST">
       <h2><input type="submit" class="surf-button" name="refresh_button" value="&#x1F3C4; Catch Another Wave! &#x1F30A;" style="width: 100%;" onclick="showLoading()"> </h2> <!-- SURF Button to go to recommend_page -->
     </form> 
+    {% else %}
+    <h2 style="white-space: nowrap; color:#0097d0;">Low-tide at the moment, search for new waves!</h2>
+    {% endif %}
+    
   </div>
 </div>
 {% if user == 2 %}
