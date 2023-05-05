@@ -112,10 +112,8 @@ def get_artist_audio(a1):
 
 	return track_uri
 
-def get_artist_image(a1):
+def get_artist_image(artist_name):
 	print("Retrieving image...")
-
-	artist_name = "a1"
 
 	results = sp.search(q='artist:' + artist_name, type='artist')	# search fr artist
 	
@@ -124,7 +122,7 @@ def get_artist_image(a1):
 	else:
 	    print("No results found for " + artist_name)
 
-	artist = sp.artist(artist_id)
+	artist = sp.artist(artist_uri)
     picture_url = artist['images'][0]['url']
 
     return picture_url
