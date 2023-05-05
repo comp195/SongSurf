@@ -74,14 +74,15 @@ def search_page():
             error_message = "Please fill out all three input fields."
             return render_template('search_page.html', message=error_message)
 
+        
+        # Check if a radio button is selected
+        if not request.form.get('radio_button'):
+            error_message = "Please select a category: Artists, Albums, or Songs"
+            return render_template('search_page.html', message=error_message)
+
          # Check if any input fields are empty
         if (request.form['show_type'] == 'Albums' or request.form['show_type'] == 'Songs') and (not request.form['user_choice4'] or not request.form['user_choice5'] or not request.form['user_choice6']):
             error_message = "Please fill out all the artist input fields."
-            return render_template('search_page.html', message=error_message)
-        
-        # Check if a radio button is selected
-        if not request.form.get('show_type'):
-            error_message = "Please select a category: Artists, Albums, or Songs"
             return render_template('search_page.html', message=error_message)
 
         # Check for unique inputs
