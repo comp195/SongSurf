@@ -1,132 +1,136 @@
-  {% extends 'base.html' %}
+{% extends 'base.html' %}
 
-  {% block head %}
-  <title>SongSurf Homepage</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/home_page.css') }}">
-  {% endblock %}
-  
-  {% block body %} 
-  
-  <html>
-  <head>
-  <title>SongSurf Homepage </title>
-  <body style="background-color: #c9e9cb">
-  <tr>
-  
-  <!--<td align="center" style="color:#ffffff;font-size:50px;text-shadow:2px 2px 2px #27ae60">SongSurf</td>-->
-  <td>
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-      <div style="margin-left: 120px;">
-        <img src='static/css/images/SongSurf Logo.png' style="width:250px" height="100px">
+{% block head %}
+<title>SongSurf Homepage</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home_page.css') }}">
+{% endblock %}
+
+{% block body %} 
+
+<html>
+<head>
+<title>SongSurf Homepage </title>
+<body style="background-color: #c9e9cb">
+<tr>
+
+<!--<td align="center" style="color:#ffffff;font-size:50px;text-shadow:2px 2px 2px #27ae60">SongSurf</td>-->
+<td>
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div style="margin-left: 120px;">
+      <img src='static/css/images/SongSurf Logo.png' style="width:270px" height="120px">
+    </div>
+    <div style="position: relative;">
+      <div style="position: absolute; top: 15px; right: 0; font-size: small;">
+        <p>Contact Us</p>
       </div>
-      <div style="position: relative;">
-        <div style="position: absolute; top: 15px; right: 0; font-size: small;">
-          <p>Contact Us</p>
-        </div>
-        <img src='static/css/images/linkedin-square-logo.png' onclick="openSites()" style="cursor: pointer; position: absolute; top: -35px; right: 80px;">
+      <div style="position: absolute; top: 15px; right: 100px; font-size: small; white-space: nowrap">
+        <p>Sign In</p>
       </div>
-    </div>       
-  </td>
-    
-  </tr>
-  </table><br><br><br><br><br><br><br>
+      <img src='static/css/images/linkedin-square-logo.png' onclick="openSites()" style="cursor: pointer; position: absolute; top: -35px; right: 80px;">
+      <a href="{{ url_for('signup_page') }}"><img src="static/css/images/profile.png" style="cursor: pointer; position: absolute; top: -35px; right: 175px;"></a>
+    </div>
+  </div>       
+</td>
   
-  <div style="margin-left: 120px; margin-right: 10;" class="slideshow-container">
-  
-  <div class="mySlides fade"> 
-    <div class="numbertext"></div>
-    <img class="img" src="static/css/images/music1.png">
-    <div class="text"></div>
-  </div>
-  
-  <div class="mySlides fade">
-    <div class="numbertext"></div>
-    <img class="img" src="static/css/images/music2.png">
-    <div class="text"></div>
-  </div>
-  
-  <div class="mySlides fade">
-    <div class="numbertext"></div>
-    <img class="img" src="static/css/images/music3.png">
-    <div class="text"></div>
-  </div>
-  
-  <div class="mySlides fade">
-    <div class="numbertext"></div>
-    <img class="img" src="static/css/images/music4.png">
-    <div class="text"></div>
-  </div>
-  <div style="text-align:center">
-    <span class="dot"></span> 
-    <span class="dot"></span> 
-    <span class="dot"></span> 
-    <span class="dot"></span> 
-  </div>
-  </div>
-  <br>
-  </td>
-  </tr>
-  
-  <script>
-  var slideIndex = 0;
-  showSlides();
-  
-  function showSlides() {
-    var i;
-    var slides = document.getElementsByClassName("mySlides");
-    var dots = document.getElementsByClassName("dot");
-    for (i = 0; i < slides.length; i++) {
-      slides[i].style.display = "none";  
-    }
-    slideIndex++;
-    if (slideIndex > slides.length) {slideIndex = 1}    
-    for (i = 0; i < dots.length; i++) {
-      dots[i].className = dots[i].className.replace(" active", "");
-    }
-    slides[slideIndex-1].style.display = "block";  
-    dots[slideIndex-1].className += " active";
-    setTimeout(showSlides, 4000); // Change image every 4 seconds
+</tr>
+</table><br><br><br><br><br><br><br>
+
+<div style="margin-left: 120px; margin-right: 10;" class="slideshow-container">
+
+<div class="mySlides fade"> 
+  <div class="numbertext"></div>
+  <img class="img" src="static/css/images/music1.png">
+  <div class="text"></div>
+</div>
+
+<div class="mySlides fade">
+  <div class="numbertext"></div>
+  <img class="img" src="static/css/images/music2.png">
+  <div class="text"></div>
+</div>
+
+<div class="mySlides fade">
+  <div class="numbertext"></div>
+  <img class="img" src="static/css/images/music3.png">
+  <div class="text"></div>
+</div>
+
+<div class="mySlides fade">
+  <div class="numbertext"></div>
+  <img class="img" src="static/css/images/music4.png">
+  <div class="text"></div>
+</div>
+<div style="text-align:center">
+  <span class="dot"></span> 
+  <span class="dot"></span> 
+  <span class="dot"></span> 
+  <span class="dot"></span> 
+</div>
+</div>
+<br>
+</td>
+</tr>
+
+<script>
+var slideIndex = 0;
+showSlides();
+
+function showSlides() {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("dot");
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";  
   }
-  </script>
-  <div class="about-container">
-    {% if logged_in %}
-    <p>Music has always been an integral part of human culture, providing a means of expression, entertainment, and even therapy. Whether it's to lift our spirits, soothe 
-      our minds, or simply enjoy the rhythm and melody, music has a profound impact on our emotions and well-being.
+  slideIndex++;
+  if (slideIndex > slides.length) {slideIndex = 1}    
+  for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";  
+  dots[slideIndex-1].className += " active";
+  setTimeout(showSlides, 4000); // Change image every 4 seconds
+}
+</script>
+<div class="about-container">
+  {% if logged_in %}
+  <p>Music has always been an integral part of human culture, providing a means of expression, entertainment, and even therapy. Whether it's to lift our spirits, soothe 
+    our minds, or simply enjoy the rhythm and melody, music has a profound impact on our emotions and well-being.
 
-      However, with the vast array of music genres, artists, and platforms available today, it can be overwhelming to navigate and discover new music that resonates with us. 
-      That's where an informative, attractive, and intuitive website comes in handy.
-      
-      SongSurf is a well-designed music discovery website that can offer personalized recommendations based on what you input. By joining such a website, you can not only 
-      discover new music that you'll love but also track your favorite discoveries, explore new genres, and broaden your musical horizons. </p>
-      <h2>Welcome {{ username }}!</h2> <p>Start Surfing Now! &#x1F30A;</p>
-      
-      <a href="{{ url_for('search_page') }}">Surf</a>
-    {% else %}
-      <p>
-        Music has always been an integral part of human culture, providing a means of expression, entertainment, and even therapy. Whether it's to lift our spirits, soothe 
-          our minds, or simply enjoy the rhythm and melody, music has a profound impact on our emotions and well-being. </p>
+    However, with the vast array of music genres, artists, and platforms available today, it can be overwhelming to navigate and discover new music that resonates with us. 
+    That's where an informative, attractive, and intuitive website comes in handy.
     
-         <p> However, with the vast array of music genres, artists, and platforms available today, it can be overwhelming to navigate and discover new music that resonates with us. 
-          That's where an informative, attractive, and intuitive website comes in handy.</p>
-          
-          <p>SongSurf is a well-designed music discovery website that can offer personalized recommendations based on what you input. By joining such a website, you can not only 
-          discover new music that you'll love but also track your favorite discoveries, explore new genres, and broaden your musical horizons.</p>
-          <p>Join now to track your favorite discoveries for future use and for more personalized recommendations!</p>
-        <a href="{{ url_for('login_page') }}">Join</a>
-        <h2></h2>
-        <a href="{{ url_for('search_page') }}">Surf as Guest</a>
-    {% endif %}
-      
+    SongSurf is a well-designed music discovery website that can offer personalized recommendations based on what you input. By joining such a website, you can not only 
+    discover new music that you'll love but also track your favorite discoveries, explore new genres, and broaden your musical horizons. </p>
+    <h2>Welcome {{ username }}!</h2> <p>Start Surfing Now! &#x1F30A;</p>
+    
+    <a href="{{ url_for('search_page') }}">Surf</a>
+  {% else %}
+    <p>
+      Music has always been an integral part of human culture, providing a means of expression, entertainment, and even therapy. Whether it's to lift our spirits, soothe 
+        our minds, or simply enjoy the rhythm and melody, music has a profound impact on our emotions and well-being. </p>
+  
+       <p> However, with the vast array of music genres, artists, and platforms available today, it can be overwhelming to navigate and discover new music that resonates with us. 
+        That's where an informative, attractive, and intuitive website comes in handy.</p>
+        
+        <p>SongSurf is a well-designed music discovery website that can offer personalized recommendations based on what you input. By joining such a website, you can not only 
+        discover new music that you'll love but also track your favorite discoveries, explore new genres, and broaden your musical horizons.</p>
+        <p>Join now to track your favorite discoveries for future use and for more personalized recommendations!</p>
+      <a class="button" href="{{ url_for('signup_page') }}">Join</a>
+      <h2></h2>
+      <a class="button" href="{{ url_for('search_page') }}">Surf as Guest</a>
+  {% endif %}
+    
 
-  </div>
+</div>
 
-  <script>
-    function openSites() {
-      window.open('https://www.linkedin.com/in/shahbaj-s-3a42b6233/', '_blank');
-      window.open('https://www.linkedin.com/in/patricknisperos/', '_blank');
-      window.open('https://www.linkedin.com/in/william-balbuena-490a49230/', '_blank');
-    }
-  </script>
+<script>
+  function openSites() {
+    window.open('https://www.linkedin.com/in/shahbaj-s-3a42b6233/', '_blank');
+    window.open('https://www.linkedin.com/in/patricknisperos/', '_blank');
+    window.open('https://www.linkedin.com/in/william-balbuena-490a49230/', '_blank');
+  }
+</script>
 
 </body>
 </html>
