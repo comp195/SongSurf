@@ -1,0 +1,36 @@
+How to Install and Run
+
+Install Python 3 from https://www.python.org/downloads/.
+
+Clone repository, then enter the following commands in the terminal:
+
+unix/win> git clone https://github.com/comp195/SongSurf.git
+unix/win> cd SongSurf
+
+Create a virtual environment by entering one of the following commands depending on your OS:
+
+windows> python -m venv my_venv
+or
+unix> python3 -m venv my_venv
+
+Activate the virtual environment:
+
+windows> my_venv\Scripts\activate
+or
+unix> source my_venv/bin/activate
+
+Install the required libraries:
+
+windows> pip install -r requirements.txt
+or
+unix> pip3 install -r requirements.txt
+
+Run the flask server:
+
+windows> python src/backend/app.py
+or
+unix> python3 src/backend/app.py
+
+Open the website link in the console:
+
+http://127.0.0.1:8000
