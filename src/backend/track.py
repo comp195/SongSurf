@@ -124,6 +124,7 @@ def get_track_audio(song_name, artist_name):
 		track_uri = results['tracks']['items'][0]['uri']	# get track uri
 	else:
 		print("No results found for " + song_name + " by " + artist_name)
+		track_uri = None
 
 	return track_uri
 

@@ -110,6 +110,7 @@ def get_artist_audio(a1):
 		track_uri = top_tracks['tracks'][0]['uri']	# get top track uri
 	else:
 		print("No top tracks found for " + artist_name)
+		track_uri = None
 
 	return track_uri
 

@@ -121,15 +121,13 @@ def get_album_audio(album_name, artist_name):
 
 	if len(results['albums']['items']) > 0:
 		album_uri = results['albums']['items'][0]['uri']	# get album uri
+		album_tracks = sp.album_tracks(album_uri)	# gets list of tracks from album
+		if album_tracks['items']:
+			track_uri = album_tracks['items'][0]['uri']	# get first track from album
 	else:
 		print("No results found for " + album_name + " by " + artist_name)
-
-	album_tracks = sp.album_tracks(album_uri)	# gets list of tracks from album
-
-	if album_tracks['items']:
-		track_uri = album_tracks['items'][0]['uri']	# get first track from album
-	else:
-		print("No tracks found for " + album_name + " by " + artist_name)
+		album_uri = None
+		track_uri = None
 
 	return track_uri
 
