@@ -110,24 +110,38 @@ def get_track_info(track, track_artist):
 	except KeyError:
 		bio = "No bio available for this track."
 
-	video_link = get_track_video(track, track_artist)
+	audio_link = get_track_audio(track, track_artist)
 
-	info = {'image': image_url, 'description': bio, 'video_link': video_link, 'url_link': track_link, 'album_name': album_name}
+	info = {'image': image_url, 'description': bio, 'audio_link': audio_link, 'url_link': track_link, 'album_name': album_name}
 	return info
 
-def get_track_audio(a1):
+def get_track_audio(song_name, artist_name):
 	print("Retrieving audio...")
-
-	song_name = "a1"
 
 	results = sp.search(q='track:' + song_name + ' artist:' + artist_name, type='track')	# search for track
 
 	if len(results['tracks']['items']) > 0:
-	    track_uri = results['tracks']['items'][0]['uri']	# get track uri
+		track_uri = results['tracks']['items'][0]['uri']	# get track uri
 	else:
-	    print("No results found for " + song_name + " by " + artist_name)
+		print("No results found for " + song_name + " by " + artist_name)
+		track_uri = None
 
 	return track_uri
+
+def get_track_image(song_name, artist_name):
+	print("Retrieving image...")
+
+	results = sp.search(q='artist:' + artist_name, type='artist')	# search fr artist
+
+	if len(results['artists']['items']) > 0:
+		artist_uri = results['artists']['items'][0]['uri']	# get artist uri
+	else:
+		print("No results found for " + artist_name)
+
+	artist = sp.artist(artist_uri)
+	picture_url = artist['images'][0]['url']
+
+	return picture_url
 
 def get_track_video(track, track_artist):
 	print("Retrieving video...")

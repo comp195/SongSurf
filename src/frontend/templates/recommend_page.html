@@ -41,11 +41,36 @@
         <li style= "text-align: center; align-items: center;">{{ favorite.name }}</li>
       {% endif %}
     {% endfor %}
+    {% if user == 2 %}
+    <div>
+      <h1 style="text-align: center;"> <span>To see favorites</span><a href="{{ url_for('login_page') }}"><br>Join SongSurf</a><h1>
+    </div>
+    {% else %}
+      <h2> Artists &#127908; </h2>
+      {% for favorite in favorites %}
+        {% if favorite.artist_id is defined and favorite.album_id is not defined %}
+          <h3>{{ favorite.name }}</h3>
+        {% endif %}
+      {% endfor %}
+      <h2> Albums &#127926; </h2>
+      {% for favorite in favorites %}
+        {% if favorite.album_id is defined %}
+          <h3>{{ favorite.name }}</h3>
+        {% endif %}
+      {% endfor %}
+      <h2> Tracks &#127925; </h2>
+      {% for favorite in favorites %}
+        {% if favorite.track_id is defined %}
+          <h3>{{ favorite.name }}</h3>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
 
 </div>
   
 <div class="content">
-  <h2 style="text-align:center;">Here are some {{ user_choice }} you caught in the wave! &#x1F30A;</h2>
+  <h2 style="text-align:center;">Here are some {{ user_choice }} {{ guest_error_message }} you caught in the wave! &#x1F30A;</h2>
   <div class="recommendations">
     {% for rec in recommendations %}
     <div class="recommendation-container">
@@ -56,16 +81,18 @@
       {% if rec is iterable and not rec|string %}
         {% for r in rec %}
           <div class="recommendation_section">
-            <!--<img src={{rec.image}} alt="Image">-->
-            <iframe src="{{ rec.video_link }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            <img src={{rec.image}} style="width:250px; height:250px;" alt="Image">
+            <!-- <iframe src="{{ rec.video_link }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> -->
             {% if rec.description|length != 1 %}
               {% if rec.description|length > 235 %}
                 <div class="description-container">
                   <p class="description">{{ rec.description[:150] }}<span>...<a class="link" href={{rec.url_link}} target="_blank">Read More!</a></span></p>
+                  <p class="description"><a class="link" href={{rec.audio_link}} target="_blank"><br>Listen Now</a></span></p>
                 </div>
               {% else %}
                 <div class="description-container">
                   <p class="description">{{ rec.description }}<span><a class="link" href={{rec.url_link}} target="_blank">Read More!</a></span></p>
+                  <p class="description"><a class="link" href={{rec.audio_link}} target="_blank"><br>Listen Now</a></span></p>
                 </div>
               {% endif %}
             {% else %}
@@ -77,16 +104,18 @@
         {% endfor %}
       {% else %}
         <div class="recommendation_section">
-            <!--<img src={{rec.image}} alt="Image">-->
-            <iframe src="{{ rec.video_link }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            <img src={{rec.image}} style="width:250px; height:250px;" alt="Image">
+            <!-- <iframe src="{{ rec.video_link }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> -->
             {% if rec.description|length != 1 %}
               {% if rec.description|length > 235 %}
                 <div class="description-container">
                   <p class="description">{{ rec.description[:150] }}<span>...<a class="link" href={{rec.url_link}} target="_blank">Read More!</a></span></p>
+                  <p class="description"><a class="link" href={{rec.audio_link}} target="_blank"><br>Listen Now</a></span></p>
                 </div>
               {% else %}
                 <div class="description-container">
                   <p class="description">{{ rec.description}}<span><a class="link" href={{rec.url_link}} target="_blank">Read More!</a></span></p>
+                  <p class="description"><a class="link" href={{rec.audio_link}} target="_blank"><br>Listen Now</a></span></p>
                 </div>
               {% endif %}
             {% else %}
@@ -128,7 +157,11 @@
     </form> 
   </div>
 </div>
-
+{% if user == 2 %}
+<div>
+  <h1 style="text-align: center;"> <span>To like/dislike and more - </span><a href="{{ url_for('login_page') }}">Join SongSurf</a><h1>
+</div>
+{% endif %}
 
 
 <script>

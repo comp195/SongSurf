@@ -28,9 +28,14 @@ album_name = "Pet Sounds"
 
 mode = "artist"
 
+picture_url = ""
+
 # GET TRACK 
 if mode == "song":
 	results = sp.search(q='track:' + song_name + ' artist:' + artist_name, type='track')	# search for track
+
+	artist = sp.artist(artist_uri)
+	picture_url = artist['images'][0]['url']
 
 	if len(results['tracks']['items']) > 0:
 	    track_uri = results['tracks']['items'][0]['uri']	# get track uri
@@ -48,6 +53,9 @@ if mode == "artist":
 
 	top_tracks = sp.artist_top_tracks(artist_uri)	# get top tracks from artist
 
+	artist = sp.artist(artist_uri)
+	picture_url = artist['images'][0]['url']
+
 	if len(top_tracks['tracks']) > 0:
 	    track_uri = top_tracks['tracks'][0]['uri']	# get top track uri
 	else:
@@ -64,10 +72,15 @@ if mode == "album":
 
 	album_tracks = sp.album_tracks(album_uri)	# gets list of tracks from album
 
+	album = sp.album(album_uri)
+	picture_url = album['images'][0]['url']
+
 	if album_tracks['items']:
 	    track_uri = album_tracks['items'][0]['uri']	# get first track from album
 	else:
 	    print("No tracks found for " + album_name + " by " + artist_name)
+
+print("Album/Artist Image: "+picture_url)
 
 # Get devices that are playing Spotify
 scope = "user-read-playback-state,user-modify-playback-state"

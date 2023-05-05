@@ -81,36 +81,53 @@ def get_artist_info(a1):
 	r = requests.get('https://ws.audioscrobbler.com/2.0/', headers=headers, params=payload)
 	data = json.loads(r.text)
 
-	image_url=data["artist"]["image"][-1]["#text"]
+	image_url= get_artist_image(a1)
 	bio = data["artist"]["bio"]["summary"].split("<a")[0]
 	artist_link = data["artist"]["url"]
 
-	video_link = get_artist_video(a1)
+	#video_link = get_artist_video(a1)
+	audio_link = get_artist_audio(a1)
 
-	info = {'image': image_url, 'description': bio, 'video_link': video_link, 'url_link': artist_link}
+	info = {'image': image_url, 'description': bio, 'audio_link': audio_link, 'url_link': artist_link}
 
 	return info
 
 def get_artist_audio(a1):
 	print("Retrieving audio...")
 
-	artist_name = "a1"
+	artist_name = a1
 
 	results = sp.search(q='artist:' + artist_name, type='artist')	# search fr artist
-	
+
 	if len(results['artists']['items']) > 0:
-	    artist_uri = results['artists']['items'][0]['uri']	# get artist uri
+		artist_uri = results['artists']['items'][0]['uri']	# get artist uri
 	else:
-	    print("No results found for " + artist_name)
+		print("No results found for " + artist_name)
 
 	top_tracks = sp.artist_top_tracks(artist_uri)	# get top tracks from artist
 
 	if len(top_tracks['tracks']) > 0:
-	    track_uri = top_tracks['tracks'][0]['uri']	# get top track uri
+		track_uri = top_tracks['tracks'][0]['uri']	# get top track uri
 	else:
-	    print("No top tracks found for " + artist_name)
+		print("No top tracks found for " + artist_name)
+		track_uri = None
 
 	return track_uri
+
+def get_artist_image(artist_name):
+	print("Retrieving image...")
+
+	results = sp.search(q='artist:' + artist_name, type='artist')	# search fr artist
+
+	if len(results['artists']['items']) > 0:
+		artist_uri = results['artists']['items'][0]['uri']	# get artist uri
+	else:
+		print("No results found for " + artist_name)
+
+	artist = sp.artist(artist_uri)
+	picture_url = artist['images'][0]['url']
+
+	return picture_url
 
 
 def test_artist(app):

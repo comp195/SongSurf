@@ -152,7 +152,7 @@ def update_database_with_items(app, user_id, item_type, items):
             if (database.get_artist_object(app, item) == None):
 
                 info = artist.get_artist_info(item)
-                database.add_item(app, 'artist', item, info['image'], info['description'], info['video_link'], info['url_link'])
+                database.add_item(app, 'artist', item, info['image'], info['description'], info['audio_link'], info['url_link'])
 
             cur_artist = database.get_artist_object(app, item)
             database.add_recommended(app, user_id, cur_artist.artist_id, 'artist')
@@ -166,12 +166,12 @@ def update_database_with_items(app, user_id, item_type, items):
                 if (database.get_artist_object(app, item[1]) == None):
                     time.sleep(0.7)
                     artist_info = artist.get_artist_info(item[1])
-                    database.add_item(app, 'artist', item[1], artist_info['image'], artist_info['description'], artist_info['video_link'], artist_info['url_link'])
+                    database.add_item(app, 'artist', item[1], artist_info['image'], artist_info['description'], artist_info['audio_link'], artist_info['url_link'])
 
                 cur_artist = database.get_artist_object(app, item[1])
                 (info, album_tracks) = album.get_album_info(item[0], item[1])
                 # add the album
-                database.add_item(app, 'album', item[0], info['image'], info['description'], info['video_link'], info['url_link'], cur_artist.artist_id)
+                database.add_item(app, 'album', item[0], info['image'], info['description'], info['audio_link'], info['url_link'], cur_artist.artist_id)
                 cur_album = database.get_album_object(app, item[0], item[1])
 
                 """ Currently, adding every track for an album is a feature that costs to many api calls. """
@@ -181,7 +181,7 @@ def update_database_with_items(app, user_id, item_type, items):
                 #         print("adding track: " + album_track)
                 #         time.sleep(0.5)
                 #         track_info = track.get_track_info(album_track, item[1])
-                #         database.add_item(app, 'track', album_track, track_info['image'], track_info['description'], track_info['video_link'], track_info['url_link'], cur_artist.artist_id, cur_album.album_id)
+                #         database.add_item(app, 'track', album_track, track_info['image'], track_info['description'], track_info['audio_link'], track_info['url_link'], cur_artist.artist_id, cur_album.album_id)
 
                 #     # ensure the track's album_id is correct
                 #     cur_track = database.get_track_object(app, album_track, item[1])
@@ -203,7 +203,7 @@ def update_database_with_items(app, user_id, item_type, items):
                 if (database.get_artist_object(app, item[1]) == None):
                     time.sleep(0.7)
                     artist_info = artist.get_artist_info(item[1])
-                    database.add_item(app, 'artist', item[1], artist_info['image'], artist_info['description'], artist_info['video_link'], artist_info['url_link'])
+                    database.add_item(app, 'artist', item[1], artist_info['image'], artist_info['description'], artist_info['audio_link'], artist_info['url_link'])
 
                 cur_artist = database.get_artist_object(app, item[1])
                 info = track.get_track_info(item[0], item[1])
@@ -212,19 +212,19 @@ def update_database_with_items(app, user_id, item_type, items):
                     # check if album of track exists in database, if not then add it
                     if (database.get_album_object(app, info['album_name'], item[1]) == None):
                         (album_info, album_tracks) = album.get_album_info(info['album_name'], item[1])
-                        database.add_item(app, 'album', info['album_name'], album_info['image'], album_info['description'], album_info['video_link'], album_info['url_link'], cur_artist.artist_id)
+                        database.add_item(app, 'album', info['album_name'], album_info['image'], album_info['description'], album_info['audio_link'], album_info['url_link'], cur_artist.artist_id)
 
                     cur_album = database.get_album_object(app, info['album_name'], item[1])
                     # add the track
                     print(item[0])
                     print("album found!")
-                    database.add_item(app, 'track', item[0], info['image'], info['description'], info['video_link'], info['url_link'], cur_artist.artist_id, cur_album.album_id)
+                    database.add_item(app, 'track', item[0], info['image'], info['description'], info['audio_link'], info['url_link'], cur_artist.artist_id, cur_album.album_id)
                 else:
                     # add the track
                     print(item[0])
                     print("album  NOT found!")
-                    print(info['image'] + info['description'] + info['video_link'] + info['url_link'])
-                    database.add_item(app, 'track', item[0], info['image'], info['description'], info['video_link'], info['url_link'], cur_artist.artist_id)
+                    print(info['image'] + info['description'] + info['audio_link'] + info['url_link'])
+                    database.add_item(app, 'track', item[0], info['image'], info['description'], info['audio_link'], info['url_link'], cur_artist.artist_id)
             print(item[0])
             print(item[1])
             cur_track = database.get_track_object(app, item[0], item[1])
