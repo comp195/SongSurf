@@ -191,16 +191,18 @@ def recommend_page():
             print(item_type)
             # If artists were chosen, treat user input as all artists, etc.
             if item_type == 'artist':
+                temp_recommendations = recommendations
                 for rec in recommendations: # Set recommendation = true
                     database.set_recommended(app, user_id, rec.artist_id, 'artist')
                 artist_ids = database.get_artist_recommendations(app, user_id)
                 recommendations = [database.get_item_object_from_id(app, artist_id, 'artist') for artist_id in artist_ids][:3]
                 if not recommendations:
                     error_message = "No tags were able to be found for any of the artists.  Please try other artists."
-                    return render_template('search_page.html', message=error_message)
+                    return render_template('recommend_page.html', user=user_id, user_choice='Artists', recommendations=temp_recommendations, item_type='artist', favorites=favorites, no_more_recs=True)
                 return render_template('recommend_page.html', user=user_id, user_choice='Artists', recommendations=recommendations, item_type='artist', favorites=favorites)
 
             elif item_type == 'album':
+                temp_recommendations = recommendations
                 for rec in recommendations: # Set recommendation = true
                     database.set_recommended(app, user_id, rec.album_id, 'album')
                 album_ids = database.get_album_recommendations(app, user_id)
@@ -208,11 +210,12 @@ def recommend_page():
                 artist_names = [database.get_name(app, album.artist_id, 'artist') for album in recommendations]
                 if not recommendations:
                     error_message = "No tags were able to be found for any of the albums.  Please try other albums."
-                    return render_template('search_page.html', message=error_message)
+                    return render_template('recommend_page.html', user=user_id, user_choice='Albums', recommendations=temp_recommendations, item_type='album', artist_names=artist_names, favorites=favorites, no_more_recs=True)
 
                 return render_template('recommend_page.html', user=user_id, user_choice='Albums', recommendations=recommendations, item_type='album', artist_names=artist_names, favorites=favorites)
 
             elif item_type == 'track':
+                temp_recommendations = recommendations
                 for rec in recommendations: # Set recommendation = true
                     database.set_recommended(app, user_id, rec.track_id, 'track')
                 track_ids = database.get_track_recommendations(app, user_id)
@@ -220,7 +223,7 @@ def recommend_page():
                 artist_names = [database.get_name(app, track.artist_id, 'artist') for track in recommendations]
                 if not recommendations:
                     error_message = "No tags were able to be found for any of the tracks.  Please try other tracks."
-                    return render_template('search_page.html', message=error_message)
+                    return render_template('recommend_page.html', user=user_id, user_choice='Tracks', recommendations=temp_recommendations, item_type='track', artist_names=artist_names, favorites=favorites, no_more_recs=True)
                 return render_template('recommend_page.html', user=user_id, user_choice='Tracks', recommendations=recommendations, item_type='track', artist_names=artist_names, favorites=favorites)
         else:
             return render_template('recommend_page.html', user=user_id, item_type=item_type, recommendations=recommendations, artist_names=artist_names, favorites=favorites)
@@ -303,22 +306,22 @@ def get_recommendations(show_type, user_id, user_choices):
 
 # Function called to play a song on Spotify
 def play_song(track_uri):
-	scope = "user-read-playback-state,user-modify-playback-state"
-	sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_id,
-	                                               client_secret=client_secret,
-	                                               redirect_uri=redirect_uri,
-	                                               scope=scope))
+    scope = "user-read-playback-state,user-modify-playback-state"
+    sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=client_id,
+                                                    client_secret=client_secret,
+                                                    redirect_uri=redirect_uri,
+                                                    scope=scope))
 
-	current_track = sp.current_playback()
-	if current_track is not None:
-	    # If a song is playing, pause it
-	    sp.pause_playback()
+    current_track = sp.current_playback()
+    if current_track is not None:
+        # If a song is playing, pause it
+        sp.pause_playback()
 
-	devices = sp.devices()
-	deviceID = devices['devices'][0]['id']
+    devices = sp.devices()
+    deviceID = devices['devices'][0]['id']
 
-	# Play on first device found
-	sp.start_playback(deviceID, None, [track_uri])
+    # Play on first device found
+    sp.start_playback(deviceID, None, [track_uri])
 
 
 if __name__ == "__main__":
