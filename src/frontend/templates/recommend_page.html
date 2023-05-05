@@ -23,22 +23,22 @@
   <div style= "text-align: center; align-items: center;"><h2>Your Favorites</h2>
   </div>
     <!-- Add your favorite items here -->
-    <h2> Artists &#127908; </h2>
+    <h2 style= "text-align: center; align-items: center;"> <u>Artists &#127908;</u> </h2>
     {% for favorite in favorites %}
       {% if favorite.artist_id is defined and favorite.album_id is not defined %}
-        <h3>{{ favorite.name }}</h3>
+        <li style= "text-align: center; align-items: center;">{{ favorite.name }}</li>
       {% endif %}
     {% endfor %}
-    <h2> Albums &#127926; </h2>
+    <h2 style= "text-align: center; align-items: center;"> <u>Albums &#127926;</u> </h2>
     {% for favorite in favorites %}
       {% if favorite.album_id is defined %}
-        <h3>{{ favorite.name }}</h3>
+        <li style= "text-align: center; align-items: center;">{{ favorite.name }}</li>
       {% endif %}
     {% endfor %}
-    <h2> Tracks &#127925; </h2>
+    <h2 style= "text-align: center; align-items: center;"> <u>Tracks &#127925;</u> </h2>
     {% for favorite in favorites %}
       {% if favorite.track_id is defined %}
-        <h3>{{ favorite.name }}</h3>
+        <li style= "text-align: center; align-items: center;">{{ favorite.name }}</li>
       {% endif %}
     {% endfor %}
 
