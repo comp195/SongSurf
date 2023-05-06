@@ -338,4 +338,4 @@ def play_song(track_uri):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port = 8000) # when deployed, set debug=False
+    app.run(debug=False, port = 8000) # when deployed, set debug=False
