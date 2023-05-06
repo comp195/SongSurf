@@ -119,7 +119,7 @@ function showSlides() {
       
 
       <form action="/home_page" method="POST">
-        <button type="submit" class="button">Join</button>
+        <a class="button" href="{{ url_for('signup_page') }}">Join</a>
         <h2></h2>
         <input type="hidden" name="logged_in_user_id" value="2">
         <button type="submit" class="button">Surf as Guest</button>
