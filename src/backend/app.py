@@ -67,74 +67,78 @@ def index():
 
 @app.route('/search_page', methods=['POST', 'GET'])
 def search_page():
-    if request.method == 'POST': # If user clicks SURF
-        
-         # Check if any input fields are empty
-        if not request.form['user_choice1'] or not request.form['user_choice2'] or not request.form['user_choice3']:
-            error_message = "Please fill out all three input fields."
-            return render_template('search_page.html', message=error_message)
-        
-        # Check if a radio button is selected
-        if not request.form.get('show_type'):
-            error_message = "Please select a category: Artists, Albums, or Songs"
-            return render_template('search_page.html', message=error_message)
+    try:
+	    if request.method == 'POST': # If user clicks SURF
+	        
+	         # Check if any input fields are empty
+	        if not request.form['user_choice1'] or not request.form['user_choice2'] or not request.form['user_choice3']:
+	            error_message = "Please fill out all three input fields."
+	            return render_template('search_page.html', message=error_message)
+	        
+	        # Check if a radio button is selected
+	        if not request.form.get('show_type'):
+	            error_message = "Please select a category: Artists, Albums, or Songs"
+	            return render_template('search_page.html', message=error_message)
 
-         # Check if any input fields are empty
-        if (request.form['show_type'] == 'Albums' or request.form['show_type'] == 'Songs') and (not request.form['user_choice4'] or not request.form['user_choice5'] or not request.form['user_choice6']):
-            error_message = "Please fill out all the artist input fields."
-            return render_template('search_page.html', message=error_message)
+	         # Check if any input fields are empty
+	        if (request.form['show_type'] == 'Albums' or request.form['show_type'] == 'Songs') and (not request.form['user_choice4'] or not request.form['user_choice5'] or not request.form['user_choice6']):
+	            error_message = "Please fill out all the artist input fields."
+	            return render_template('search_page.html', message=error_message)
 
-        # Check for unique inputs
-        if (request.form['show_type'] == 'Artists'):
-            all_choices = [request.form['user_choice1'], request.form['user_choice2'], request.form['user_choice3']]
-        else:
-            tuple1 = (request.form['user_choice1'], request.form['user_choice4'])
-            tuple2 = (request.form['user_choice2'], request.form['user_choice5'])
-            tuple3 = (request.form['user_choice3'], request.form['user_choice6'])
+	        # Check for unique inputs
+	        if (request.form['show_type'] == 'Artists'):
+	            all_choices = [request.form['user_choice1'], request.form['user_choice2'], request.form['user_choice3']]
+	        else:
+	            tuple1 = (request.form['user_choice1'], request.form['user_choice4'])
+	            tuple2 = (request.form['user_choice2'], request.form['user_choice5'])
+	            tuple3 = (request.form['user_choice3'], request.form['user_choice6'])
 
-            all_choices = [tuple1, tuple2, tuple3]
+	            all_choices = [tuple1, tuple2, tuple3]
 
-        if len(all_choices) != len(set(all_choices)):
-            error_message = "Please choose unique values for all input fields."
-            return render_template('search_page.html', message=error_message)
+	        if len(all_choices) != len(set(all_choices)):
+	            error_message = "Please choose unique values for all input fields."
+	            return render_template('search_page.html', message=error_message)
 
-        user_id = session.get('logged_in_user_id')
-        if (user_id == None):
-            user_id = 2    # Set to guest user
-            session['logged_in_user_id'] = 2
-        print(user_id)
+	        user_id = session.get('logged_in_user_id')
+	        if (user_id == None):
+	            user_id = 2    # Set to guest user
+	            session['logged_in_user_id'] = 2
+	        print(user_id)
 
-        # If artists were chosen, treat user input as all artists, etc.
-        if request.form['show_type'] == 'Artists':
-            user_choice = request.form['show_type']
-            recommendations = get_recommendations('artist', user_id, [request.form['user_choice1'], request.form['user_choice2'], request.form['user_choice3']])
-            session['item_type'] = 'artist'
-            if not recommendations:
-                error_message = "Sorry, no recommended artists found. Please try other artists."
-                return render_template('search_page.html', message=error_message)
-            # Set recommendation = true
-            for rec in recommendations:
-                database.set_recommended(app, user_id, rec.artist_id, 'artist')
-            return render_template('recommend_page.html', user=user_id, user_choice=user_choice, item_type='artist', recommendations=recommendations, artist_names=None)
-        elif request.form['show_type'] == 'Albums':
-            user_choice = request.form['show_type']
-            recommendations, artist_names = get_recommendations('album', user_id, [request.form['user_choice1'], request.form['user_choice2'], request.form['user_choice3'], request.form['user_choice4'], request.form['user_choice5'], request.form['user_choice6']])
-            session['item_type'] = 'album'
-            if not recommendations:
-                error_message = "Sorry, no recommended albums found. Please try other albums."
-                return render_template('search_page.html', message=error_message)
-            return render_template('recommend_page.html', user=user_id, user_choice=user_choice, item_type='album', recommendations=recommendations, artist_names=artist_names)
-        elif request.form['show_type'] == 'Tracks':
-            user_choice = request.form['show_type']
-            recommendations, artist_names = get_recommendations('track', user_id, [request.form['user_choice1'], request.form['user_choice2'], request.form['user_choice3'], request.form['user_choice4'], request.form['user_choice5'], request.form['user_choice6']])
-            session['item_type'] = 'track'
-            if not recommendations:
-                error_message = "Sorry, no recommended tracks found. Please try other tracks."
-                return render_template('search_page.html', message=error_message)
-            return render_template('recommend_page.html', user=user_id, user_choice=user_choice, item_type='track', recommendations=recommendations, artist_names=artist_names)
-   
-    else: # If user visits the page
-        return render_template('search_page.html')
+	        # If artists were chosen, treat user input as all artists, etc.
+	        if request.form['show_type'] == 'Artists':
+	            user_choice = request.form['show_type']
+	            recommendations = get_recommendations('artist', user_id, [request.form['user_choice1'], request.form['user_choice2'], request.form['user_choice3']])
+	            session['item_type'] = 'artist'
+	            if not recommendations:
+	                error_message = "Sorry, no recommended artists found. Please try other artists."
+	                return render_template('search_page.html', message=error_message)
+	            # Set recommendation = true
+	            for rec in recommendations:
+	                database.set_recommended(app, user_id, rec.artist_id, 'artist')
+	            return render_template('recommend_page.html', user=user_id, user_choice=user_choice, item_type='artist', recommendations=recommendations, artist_names=None)
+	        elif request.form['show_type'] == 'Albums':
+	            user_choice = request.form['show_type']
+	            recommendations, artist_names = get_recommendations('album', user_id, [request.form['user_choice1'], request.form['user_choice2'], request.form['user_choice3'], request.form['user_choice4'], request.form['user_choice5'], request.form['user_choice6']])
+	            session['item_type'] = 'album'
+	            if not recommendations:
+	                error_message = "Sorry, no recommended albums found. Please try other albums."
+	                return render_template('search_page.html', message=error_message)
+	            return render_template('recommend_page.html', user=user_id, user_choice=user_choice, item_type='album', recommendations=recommendations, artist_names=artist_names)
+	        elif request.form['show_type'] == 'Tracks':
+	            user_choice = request.form['show_type']
+	            recommendations, artist_names = get_recommendations('track', user_id, [request.form['user_choice1'], request.form['user_choice2'], request.form['user_choice3'], request.form['user_choice4'], request.form['user_choice5'], request.form['user_choice6']])
+	            session['item_type'] = 'track'
+	            if not recommendations:
+	                error_message = "Sorry, no recommended tracks found. Please try other tracks."
+	                return render_template('search_page.html', message=error_message)
+	            return render_template('recommend_page.html', user=user_id, user_choice=user_choice, item_type='track', recommendations=recommendations, artist_names=artist_names)
+	   
+	    else: # If user visits the page
+	        return render_template('search_page.html')
+    except Exception as e:
+    	error_message = f"An error occurred: {str(e)}"
+    	return render_template('search_page.html', message=error_message)
     
 @app.route('/recommend_page', methods=['POST', 'GET'])
 def recommend_page():
